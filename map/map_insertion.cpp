@@ -13,7 +13,7 @@
 
 //	----------------------------------
 
-std::pair<iterator, bool> insert(const value_type& val) {
+std::pair<iterator, bool> insert_RBT(const value_type& val) {
 	iterator if_exist = find(val->first);
 	if (if_exist != iter_end)
 		return <if_exist, false>;
@@ -29,18 +29,26 @@ std::pair<iterator, bool> insert(const value_type& val) {
 	}
 }
 
-void	insert_BST(Node* root, Node* new_node) {
+void	insertion_BST(Node* parent, Node* curr, Node* new_node) {
 	// Just answer the new Node, no need to do anything else
-	if (root.is_null == 1) {
-		// Empty Tree
-		root = new_node;
+	if (!curr.is_null())
+	{
+		if (parent->value > new_node->value)
+		{
+			parent->l_child = new_node;
+			new_node->parent = parent;
+		}
+		else
+		{
+			parent->r_child = new_node;
+			new_node->parent = parent;
+		}
 	}
 	else {
-		// we compare here the key value of each node
-		if (root > new_node) // compare nodes
-			insert_BST(root->left, new_node);
+		if (curr->value > new_node->value)
+			insert_BST(curr, node->left, new_node);
 		else
-			insert_BST(root->right, new_node);
+			insert_BST(curr, node->right, new_node);
 	}
 }
 
@@ -59,7 +67,7 @@ void	balancing_insertion(Node* new_node) {
 	// Case 3:
 	else { // if(parent.color == Red)
 		
-		Node* uncle = sibling(parent);
+		Node* uncle = sibling(parent);    // Maybe uncle could be NIL
 		Node* grandParent = parent->parent;
 
 		// Case 3.1:
@@ -71,7 +79,7 @@ void	balancing_insertion(Node* new_node) {
 			balancing_insertion(grandParent);
 		}
 		// Case 3.2:
-		else // Parent is Red && Uncle is Black
+		else // Parent is Red && Uncle is Black and Maybe in this Case Uncle is NIL
 		{
 			if (parent.isRight() && new_node.isRight())
 				case_1Insertion(grandParent);

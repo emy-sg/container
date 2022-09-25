@@ -8,7 +8,7 @@
 //  https://en.cppreference.com/w/cpp/iterator/iterator
 
 namespace ft {
-    template <class Category, class T, class Distance = std::ptrdiff_t, class Pointer = T*, class Reference = T&>
+    template <class T>
     class my_RandomAccessIterator;
 }
 

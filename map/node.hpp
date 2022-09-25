@@ -11,8 +11,8 @@ enum Color {
 
 template <class value_type>
 class Node {
-    private:
-        int is_null;  // 0 is null and 1 is !null
+    public:
+        int _is_null;  // 0 is null and 1 is !null
         value_type value;
         Color color;
 
@@ -22,11 +22,26 @@ class Node {
 
     public:
         // Constructor
-        Node();
-        Node(value_type value);
-        Node(const Node& inst);
-        Node& operator=(const Node& inst);
-        ~Node();
+        Node() {
+        	_is_null = 0;  // 0 is null and 1 is !null
+			color = Black;
+		}
+        Node(value_type value) : value(value) {
+			_is_null = 1;
+			//std::cout << "Parameterized Node Constructor\n";
+		}
+        Node(const Node& inst) {
+			*this = inst;
+		}
+        Node& operator=(const Node& inst) {
+			_is_null = inst._is_null;
+			value = inst.value;
+			color = inst.color;
+			parent = inst->parent;
+			l_child = inst->l_child;
+			r_child = inst->r_child;
+		}
+        ~Node() {}
 
     // -------------  Methods  ------------ //
 
@@ -34,22 +49,38 @@ class Node {
         //      Check position of Node //
         /////////////////////////////////
 
+	void printNode() {
+		if (is_null())
+			std::cout << "is_null: yes | ";
+		else
+			std::cout << "is_null: no | ";
+		if (color == Red)
+			std::cout << "color: Red | ";
+		else
+		 	std::cout << "color: Black | ";
+		if (isLeft())
+			std::cout << "is_Left: yes | ";
+		else
+		 	std::cout << "is_right: yes | ";
+		std::cout <<  " value: " << value.first << " | parent value: " << parent->value.first << "\n";
+	}
+
     bool is_null() {
-	    if (!(*this).is_null)
+	    if (this->_is_null == 0)
 		    return true;
 	    return false;
     }
     
     bool isRight() {
 	    Node* parent = this->parent;
-	    if (parent->r_child == *this)
+	    if (parent->r_child == this)
 		    return true;
 	    return false;
     }
 
     bool isLeft() {
 	    Node* parent = this->parent;
-	    if (parent->l_child == *this)
+	    if ((parent->l_child) == this)
 		    return true;
 	    return false;
     }
@@ -69,18 +100,18 @@ class Node {
 
     Node* far_child_sibling() {
 	    Node* node = this;
-	    Node* sibling = node.sibling();
-	    if (node.isLeft())
+	    Node* sibling = node->sibling();
+	    if (node->isLeft())
 		    return sibling->r_child;
 	    return sibling->l_child;
     }
 
     Node* near_child_sibling() {
 	    Node* node = this;
-	    Node* sibling = node.sibling();
-	    if (node.isLeft())
+	    Node* sibling = node->sibling();
+	    if (node->isLeft())
 		    return sibling->l_child;
-	    return sibling.r_child;
+	    return sibling->r_child;
     }
 
         ////////////////////////////////////
@@ -119,30 +150,40 @@ class Node {
         //           Rotation          //
         /////////////////////////////////
 
-    void left_Rotation(Node* node) {
+    void left_Rotation() {
+		Node* node = this;
 	    Node* parent = node->parent;
 	    Node* right_child = node->r_child;
 
-	    if (node.isRight())
+	    if (node->isRight())
 		    parent->r_child = right_child;
 	    else
 		    parent->l_child = right_child;
+		//parent->printNode();
 	    node->parent = right_child;
 	    node->r_child = right_child->l_child;
+		if (!(node->r_child)->is_null()) // is not NIL
+			(node->r_child)->parent = node;
 	    right_child->l_child = node;
+		right_child->parent = parent;
+		right_child->printNode();
     }
 
-    void right_Rotation(Node* node) {
+    void right_Rotation() {
+		Node* node = this;
 	    Node* parent = node->parent;
 	    Node* left_child = node->l_child;
 
-	    if (node.isRight())
+	    if (node->isRight())
 		    parent->r_child = left_child;
 	    else
 		    parent->l_child = left_child;
 	    node->parent = left_child;
 	    node->l_child = left_child->r_child;
+		if (!(node->l_child)->is_null()) // is not NIL
+			(node->l_child)->parent = node;
 	    left_child->r_child = node;
+		left_child->parent = parent;
     }
 
         ///////////////////////////////////
