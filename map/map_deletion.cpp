@@ -5,23 +5,18 @@
 	https://www.youtube.com/watch?v=w5cvkTXY0vQ&t=474s&ab_channel=Jenny%27slecturesCS%2FITNET%26JRF
 */
 
-void	delete_leaf(Node* node) {
+void	delete_leaf(Node node) {
 	// Node to be "deleted" has no children : i.e, it is a lead node
 	Node* parent = node->parent;
 	if (node.isLeft())
-	{
 		parent->l_child = node->l_child;
-		// destroy node->r_child;
-	}
 	else
-	{
 		parent->r_child = node->r_child;
-		// destroy node->l_child
-	}
 	// destroy node
+	delete node;
 }
 
-void delete_node(Node* node_to_delete)
+void delete_node(Node& node_to_delete)
 {
 	// Case 1:
 	if (isRoot(node_to_delete) && node_to_delete.is_leaf())
@@ -63,7 +58,7 @@ void delete_node(Node* node_to_delete)
 
 	//	--------------------------------------------
 
-void fix_DB(Node* DB_node)
+void fix_DB(Node& DB_node)
 {
 	// Case 0:
 	if (isroot(DB_node))
