@@ -24,10 +24,17 @@ class Node {
         // Constructor
         Node() {
         	_is_null = 0;  // 0 is null and 1 is !null
+			//parent = nullptr;
+			//l_child = nullptr;
+			//r_child = nullptr;
 			color = Black;
 		}
         Node(value_type value) : value(value) {
 			_is_null = 1;
+			//parent = nullptr;
+			//l_child = nullptr;
+			//r_child = nullptr;
+			color = Red;
 			//std::cout << "Parameterized Node Constructor\n";
 		}
         Node(const Node& inst) {
@@ -177,7 +184,11 @@ class Node {
 	    node->parent = right_child;
 	    node->r_child = right_child->l_child;
 		if (!(node->r_child)->is_null()) // is not NIL
+		{
+			std::cout << "\n\n wala\n\n";
+			(node->r_child)->printNode();
 			(node->r_child)->parent = node;
+		}
 	    right_child->l_child = node;
 		right_child->parent = parent;
 		//right_child->printNode();
@@ -197,7 +208,11 @@ class Node {
 	    node->parent = left_child;
 	    node->l_child = left_child->r_child;
 		if (!(node->l_child)->is_null()) // is not NIL
+		{
+			std::cout << "\n\n wala\n\n";
+			(node->r_child)->printNode();
 			(node->l_child)->parent = node;
+		}
 	    left_child->r_child = node;
 		left_child->parent = parent;
 		//std::cout << "end right_Rotation\n";
@@ -257,7 +272,7 @@ class Node {
 	}
 
 
-	void swap1(Node* replace_node) {
+	/*void swap1(Node* replace_node) {
 			Node* pparent = this->parent;
 			if (this->isLeft())
 				pparent->l_child = replace_node;
@@ -289,7 +304,7 @@ class Node {
 			Color color = replace_node->color;
 			replace_node->color = node_to_delete->color;
 			node_to_delete->color = color;
-	}
+	}*/
 
 };
 
