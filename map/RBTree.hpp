@@ -156,8 +156,6 @@ Node* insertion_RBTree(const value_type& val) {
 		}
 		// 5- Balance the RedBlack Tree
 		balancing_insertion(new_node); // new_node is not a "NIL node"
-				std::cout << "     ________________NIL ";
-				_NIL.printNode();
 		return new_node;
 	}
 	catch (...) {
@@ -265,24 +263,14 @@ void delete_RBTree(const key_type& key)
 	Node* node_to_delete = searchByKey(key);
 
 	if (node_to_delete)
-	{
-				std::cout << "     ________________NIL ";
-				_NIL.printNode();
-		node_to_delete->printNode();
 		deletion_RBTree(node_to_delete);
-
-		std::cout << "     ________________NIL ";
-				_NIL.printNode();
-	}
 	else
 		 std::cout << "I'm null";
 }
+
 //void deletion_RBTree(Node& node_to_delete)
 void deletion_RBTree(Node* node_to_delete)
 {
-	std::cout << "      ========== Node to delete is: ============== \n";
-	node_to_delete->printNode();
-	std::cout << "      ============================================\n";
 	// Case 1:
 	if (isRoot(node_to_delete) && node_to_delete->is_leaf())
 		delete_leaf(node_to_delete);
@@ -292,14 +280,10 @@ void deletion_RBTree(Node* node_to_delete)
 	// Case 3:
 	else if (node_to_delete->is_leaf() && node_to_delete->color == Black)
 	{
-		std::cout << "Black leaf\n";
-		std::cout << "     ________________NIL ";
-		_NIL.printNode();
-		//node_to_delete->printNode();
 		Node	*parent = node_to_delete->parent;// parent
 		if (node_to_delete->isRight())
 		{
-			std::cout << "is Right\n";
+			//std::cout << "Black leaf Right\n";
 			delete_leaf(node_to_delete);
 			Node* new_node = new Node(); // is Black Null Node
 			new_node->_is_null = 0;
@@ -308,12 +292,16 @@ void deletion_RBTree(Node* node_to_delete)
 			new_node->l_child = &_NIL;
 			new_node->r_child = &_NIL;
 			new_node->color = DB; // enum {RED, Black, DB}
+			//std::cout << "DB new node \n";
+			//new_node->printNode();
 			fix_DB(new_node);
 			delete_leaf(new_node);
 		}
 		else // isLeft()
 		{
-			std::cout << "is Left\n";
+			this->printTree();
+			//std::cout << "Black leaf Left\n";
+			//(node_to_delete->parent)->printNode();
 			delete_leaf(node_to_delete);
 			Node* new_node = new Node();
 			parent->l_child = new_node;
@@ -322,6 +310,8 @@ void deletion_RBTree(Node* node_to_delete)
 			new_node->l_child = &_NIL;
 			new_node->r_child = &_NIL;
 			new_node->color = DB;
+			//std::cout << "DB new node \n";
+			//new_node->printNode();
 			fix_DB(new_node);
 			delete_leaf(new_node);
 		}
@@ -329,42 +319,44 @@ void deletion_RBTree(Node* node_to_delete)
 	// Case 4: Internal Node
 	else
 	{
-		std::cout << "----Delete Internal node-----\n";
+		//std::cout << "----Delete Internal node-----\n";
+
 		// In this case of Internal Node, we don't delete the node:
 		// 		==> Actually we replace the node.
 		// Replace it with his InOrderSuccessor OR InOrderPredecessor
 		//    and delete the actual node(node_to_delete)
 
-		std::cout << "     ________________NIL ";
-		_NIL.printNode();
-		
 		Node* node_replace;
 	
 		node_replace = choose_replacement_of_node(node_to_delete);
-		std::cout << " ====> Replace node will be: \n";
-		// node_replace->printNode();
-		// node_to_delete->l_child->printNode();
-		// node_to_delete->r_child->printNode();
 		if (node_replace != node_to_delete->l_child && node_replace != node_to_delete->r_child)
 		{
-			std::cout << "choosing replacement node is not a child\n";
+			//std::cout << "Replacement node is not a special case aka one of his children\n";
+			//std::cout << "Replacement node \n";
+			//node_replace->printNode();
+			//std::cout << "Parent of replacement node \n";
+			//if(!(node_replace->parent)->is_null())
+			//	(node_replace->parent)->printNode();
+			//std::cout << "Node to delete \n";
+			//node_to_delete->printNode();
 			node_to_delete->swap(node_replace);
-			//exit(1);
+			_root = _end_node.l_child;
+			//std::cout << "Replacement node \n";
+			//node_replace->printNode();
+			//std::cout << "Parent of node to delete \n";
+			//(node_to_delete->parent)->printNode();
+			//std::cout << "Node to delete \n";
+			//node_to_delete->printNode();
 		}
 		else
 		{
-			std::cout << "special case when the replace node is the child of node\n";
-			// exit(1);
 			// Special case of : Swap node with one of his children
 			if (node_to_delete->isLeft())
 			{
-				std::cout << "node to delete is left\n";
 				(node_to_delete->parent)->l_child = node_replace;
 				// swap with left child
 				if (node_replace->isLeft())
 				{
-					std::cout << "node replace is left\n";
-					//exit(1);
 					node_replace->parent = node_to_delete->parent;
 					Node* left_child = node_replace->l_child;
 					Node* right_child = node_replace->r_child;
@@ -383,8 +375,6 @@ void deletion_RBTree(Node* node_to_delete)
 				// swap with right child
 				else // node_replace is right
 				{
-					std::cout << "node replace is right\n";
-					//exit(1);
 					node_replace->parent = node_to_delete->parent;
 					Node* left_child = node_replace->l_child;
 					Node* right_child = node_replace->r_child;
@@ -403,13 +393,14 @@ void deletion_RBTree(Node* node_to_delete)
 			}
 			else
 			{
-				std::cout << "node to delete is right\n";
+				//std::cout << "Node to delete is Right\n";
+				//node_to_delete->printNode();
 				(node_to_delete->parent)->r_child = node_replace;
 					// swap with left child
 				if (node_replace->isLeft())
 				{
-					std::cout << "node replace is left\n";
-					// exit(1);
+					//std::cout << "Replacement node is Left\n";
+					//node_replace->printNode();
 					node_replace->parent = node_to_delete->parent;
 					Node* left_child = node_replace->l_child;
 					Node* right_child = node_replace->r_child;
@@ -424,15 +415,12 @@ void deletion_RBTree(Node* node_to_delete)
 					// give children of node_replace to the node to delete
 					node_to_delete->l_child = left_child;
 					node_to_delete->r_child = right_child;
-					//exit(1);
 				}
 				// swap with right child
 				else // node_replace is right
 				{
-					std::cout << "node replace is right\n";
-					std::cout << "     ________________NIL ";
-					_NIL.printNode();
-					//exit(1);
+					//std::cout << "Replacement node is Right\n";
+					//node_replace->printNode();
 					node_replace->parent = node_to_delete->parent;
 					Node* left_child = node_replace->l_child;
 					Node* right_child = node_replace->r_child;
@@ -446,124 +434,15 @@ void deletion_RBTree(Node* node_to_delete)
 					node_to_delete->parent = node_replace;
 					// give children of node_replace to the node to delete
 					node_to_delete->l_child = left_child;
-					node_to_delete->r_child = right_child;
-					std::cout << "     ________________NIL ";
-					_NIL.printNode();		
+					node_to_delete->r_child = right_child;		
 				}					
 			}
-
-
-
-
-			/*// swap node with one of his children
-			if ((node_to_delete->l_child)->is_null()) // internal node with one child
-			{
-				std::cout << "internal node with one child l_child\n";
-				replace_node = node_to_delete->r_child;
-				//node_to_delete->swap_node(replace_node);
-				Node* pparent = node_to_delete->parent;
-			if (node_to_delete->isLeft())
-				pparent->l_child = replace_node;
-			else
-				pparent->r_child = replace_node;
-			replace_node->parent = pparent;
-			replace_node->r_child = node_to_delete;
-			node_to_delete->parent = replace_node;
-			node_to_delete->r_child = &_NIL;
-			replace_node->printNode();
-			node_to_delete->printNode();
-			Color color = replace_node->color;
-			replace_node->color = node_to_delete->color;
-			node_to_delete->color = color;
-		}
-		else if ((node_to_delete->r_child)->is_null()) // internal node with one child
-		{
-			std::cout << "internal node with one child r_child\n";
-			replace_node = node_to_delete->l_child;
-			//node_to_delete->swap_node(replace_node);
-			Node* pparent = node_to_delete->parent;
-			if (node_to_delete->isLeft())
-				pparent->l_child = replace_node;
-			else
-				pparent->r_child = replace_node;
-			replace_node->parent = pparent;
-			replace_node->l_child = node_to_delete;
-			node_to_delete->parent = replace_node;
-			node_to_delete->l_child = &_NIL;
-			replace_node->printNode();
-			node_to_delete->printNode();
-			Color color = replace_node->color;
-			replace_node->color = node_to_delete->color;
-			node_to_delete->color = color;
-		}
-		}	*/
-
-/*		Node* replace_node;
-		if ((node_to_delete->l_child)->is_null()) // internal node with one child
-		{
-			std::cout << "internal node with one child l_child\n";
-			replace_node = node_to_delete->r_child;
-			//node_to_delete->swap_node(replace_node);
-			Node* pparent = node_to_delete->parent;
-			if (node_to_delete->isLeft())
-				pparent->l_child = replace_node;
-			else
-				pparent->r_child = replace_node;
-			replace_node->parent = pparent;
-			replace_node->r_child = node_to_delete;
-			node_to_delete->parent = replace_node;
-			node_to_delete->r_child = &_NIL;
-			replace_node->printNode();
-			node_to_delete->printNode();
-			Color color = replace_node->color;
-			replace_node->color = node_to_delete->color;
-			node_to_delete->color = color;
-		}
-		else if ((node_to_delete->r_child)->is_null()) // internal node with one child
-		{
-			std::cout << "internal node with one child r_child\n";
-			replace_node = node_to_delete->l_child;
-			//node_to_delete->swap_node(replace_node);
-			Node* pparent = node_to_delete->parent;
-			if (node_to_delete->isLeft())
-				pparent->l_child = replace_node;
-			else
-				pparent->r_child = replace_node;
-			replace_node->parent = pparent;
-			replace_node->l_child = node_to_delete;
-			node_to_delete->parent = replace_node;
-			node_to_delete->l_child = &_NIL;
-			replace_node->printNode();
-			node_to_delete->printNode();
-			Color color = replace_node->color;
-			replace_node->color = node_to_delete->color;
-			node_to_delete->color = color;
-		}
-		else // internal node with two children
-*/		/*{
-			std::cout << "internal node with two children\n";
-			replace_node = choose_replacement_of_node(node_to_delete);
-			std::cout << "Replace_node\n";
-			replace_node->printNode();
-			if (!(node_to_delete->l_child)->is_null())
-			 	node_to_delete->swap1(replace_node);
-			else if (!(node_to_delete->r_child)->is_null())
-			 	node_to_delete->swap2(replace_node);
-			else
-				node_to_delete->swap_node(replace_node);
-		}*/
 		}
 		Color color = node_replace->color;
 		node_replace->color = node_to_delete->color;
 		node_to_delete->color = color;
 		// ==> After Rotation, Update the _root
 		_root = _end_node.l_child;
-		std::cout << "Recursive call for deletion_RBTree for this node:\n";
-		node_to_delete->printNode();
-		std::cout << "     ________________NIL ";
-		_NIL.printNode();
-		//this->printTree();
-		//exit(1);
 		deletion_RBTree(node_to_delete); // is leaf or one child those are the only cases
 	}
 }
@@ -575,10 +454,6 @@ Node* choose_replacement_of_node(Node* node_to_delete)
 	Node* InOrderSuccessor = node_to_delete->inOrderSuccessor();
 	Node* InOrderPredecessor = node_to_delete->inOrderPredecessor();
 
-	//std::cout << "===> Successor:\n";
-	//InOrderSuccessor->printNode();
-	//std::cout << "===> Predecessor:\n";
-	//InOrderPredecessor->printNode();
 	if (InOrderSuccessor->is_null())
 		return InOrderPredecessor;
 	else if (InOrderPredecessor->is_null())
@@ -634,50 +509,26 @@ void case_1Deletion(Node* DB_node) {
 // Case 2: // sibling is Red
 void case_2Deletion(Node* DB_node) {
 	//std::cout << "case_2Deletion\n";
-	std::cout << "     ________________NIL  case_ 2Deletion \n";
-				_NIL.printNode();
 	Node* sibling = DB_node->sibling();
 	Node* parent = DB_node->parent;
 
 	// Step 1: Swap DB's parent color with DB's sibling color
 	parent->color = Red;
 	sibling->color = Black;
-	//	std::cout << "sibling ";
-	//		sibling->printNode();
-	//	std::cout << "parent ";
-	//		parent->printNode();
-	//this->printTree();
-	//		std::cout << "RRRight child ";
-	//		(((DB_node->sibling())->l_child)->r_child)->printNode();
+
 	// Step 2: Perform Rotation at parent node in the direction of DB node
 	if (DB_node->isLeft())
 	{
-				std::cout << "     ________________NIL Before rotation if \n";
-				_NIL.printNode();
 		parent->left_Rotation();
-				std::cout << "     ________________NIL After rotation \n";
-				_NIL.printNode();
 		// ==> After Rotation, Update the _root
 		_root = _end_node.l_child;
 	}
 	else
 	{
-				std::cout << "     ________________NIL Before rotation else \n";
-				_NIL.printNode();
 		parent->right_Rotation();
-				std::cout << "     ________________NIL After rotation ";
-				_NIL.printNode();
 		// ==> After Rotation, Update the _root
 		_root = _end_node.l_child;
 	}
-	//this->printTree();
-	// Step 3: recursive
-			//std::cout << "sibling ";
-			//(DB_node->sibling())->printNode();
-		//std::cout << "left child ";
-		//	((DB_node->sibling())->l_child)->printNode();
-		//std::cout << "right child ";
-		//	((DB_node->sibling())->r_child)->printNode();
 	fix_DB(DB_node);
 }
 
@@ -685,8 +536,9 @@ void case_2Deletion(Node* DB_node) {
 	//    Sibling's child near to DB in red
 void	case_3Deletion(Node* DB_node)
 {
-	std::cout << "case_3Deletion\n";
+	//std::cout << "case_3Deletion\n";
 	Node* sibling = DB_node->sibling();
+
 	// Step 1: color sibling with Red, and red child sibling with black (swap color)
 	sibling->color = Red;
 	(DB_node->near_child_sibling())->color = Black;
@@ -710,12 +562,11 @@ void	case_3Deletion(Node* DB_node)
 // Case 4: // if (sibling.color == Black && (DB_node.far_child_sibling()).color == Red)
 void case_4Deletion(Node* DB_node)
 {
-	std::cout << "case_4Deletion\n";
-	//exit(1);
+	//std::cout << "case_4Deletion\n";
 	Node* sibling = DB_node->sibling();
 	Node* far_child_sibling = DB_node->far_child_sibling();
-	//exit(1);
 	Node* parent = DB_node->parent;
+
 	// Step 1: Swap color of DB's parent with DB's sibling's color
 	sibling->color = parent->color;
 	parent->color = Black;
@@ -723,24 +574,19 @@ void case_4Deletion(Node* DB_node)
 	if (DB_node->isLeft())
 	{
 		parent->left_Rotation();
-		//exit(1);
 		// ==> After Rotation, Update the _root
 		_root = _end_node.l_child;
 	}
 	else
 	{
 		parent->right_Rotation();
-		//exit(1);
 		// ==> After Rotation, Update the _root
 		_root = _end_node.l_child;
 	}
-	//exit(1);
 	// Step 3: Remove DB sign
 	DB_node->color = Black;
 	// Step 4: Change color of DB's sibling far child from Red to Black
-	std::cout << "siri na3si\n";
 	far_child_sibling->color = Black;
-	//exit(1);
 }
 
 };

@@ -6,7 +6,7 @@
 enum Color {
     Red,
     Black,
-    DB
+    DB,
 };
 
 template <class value_type>
@@ -63,8 +63,10 @@ class Node {
 			std::cout << "is_null: no | ";
 		if (color == Red)
 			std::cout << "color: Red | ";
-		else
+		else if (color == Black)
 		 	std::cout << "color: Black | ";
+		else
+		 	std::cout << "color: DB | ";
 		if (isLeft())
 			std::cout << "is_Left: yes | ";
 		else
@@ -180,19 +182,12 @@ class Node {
 		    parent->r_child = right_child;
 	    else
 		    parent->l_child = right_child;
-		//parent->printNode();
 	    node->parent = right_child;
 	    node->r_child = right_child->l_child;
 		if (!(node->r_child)->is_null()) // is not NIL
-		{
-			std::cout << "\n\n wala\n\n";
-			(node->r_child)->printNode();
 			(node->r_child)->parent = node;
-		}
 	    right_child->l_child = node;
 		right_child->parent = parent;
-		//right_child->printNode();
-		//std::cout << "end left_Rotation\n";
     }
 
     void right_Rotation() {
@@ -208,103 +203,56 @@ class Node {
 	    node->parent = left_child;
 	    node->l_child = left_child->r_child;
 		if (!(node->l_child)->is_null()) // is not NIL
-		{
-			std::cout << "\n\n wala\n\n";
-			(node->r_child)->printNode();
 			(node->l_child)->parent = node;
-		}
 	    left_child->r_child = node;
 		left_child->parent = parent;
-		//std::cout << "end right_Rotation\n";
     }
 
         ///////////////////////////////////
         //   Swap position of two nodes  //
         ///////////////////////////////////
 
-    // void	swap_node(Node* replacement_node) {
-	// 	std::cout << "begin swap_node\n";
-	//     Node* pparent = replacement_node->parent;	
-	//     replacement_node->parent = this->parent;
-	//     this->parent = pparent;;
-	// 	// Change right with right:
-	//     Node* rr_child = replacement_node->r_child;
-	//     replacement_node->r_child = this->r_child;
-	//     this->r_child = rr_child;;
-	// 	// Change left with left
-    //     Node*  ll_child = replacement_node->l_child;
-	//     replacement_node->l_child = this->l_child;
-	//     this->l_child = ll_child;
-	// 	std::cout << "end swap_node\n";
-    // }
-
 	void swap(Node* replace_node) {
-		std::cout << "SWAP fct\n";
-		this->printNode();
-		replace_node->printNode();
+		//std::cout << "Call to SWAP function\n";
 		Node* this_parent = this->parent;
 		Node* replace_parent = replace_node->parent;
 		Node* left_child = replace_node->l_child;
 		Node* right_child = replace_node->r_child;
 		Color color = replace_node->color;
 
-		// We discuss here some cases 
+		// 1- We discuss here some cases 
 		if (this->isLeft())
 			this_parent->l_child = replace_node;
 		else
 			this_parent->r_child = replace_node;
+
 		if (replace_node->isLeft())
 			replace_parent->l_child = this;
 		else
 		 	replace_parent->r_child = this;
 		
-		// 1- switch parent
+		// 2- switch parent
 		this->parent = replace_parent;
 		replace_node->parent = this_parent;
 		// 3- switch children 
 		replace_node->l_child = this->l_child;
+		if (!(this->l_child)->is_null())
+			(this->l_child)->parent = replace_node;
 		replace_node->r_child = this->r_child;
+		if (!(this->r_child)->is_null())
+			(this->r_child)->parent = replace_node;
+
 		this->l_child = left_child;
+		if (!left_child->is_null())
+			left_child->parent = this;
 		this->r_child = right_child;
+		if (!right_child->is_null())
+			right_child->parent = this;
+
 		// 4- switch colors
 		replace_node->color = this->color;
 		this->color = color;
 	}
-
-
-	/*void swap1(Node* replace_node) {
-			Node* pparent = this->parent;
-			if (this->isLeft())
-				pparent->l_child = replace_node;
-			else
-				pparent->r_child = replace_node;
-			replace_node->parent = pparent;
-			replace_node->r_child = node_to_delete;
-			node_to_delete->parent = replace_node;
-			node_to_delete->r_child = &_NIL;
-			replace_node->printNode();
-			node_to_delete->printNode();
-			Color color = replace_node->color;
-			replace_node->color = node_to_delete->color;
-			node_to_delete->color = color;
-	}
-
-	void swap2(Node* replace_node) {
-			Node* pparent = node_to_delete->parent;
-			if (node_to_delete->isLeft())
-				pparent->l_child = replace_node;
-			else
-				pparent->r_child = replace_node;
-			replace_node->parent = pparent;
-			replace_node->l_child = node_to_delete;
-			node_to_delete->parent = replace_node;
-			node_to_delete->l_child = &_NIL;
-			replace_node->printNode();
-			node_to_delete->printNode();
-			Color color = replace_node->color;
-			replace_node->color = node_to_delete->color;
-			node_to_delete->color = color;
-	}*/
 
 };
 
