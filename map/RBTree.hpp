@@ -2,16 +2,14 @@
 #define RBTREE_HPP
 
 #include "node.hpp"
+#include <cstddef>
 //#in
 
 /* Red-Black Tree is a self-balanced Binary Tree */
 // Search and Insert and Remove this operation in O log(n) time complexity
 
-//template <class value_type, class key_type, class mapped_value, class Alloc>
-template <class key_type, class mapped_value>
-class Tree {
-	public:
-		typedef std::pair<key_type, mapped_value> value_type;
+template <class key_type, class value_type, class allocator_type>
+class RBTree {
     private:
 		typedef ::Node<value_type> Node;
 		size_t _size;
@@ -25,16 +23,28 @@ class Tree {
     
 	public:
     // Constructor
-    Tree() { 
-		//std::cout << "Default Tree constructor\n";
+    RBTree() { 
+		std::cout << "Default Tree constructor\n";
 		_size = 0;
 		_begin_node = &_end_node;
 	}
 
-	~Tree() {
-		//std::cout << "Tree Destructor\n";
+	RBTree(int i) {
+		std::cout << "Parameterized Tree constructor\n";
+	}
+
+	virtual ~RBTree() {
+		std::cout << "Tree Destructor\n";
 		// if (_size > 0)
 		// 	//delete all
+	}
+
+	void setSize(size_t n) {
+		_size = n;
+	}
+	
+	size_t getSize() const {
+		return _size;
 	}
 
 	void printHelper(Node *root, std::string indent, bool last) {
