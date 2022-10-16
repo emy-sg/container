@@ -22,12 +22,14 @@ class Node {
 
     public:
         // Constructor
-        Node() {
+        Node() : value() { //: value()
         	_is_null = 0;  // 0 is null and 1 is !null
+			//value should be initialzed
 			//parent = nullptr;
 			//l_child = nullptr;
 			//r_child = nullptr;
 			color = Black;
+			//std::cout << "Default Node Constructor\n";
 		}
         Node(value_type value) : value(value) {
 			_is_null = 1;
@@ -38,17 +40,23 @@ class Node {
 			//std::cout << "Parameterized Node Constructor\n";
 		}
         Node(const Node& inst) {
+			//std::cout << "Copy Node Construtor\n";
 			*this = inst;
 		}
         Node& operator=(const Node& inst) {
 			_is_null = inst._is_null;
-			value = inst.value;
+			//value = inst.value;
+			*(int *)0 = 0;
 			color = inst.color;
-			parent = inst->parent;
-			l_child = inst->l_child;
-			r_child = inst->r_child;
+			parent = inst.parent;
+			l_child = inst.l_child;
+			r_child = inst.r_child;
+			//std::cout << "Copy Assignement Node operator\n";
+			return *this;
 		}
-        ~Node() {}
+        ~Node() {
+			//std::cout << "Node Destructor\n";
+		}
 
     // -------------  Methods  ------------ //
 
@@ -71,7 +79,7 @@ class Node {
 			std::cout << "is_Left: yes | ";
 		else
 		 	std::cout << "is_right: yes | ";
-		std::cout << " value: " << value.first << " | parent value: " << parent->value.first;
+		std::cout << " key: " << value.first << " | value: " << value.second << " | parent value: " << parent->value.first;
 		if (!(this->l_child)->is_null())
 			std::cout << " | l_child value: " << (this->l_child)->value.first;
 		else
@@ -135,6 +143,38 @@ class Node {
         ////////////////////////////////////
         //     Successor and Predecessor  //
         ////////////////////////////////////
+		
+	// Node* next_node(Node* root) {
+	// 	if ((this->r_child)->is_null())
+	// 	{
+	// 		if (this->isLeft())
+	// 			return this->parent;
+	// 		else {
+	// 			Node* p = this->parent;
+	// 			while (p->value != root->value && p->isRight())
+	// 				p = p->parent;
+	// 			return p->parent; // return end_node OR another node
+	// 		}
+	// 	}
+	// 	else
+	// 		return this->inOrderSuccessor();
+	// }
+
+	// Node* previous_node(Node* root) {
+	// 	if ((this->l_child)->is_null())
+	// 	{
+	// 		if (this->isRight())
+	// 			return this->parent;
+	// 		else {
+	// 			Node* p = this->parent;
+	// 			while (p->value != root->value && p->isLeft())
+	// 				p = p->parent;
+	// 			return p->parent; // return end_node OR another node
+	// 		}
+	// 	}
+	// 	else
+	// 		return this->inOrderPredecessor();
+	// }
 
     Node* inOrderSuccessor() {
 	    // What is node's Successor in a BST ?
@@ -142,7 +182,7 @@ class Node {
 	    Node* right_child = this->r_child;
 	    // getMinimumkey of right child
 		if (right_child->is_null())
-			return this;
+			return NULL;// instead of this (return this)
 	    return getMinimumKey(right_child);
     }
 
@@ -153,16 +193,18 @@ class Node {
     }
 
     Node* inOrderPredecessor() {
+		//std::cout << "They think that is so long\n";
 	    // What is node's Predecessor in a BST ?
 	    // ==> It is the Greatest value in its left subtree.
 	    Node* left_child = this->l_child;
 	    // getMaximumkey of left child
 		if (left_child->is_null())
-			return this;
+			return NULL;
 	    return getMaximumKey(left_child);
     }
 
     Node* getMaximumKey(Node* curr) {
+		//std::cout << "==> Return maximum key\n";
 	    while (!(curr->r_child)->is_null())
 		    curr = curr->r_child;
 	    return curr;
@@ -250,8 +292,8 @@ class Node {
 			right_child->parent = this;
 
 		// 4- switch colors
-		replace_node->color = this->color;
-		this->color = color;
+		// replace_node->color = this->color;
+		// this->color = color;
 	}
 
 };

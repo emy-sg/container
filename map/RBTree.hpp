@@ -2,7 +2,9 @@
 #define RBTREE_HPP
 
 #include "node.hpp"
+#include "iterator.hpp"
 #include <cstddef>
+#include <cstdlib>
 //#in
 
 /* Red-Black Tree is a self-balanced Binary Tree */
@@ -23,18 +25,18 @@ class RBTree {
     
 	public:
     // Constructor
-    RBTree() { 
-		std::cout << "Default Tree constructor\n";
+    RBTree() : _root() {
+		//std::cout << "Default Tree constructor\n";
 		_size = 0;
 		_begin_node = &_end_node;
 	}
 
-	RBTree(int i) {
-		std::cout << "Parameterized Tree constructor\n";
-	}
+	// RBTree(int i) {
+	// 	std::cout << "Parameterized Tree constructor\n";
+	// }
 
 	virtual ~RBTree() {
-		std::cout << "Tree Destructor\n";
+		//std::cout << "Tree Destructor\n";
 		// if (_size > 0)
 		// 	//delete all
 	}
@@ -45,6 +47,14 @@ class RBTree {
 	
 	size_t getSize() const {
 		return _size;
+	}
+
+	Node* get_begin() { // don't use const, bcuz iterator in case of iterator
+		return _begin_node;
+	}
+
+	Node* get_end() { // don't use const, bcuz iterator in case of iterator
+		return &_end_node;
 	}
 
 	void printHelper(Node *root, std::string indent, bool last) {
@@ -59,7 +69,7 @@ class RBTree {
       }
 
       std::string sColor = root->color == Red ? "RED" : "BLACK";
-      std::cout << root->value.first << "(" << sColor << ")" << std::endl;
+      std::cout << " { " << root->value.first << " | " << root->value.second << " }" << "(" << sColor << ")" << std::endl;
       printHelper(root->l_child, indent, false);
       printHelper(root->r_child, indent, true);
     }
@@ -81,15 +91,20 @@ class RBTree {
     Node*	searchByKey(const key_type& key) {
 	    Node* tmp = _root;
 	
-		if (!_root)
+		if (!_root)  // if (_size == 0)
 		{
-			std::cout << "NOT FOUND\n";
-			return NULL;
+			//std::cout << " 		SearchByKey() in Empty Tree  \n";
+			return NULL;//return &_end_node; // return NULL;
 		}
-	    while (!tmp->is_null())
+	    while (tmp->is_null() == false)
 	    {
+			//std::cout << " 		 SearchByKey() in NOT Empty Tree " << i << " \n";
 		    if ((tmp->value).first == key)
+			{
+				//std::cout << "   Yes please this is the node :\n";
+				//tmp->printNode();
 			    return tmp;
+			}
 		    else
 		    {
 			    if ((tmp->value).first < key)
@@ -98,8 +113,59 @@ class RBTree {
 				    tmp = tmp->l_child;
 		    }
 	    }
+		//std::cout << "-------KEY NOT FOUND searchByKey()-------\n";
 	    return NULL;
     }
+
+	Node* next_node(Node* curr) {
+		//std::cout << "next node \n";
+		if (_begin_node == &_end_node)
+		{
+			//std::cout << "==> Ana Tree 5awya and nta fl end_node and you are looking for my next node, ali makaynch aslan\n";
+			return curr;
+		}
+		if (curr == &_end_node)
+		{
+			//std::cout << "==> Ana Tree 3aaamra and nta fl end_node and you are looking for my next node, which is the max element before end??\n";
+			return previous_node(curr);			
+		}
+		//curr->printNode();
+		if ((curr->r_child)->is_null())
+		{
+			if (curr->isLeft())
+				return curr->parent;
+			else {
+				Node* p = curr->parent;
+				while (this->isRoot(p) == false && p->isRight())
+					p = p->parent;
+				return p->parent; // return end_node OR another node
+			}
+		}
+		else
+			return curr->inOrderSuccessor();
+	}
+
+	Node* previous_node(Node* curr) {
+		//std::cout << "previous node \n";
+
+		if ((curr->l_child)->is_null())
+		{
+			//std::cout << "ROOT is null\n";
+			if (curr->isRight())
+				return curr->parent;
+			else {
+				Node* p = curr->parent;
+				while (this->isRoot(p) == false && p->isLeft())
+					p = p->parent;
+				return p->parent; // return end_node OR another node
+			}
+		}
+		else
+		{
+			//std::cout << "==> my left is root\n";
+			return curr->inOrderPredecessor();
+		}
+	}
 
         ////////////////////////////////////
         //          Insertion             //
@@ -166,6 +232,7 @@ Node* insertion_RBTree(const value_type& val) {
 		}
 		// 5- Balance the RedBlack Tree
 		balancing_insertion(new_node); // new_node is not a "NIL node"
+		//printTree();
 		return new_node;
 	}
 	catch (...) {
@@ -265,13 +332,17 @@ void	delete_leaf(Node* node) {
 	else
 		parent->r_child = node->r_child;
 	// destroy node
-	delete node;
+	//delete node;
 }
 
 void delete_RBTree(const key_type& key)
 {
+	//std::cout << "delete_RBTree\n";
+	//printTree();
 	Node* node_to_delete = searchByKey(key);
-
+	//node_to_delete->printNode();
+	//exit(1);
+	//node_to_delete->printNode();
 	if (node_to_delete)
 		deletion_RBTree(node_to_delete);
 	else
@@ -290,46 +361,53 @@ void deletion_RBTree(Node* node_to_delete)
 	// Case 3:
 	else if (node_to_delete->is_leaf() && node_to_delete->color == Black)
 	{
+		std::cout << "Node to delete is leaf and black\n";
 		Node	*parent = node_to_delete->parent;// parent
 		if (node_to_delete->isRight())
 		{
 			//std::cout << "Black leaf Right\n";
-			delete_leaf(node_to_delete);
-			Node* new_node = new Node(); // is Black Null Node
-			new_node->_is_null = 0;
-			new_node->parent = parent;
-			parent->r_child = new_node;
-			new_node->l_child = &_NIL;
-			new_node->r_child = &_NIL;
-			new_node->color = DB; // enum {RED, Black, DB}
+			//delete_leaf(node_to_delete);
+			// Node* new_node = new Node(); // is Black Null Node
+			// new_node->_is_null = 0;
+			// new_node->parent = parent;
+			// parent->r_child = new_node;
+			// new_node->l_child = &_NIL;
+			// new_node->r_child = &_NIL;
+			// new_node->color = DB; // enum {RED, Black, DB}
 			//std::cout << "DB new node \n";
 			//new_node->printNode();
-			fix_DB(new_node);
-			delete_leaf(new_node);
+			//fix_DB(new_node);
+			//delete_leaf(new_node);
+			node_to_delete->color = DB;
+			fix_DB(node_to_delete);
+			delete_leaf(node_to_delete);
 		}
 		else // isLeft()
 		{
-			this->printTree();
+			//this->printTree();
 			//std::cout << "Black leaf Left\n";
 			//(node_to_delete->parent)->printNode();
-			delete_leaf(node_to_delete);
-			Node* new_node = new Node();
-			parent->l_child = new_node;
-			new_node->_is_null = 0;
-			new_node->parent = parent;
-			new_node->l_child = &_NIL;
-			new_node->r_child = &_NIL;
-			new_node->color = DB;
-			//std::cout << "DB new node \n";
+			// delete_leaf(node_to_delete);
+			// Node* new_node = new Node();
+			// parent->l_child = new_node;
+			// new_node->_is_null = 0; // yes null
+			// new_node->parent = parent;
+			// new_node->l_child = &_NIL;
+			// new_node->r_child = &_NIL;
+			// new_node->color = DB;
+			//std::cout << "DB new node --> ";
 			//new_node->printNode();
-			fix_DB(new_node);
-			delete_leaf(new_node);
+			// fix_DB(new_node);
+			// delete_leaf(new_node);
+			node_to_delete->color = DB;
+			fix_DB(node_to_delete);
+			delete_leaf(node_to_delete);
 		}
 	}
 	// Case 4: Internal Node
 	else
 	{
-		//std::cout << "----Delete Internal node-----\n";
+		std::cout << "----Delete Internal node with color " << node_to_delete->color << " --------\n";
 
 		// In this case of Internal Node, we don't delete the node:
 		// 		==> Actually we replace the node.
@@ -339,10 +417,13 @@ void deletion_RBTree(Node* node_to_delete)
 		Node* node_replace;
 	
 		node_replace = choose_replacement_of_node(node_to_delete);
+		std::cout << "---- Replacement node ";
+		node_replace->printNode();
+		//exit(1);
 		if (node_replace != node_to_delete->l_child && node_replace != node_to_delete->r_child)
 		{
 			//std::cout << "Replacement node is not a special case aka one of his children\n";
-			//std::cout << "Replacement node \n";
+			std::cout << "Swap node \n";
 			//node_replace->printNode();
 			//std::cout << "Parent of replacement node \n";
 			//if(!(node_replace->parent)->is_null())
@@ -464,13 +545,17 @@ Node* choose_replacement_of_node(Node* node_to_delete)
 	Node* InOrderSuccessor = node_to_delete->inOrderSuccessor();
 	Node* InOrderPredecessor = node_to_delete->inOrderPredecessor();
 
-	if (InOrderSuccessor->is_null())
+	if (!InOrderSuccessor)//(InOrderSuccessor->is_null())
 		return InOrderPredecessor;
-	else if (InOrderPredecessor->is_null())
+	else if (!InOrderPredecessor)//(InOrderPredecessor->is_null())
 		return InOrderSuccessor;
-	//else if (InOrderSuccessor->color == Red)
+	// This solution
+	else
+	 	return InOrderSuccessor;
+	// Or this :
+	/*else if (InOrderSuccessor->color == Red)  
 		return InOrderSuccessor;
-	//return InOrderPredecessor;
+	return InOrderPredecessor;*/
 }
 
 void fix_DB(Node* DB_node)
@@ -481,7 +566,31 @@ void fix_DB(Node* DB_node)
 	else
 	{
 		Node* sibling = DB_node->sibling();
+		// if (sibling->is_null())
+		// 	std::cout << "ana endnode\n\n\n\n";
+		std::cout << "DB node ";
+		DB_node->printNode();
+		std::cout << "DB node parent ";
+		DB_node->parent->printNode();
+		if (sibling->is_null())
+		{
+			std::cout << "DB node sibling is NULL" << " with color "<< sibling->color <<"\n";
+			//printTree();
+			exit(1);
+		}
+		else
+		{
+			std::cout << "DB sibling node ";
+			sibling->printNode();
+		}
+		// printHelper(sibling->parent, 0, true);
+		//DB_node->printNode(); // hellio
 		// Case 1: // sibling is Black and Both of this children are black
+		// if (sibling->color == Black && sibling->is_null()) // NEEEEEEEEEEEEEEW CASe
+		// {
+		// 	std::cout << "sibling is null\n";
+		// 	case_0Deletion(DB_node);
+		// }
 		if (sibling->color == Black && 
 			(sibling->l_child)->color == Black &&
 			(sibling->r_child)->color == Black)
@@ -499,6 +608,22 @@ void fix_DB(Node* DB_node)
 			case_4Deletion(DB_node);
 	}
 }
+
+// // Case 0: sibling is Black and NULL
+// void case_0Deletion(Node* DB_node) {
+// 	//std::cout << "case_1Deletion\n";
+// 	Node* sibling = DB_node->sibling();
+
+// 	DB_node->color = Black;
+// 	//sibling->color = Red;
+// 	if ((DB_node->parent)->color == Black)
+// 	{
+// 		(DB_node->parent)->color = DB;
+// 		fix_DB(DB_node->parent);
+// 	}
+// 	else
+// 		(DB_node->parent)->color = Black;
+// }
 
 // Case 1: sibling is Black and Both of this children are black
 void case_1Deletion(Node* DB_node) {
