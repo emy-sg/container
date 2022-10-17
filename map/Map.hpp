@@ -312,11 +312,13 @@ class Map {
 	// 6.1- void erase(iterator position);
 	void erase(iterator position)
 	{
-		//std::cout << "ERase 1\n";
+		//std::cout << "ERase Position\n";
 		//_Tree.printTree();
 		//std::cout << "KEY to erase: "<< position->first << "\n";
-		if (find((*position).first) != end())
-			_Tree.delete_RBTree((*position).first);
+		if (position == begin())
+			std::cout << "erase position of begin\n";
+		//if (find((*position).first) != end()) // work for Me the problem solved
+		_Tree.delete_RBTree(position->first);
 		//std::cout << "end ERase 1\n";
 	}
     
@@ -339,8 +341,13 @@ class Map {
 	{
 		//std::cout << "ERase 3\n";
 		// iterator iter;
+
 		while (first != end)
-			this->erase(first++);
+		{
+			std::cout << first->first << "\n";
+			this->erase(first);
+			++first;
+		}
 		//std::cout << "end ERase 3\n";
 	}
 

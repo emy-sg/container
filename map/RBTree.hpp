@@ -126,7 +126,7 @@ class RBTree {
 		}
 		if (curr == &_end_node)
 		{
-			//std::cout << "==> Ana Tree 3aaamra and nta fl end_node and you are looking for my next node, which is the max element before end??\n";
+			std::cout << "==> Ana Tree 3aaamra and nta fl end_node and you are looking for my next node, which is the max element before end??\n";
 			return previous_node(curr);			
 		}
 		//curr->printNode();
@@ -326,7 +326,18 @@ void	case_2Insertion(Node* grandParent) {
 
 void	delete_leaf(Node* node) {
 	// Node to be "deleted" has no children : i.e, it is a lead node
+	_size--;
 	Node* parent = node->parent;
+	if (node->value.first == 0)
+	{
+		std::cout << node << "\n";
+		std::cout << _begin_node << "\n";
+	}
+	if (node == _begin_node)
+	{
+		std::cout << "You gonna deleate the begin node\n";
+		_begin_node = next_node(node);
+	}
 	if (node->isLeft())
 		parent->l_child = node->l_child;
 	else
@@ -343,6 +354,8 @@ void delete_RBTree(const key_type& key)
 	//node_to_delete->printNode();
 	//exit(1);
 	//node_to_delete->printNode();
+	if(node_to_delete == _begin_node)
+		std::cout << "we gonna delete begin node\n";
 	if (node_to_delete)
 		deletion_RBTree(node_to_delete);
 	else
@@ -361,7 +374,7 @@ void deletion_RBTree(Node* node_to_delete)
 	// Case 3:
 	else if (node_to_delete->is_leaf() && node_to_delete->color == Black)
 	{
-		std::cout << "Node to delete is leaf and black\n";
+		//std::cout << "Node to delete is leaf and black\n";
 		Node	*parent = node_to_delete->parent;// parent
 		if (node_to_delete->isRight())
 		{
@@ -407,7 +420,7 @@ void deletion_RBTree(Node* node_to_delete)
 	// Case 4: Internal Node
 	else
 	{
-		std::cout << "----Delete Internal node with color " << node_to_delete->color << " --------\n";
+		//std::cout << "----Delete Internal node with color " << node_to_delete->color << " --------\n";
 
 		// In this case of Internal Node, we don't delete the node:
 		// 		==> Actually we replace the node.
@@ -417,13 +430,13 @@ void deletion_RBTree(Node* node_to_delete)
 		Node* node_replace;
 	
 		node_replace = choose_replacement_of_node(node_to_delete);
-		std::cout << "---- Replacement node ";
-		node_replace->printNode();
+		// std::cout << "---- Replacement node ";
+		// node_replace->printNode();
 		//exit(1);
 		if (node_replace != node_to_delete->l_child && node_replace != node_to_delete->r_child)
 		{
 			//std::cout << "Replacement node is not a special case aka one of his children\n";
-			std::cout << "Swap node \n";
+			//std::cout << "Swap node \n";
 			//node_replace->printNode();
 			//std::cout << "Parent of replacement node \n";
 			//if(!(node_replace->parent)->is_null())
@@ -568,21 +581,21 @@ void fix_DB(Node* DB_node)
 		Node* sibling = DB_node->sibling();
 		// if (sibling->is_null())
 		// 	std::cout << "ana endnode\n\n\n\n";
-		std::cout << "DB node ";
-		DB_node->printNode();
-		std::cout << "DB node parent ";
-		DB_node->parent->printNode();
-		if (sibling->is_null())
-		{
-			std::cout << "DB node sibling is NULL" << " with color "<< sibling->color <<"\n";
-			//printTree();
-			exit(1);
-		}
-		else
-		{
-			std::cout << "DB sibling node ";
-			sibling->printNode();
-		}
+		// std::cout << "DB node ";
+		// DB_node->printNode();
+		// std::cout << "DB node parent ";
+		// DB_node->parent->printNode();
+		// if (sibling->is_null())
+		// {
+		// 	std::cout << "DB node sibling is NULL" << " with color "<< sibling->color <<"\n";
+		// 	//printTree();
+		// 	exit(1);
+		// }
+		// else
+		// {
+		// 	std::cout << "DB sibling node ";
+		// 	sibling->printNode();
+		// }
 		// printHelper(sibling->parent, 0, true);
 		//DB_node->printNode(); // hellio
 		// Case 1: // sibling is Black and Both of this children are black

@@ -53,9 +53,19 @@ int main() {
     my[3] =3;
     my[100] = 100;
 
-    my.call_print();
-    my.erase(2);
-    my.call_print();
+    ft::Map<int, int>::iterator it = my.begin();
+    //while (it != my.end())
+    {
+        std::cout << my.size() << "\n";
+        std::cout << "begin  " << my.begin()->first << "\n";
+        my.erase(it);
+        std::cout << my.size() << "\n";
+        std::cout << "begin  " << my.begin()->first << "\n";
+        it++;
+    }
+    //my.call_print();
+    //my.erase(2);
+    //my.call_print();
     // my.insert(std::make_pair("I", 0));
     // my.insert(std::make_pair("YOU", 1));
     // my.insert(std::make_pair("HE", 2));
