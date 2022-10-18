@@ -3,23 +3,30 @@
 
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include "../iterator_traits.hpp"
 
 // Ressource:
 //  https://en.cppreference.com/w/cpp/iterator/iterator
 
+/*
+    This means that our custom iterator should inheritate from std::iterator<std::random_access_iterator_tag, T>
+    It contains, member types definition.
+    that the our custom iterator need, and so iterator_traits need too.
+*/
+
 namespace ft {
 
     template <class T>
-    class my_Iterator {
+    class my_Iterator : std::iterator<std::random_access_iterator_tag, T> {
     public:
         //typedef T value_type;
     // Member types [aka typedefs]    
-        typedef typename ft::iterator_traits<T*>::difference_type difference_type; // we need that in a-b
-        typedef typename ft::iterator_traits<T*>::value_type value_type;
-        typedef typename ft::iterator_traits<T*>::pointer pointer; // operator ->()
-        typedef typename ft::iterator_traits<T*>::reference reference; // operator []() && operator*() && operator=(int)
-        typedef typename ft::iterator_traits<T*>::iterator_category iterator_category; 
+        typedef typename std::iterator<std::random_access_iterator_tag, T> ::difference_type difference_type; // we need that in a-b
+        typedef typename std::iterator<std::random_access_iterator_tag, T> ::value_type value_type;
+        typedef typename std::iterator<std::random_access_iterator_tag, T> ::pointer pointer; // operator ->()
+        typedef typename std::iterator<std::random_access_iterator_tag, T> ::reference reference; // operator []() && operator*() && operator=(int)
+        typedef typename std::iterator<std::random_access_iterator_tag, T> ::iterator_category iterator_category; 
 
     private:
         pointer _m_ptr; // <== value_type* _m_ptr;    
@@ -35,24 +42,16 @@ namespace ft {
             //std::cout << "Parameterized Iterator Constructor\n";
             _m_ptr = ptr;
         }
+        // template <class IT>
         my_Iterator(const my_Iterator& inst) { // Copy constructor
             //std::cout << "Copy Constructor of Iterator\n";
             *this = inst;
         }
+        // template <class IT>
         my_Iterator& operator=(const my_Iterator& inst) { // Assignement operator
-            //std::cout << "Assignement Constructor of Iterator\n";
-            // ==> Maybe problem of shallow copy
+            //std::cout << "Assignement Constructor of Iterator\n";          
+            this->_m_ptr = inst._m_ptr;
             
-            this->_m_ptr = inst._m_ptr; // shallow copy
-            
-            /* // deep copy
-            this->_m_ptr = new value_type;
-            *_m_ptr = *(inst._m_ptr);
-            */
-
-
-            // if (this != &inst)
-            //     _m_ptr = inst._m_ptr;
             return *this;
         }
         ~my_Iterator() { // Destructor
@@ -63,6 +62,10 @@ namespace ft {
     // iterator is a nested class in your container.
 
 //  ------------------ Accessors operator =, * and -> ---------------------------   
+
+    operator my_Iterator<const T>() {
+        return _m_ptr;
+    }
 
     reference operator=(pointer ptr) {_m_ptr = ptr; return (*this); }
 

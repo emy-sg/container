@@ -48,7 +48,7 @@ namespace ft {
 
 // 1- Iterator
         typedef typename ft::my_Iterator<value_type> iterator;
-        //typedef typename ft::my_constIterator<const_pointer>  const_iterator;
+        typedef typename ft::my_Iterator<const value_type>  const_iterator;
 
         // iterator begin();  
         iterator begin() {
