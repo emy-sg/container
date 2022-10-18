@@ -44,9 +44,10 @@ class Node {
 			*this = inst;
 		}
         Node& operator=(const Node& inst) {
+			// deep and shallow problem I
 			_is_null = inst._is_null;
-			//value = inst.value;
-			*(int *)0 = 0;
+			value = inst.value;
+			//*(int *)0 = 0;
 			color = inst.color;
 			parent = inst.parent;
 			l_child = inst.l_child;

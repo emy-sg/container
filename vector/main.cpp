@@ -7,22 +7,22 @@ int main() {
     //ft::vector<int> vec; // default constructor
     //ft::vector<int> vec(5, 6);
 
-    std::vector<int> v(3, 4);
-    std::vector<int>::iterator it, it1;
+    // ft::Vector<int> v(3, 4);
+    // ft::Vector<int>::iterator it, it1;
 
     // ft::Vector<int> v(3, 4);
     // ft::Vector<int>::iterator it, it1;
 
     // --------- at() && [] ----------------
 
-    std::cout << v[0] << "\n";
-    std::cout << v[2] << "\n";
-    std::cout << "size: " << v.size() << "\n";
-    v[3] = 9;
-    v[4] = 4;
-    v[5] = 6;
-    std::cout << "size: " << v.size() << "\n";
-    std::cout << v[9] << "\n";
+    // std::cout << v[0] << "\n";
+    // std::cout << v[2] << "\n";
+    // std::cout << "size: " << v.size() << "\n";
+    // v[3] = 9;
+    // v[4] = 4;
+    // v[5] = 6;
+    // std::cout << "size: " << v.size() << "\n";
+    // std::cout << v[9] << "\n";
 
     // it = v.begin();
     // it1 = v.begin() + 1;
@@ -83,10 +83,25 @@ int main() {
 
     //      ----------------------------------------
 
-    std::cout << "-------------- Iterators -----------------------\n";
+    std::cout << "-------------- const Iterators -----------------------\n";
 
-    // std::vector<int> vec;
+    ft::Vector<int> v(3, 4);
+    ft::Vector<int>::iterator it, it1;
     
-    // vec.max_size();
+    std::cout << v[0] << "\n";
+    std::cout << v[2] << "\n";
+    std::cout << "size: " << v.size() << "\n";
+    v[3] = 9;
+    v[4] = 4;
+    v[5] = 6;
+    std::cout << "size: " << v.size() << "\n";
+    std::cout << v[9] << "\n";
+    ft::Vector<int> v2;
 
+    v2 = v;
+    ft::Vector<int>::const_iterator ci;
+
+    ci = v2.begin(); // call const_iterator begin();
+
+    
 }

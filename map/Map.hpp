@@ -72,13 +72,45 @@ class Map {
 
 //	-------------------------- 5- Canonical Form of map ---------------------------------
 
-    Map() {
+	// Returns a copy of the allocator object associated with the map.
+	allocator_type get_allocator() const {
+		return allocator_type();
+	}
+
+    explicit Map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {
         //std::cout << "Default constructor of map\n";
     }
     ~Map() {
         //std::cout << "Map destructor\n";
-		// if (!empty())
+		clear();
     }
+
+	template <class InputIterator>
+	Map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+	{
+		while (first != last)
+		{
+			insert(*first);
+			++first;
+		}
+	}
+
+	Map(const Map& inst) : Map(inst.begin(), inst.end()) {
+		std::cout << "Copy constructor of map\n";
+
+		// Problem deep copy and shallow copy
+		//insert(inst.begin(), inst.end());
+	}
+
+	Map& operator=(const Map& inst) {
+		std::cout << "Assignemenet copy constructor of map\n";
+		// Problem deep copy and shallow copy
+		//This path is very wrong[Za3ma calling the _Tree assignement operator] *_Tree = *(inst._Tree);
+		// Which is in this case useless, we can call insert for use
+		clear();
+		insert(inst.begin(), inst.end());
+		return *this;
+	}
 
 // --------------------------- 6- size() and max_size() ---------------------------------
 
@@ -103,13 +135,15 @@ class Map {
 	iterator begin() {
 		//return _Tree.get_begin();
     	return iterator(&_Tree, _Tree.get_begin()->value);
+		
 	}
+	// const_iterator begin() const {};
 
 	iterator end() {
 		//return _Tree.get_end();
     	return iterator(&_Tree, _Tree.get_end()->value);
 	}
-
+	// const_iterator end() const {};
 
 //	-------------------------- 9- Accessors at() && operator[] --------------------------
 

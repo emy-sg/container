@@ -8,6 +8,7 @@
 *  This array may need to be reallocated in order to grow in size when new elements are inserted, which implies allocating a new array and moving all elements to it.
 */
 #include "iterator.hpp"
+#include "const_iterator.hpp"
 #include <cstddef>
 #include <iostream>
 #include <memory.h>
@@ -31,9 +32,9 @@ namespace ft {
         typedef typename allocator_type::const_pointer const_pointer;
         // Iterator
         //typedef typename ft::my_RandomAccessIterator<value_type> iterator;
-        //typedef typename my_RandomAccessIterator<const T> const_iterator;
-        //typedef typename my_ReverseRandomAccessIterator<T> reverse_iterator;
-        //typedef typename my_ReverseRandomAccessIterator<const T> const_reverse_iterator;
+        //typedef typename ft::my_RandomAccessIterator<const value_type> const_iterator;
+        //typedef typename ft::my_ReverseRandomAccessIterator<value_type> reverse_iterator;
+        //typedef typename ft::my_ReverseRandomAccessIterator<const value_type> const_reverse_iterator;
         // difference_type and size_type
         typedef std::ptrdiff_t difference_type;
         typedef size_t size_type;
@@ -46,21 +47,28 @@ namespace ft {
     public:
 
 // 1- Iterator
-        typedef typename ft::my_iterator<value_type> iterator;
-        //typedef typename ft::my_iterator<pointer>  iterator;
+        typedef typename ft::my_Iterator<value_type> iterator;
+        typedef typename ft::my_constIterator<pointer>  const_iterator;
 
-        // begin() and end()
-        iterator begin() const {
+        // iterator begin();  
+        iterator begin() {
             return _array; // why not ? return iterator(_array);
         }
-        //const_iterator begin() const;
+        // const_iterator begin()
+        const_iterator begin() const {
+            return const_iterator(_array);
+        }
 
-        // The past-the-end element is the theoretical element that would follow the last element in the vector. It does not point to any element, and thus shall not be dereferenced.
+    // The past-the-end element is the theoretical element that would follow the last element in the vector. It does not point to any element, and thus shall not be dereferenced.
 
-        iterator end() const {
+        // iterator end();
+        iterator end() {
             return _array + size(); // WHY NOT? return iterator(_array + size());
         }
-        //const_iterator end() const;
+        // const_iterator end() const;
+        const_iterator end() const {
+            return const_iterator(_array + size());
+        }
 
         //reverse_iterator rbegin();
         //const_reverse_iterator rbegin() const;

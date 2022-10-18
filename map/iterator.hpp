@@ -35,7 +35,7 @@ class Iterator_map {
             // else
             //     _Node = tree->get_end();
 
-            _Node = _Tree->searchByKey(val.first);
+            _Node = _Tree->searchByKey(val.first); // optimization
             if (!_Node)
                 _Node = tree->get_end();
             // else
