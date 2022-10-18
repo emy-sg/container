@@ -95,22 +95,22 @@ class Map {
 		}
 	}
 
-	Map(const Map& inst) : Map(inst.begin(), inst.end()) {
-		std::cout << "Copy constructor of map\n";
+	// Map(const Map& inst) : Map(inst.begin(), inst.end()) {
+	// 	std::cout << "Copy constructor of map\n";
 
-		// Problem deep copy and shallow copy
-		//insert(inst.begin(), inst.end());
-	}
+	// 	// Problem deep copy and shallow copy
+	// 	//insert(inst.begin(), inst.end());
+	// }
 
-	Map& operator=(const Map& inst) {
-		std::cout << "Assignemenet copy constructor of map\n";
-		// Problem deep copy and shallow copy
-		//This path is very wrong[Za3ma calling the _Tree assignement operator] *_Tree = *(inst._Tree);
-		// Which is in this case useless, we can call insert for use
-		clear();
-		insert(inst.begin(), inst.end());
-		return *this;
-	}
+	// Map& operator=(const Map& inst) {
+	// 	std::cout << "Assignemenet copy constructor of map\n";
+	// 	// Problem deep copy and shallow copy
+	// 	//This path is very wrong[Za3ma calling the _Tree assignement operator] *_Tree = *(inst._Tree);
+	// 	// Which is in this case useless, we can call insert for use
+	// 	clear();
+	// 	insert(inst.begin(), inst.end());
+	// 	return *this;
+	// }
 
 // --------------------------- 6- size() and max_size() ---------------------------------
 
@@ -134,14 +134,14 @@ class Map {
 //	-------------------------- 8- begin() and end() -------------------------------------
 	iterator begin() {
 		//return _Tree.get_begin();
-    	return iterator(&_Tree, _Tree.get_begin()->value);
+    	return iterator(&_Tree, _Tree.get_begin());
 		
 	}
 	// const_iterator begin() const {};
 
 	iterator end() {
 		//return _Tree.get_end();
-    	return iterator(&_Tree, _Tree.get_end()->value);
+    	return iterator(&_Tree, _Tree.get_end());
 	}
 	// const_iterator end() const {};
 
@@ -220,7 +220,7 @@ class Map {
 		}
 		//std::cout << "=====> Node find() WITH THAT KEY ==> " << k << " " << node << "\n\n";
 		//node->printNode();
-        it = iterator(&_Tree, node->value);//it = node; // Is this construct from node to Iterator and How ????????????
+        it = iterator(&_Tree, node);//it = node; // Is this construct from node to Iterator and How ????????????
 		//std::cout << "\n The content of the iterator in find() method " << it->first << " | " << it->second << "\n";
         return it;
     }
@@ -310,7 +310,7 @@ class Map {
 		if (iter_exist == this->end())
 		{
 		//	std::cout << "        --------Element not found -------                \n";
-			iter_exist = iterator(&_Tree, _Tree.insertion_RBTree(val)->value);
+			iter_exist = iterator(&_Tree, _Tree.insertion_RBTree(val));
 			//_Tree.printTree();
 		//	std::cout << (*iter_exist).first << " | " << (*iter_exist).second << "\n";
 		//	std::cout << "-----------------------------------------------------------\n";
@@ -349,6 +349,11 @@ class Map {
 		//std::cout << "ERase Position\n";
 		//_Tree.printTree();
 		//std::cout << "KEY to erase: "<< position->first << "\n";
+		if (empty())
+		{
+			std::cout << "Erase position of empty Tree, should be protected from loop call\n";
+			return ;
+		}
 		if (position == begin())
 			std::cout << "erase position of begin\n";
 		//if (find((*position).first) != end()) // work for Me the problem solved
@@ -373,22 +378,30 @@ class Map {
 	// 6.3- void erase(iterator first, iterator last);
 	void erase(iterator first, iterator end)
 	{
-		//std::cout << "ERase 3\n";
-		// iterator iter;
-
 		while (first != end)
-		{
-			std::cout << first->first << "\n";
-			this->erase(first);
-			++first;
-		}
-		//std::cout << "end ERase 3\n";
+			erase(++first);
+
+		//  --------------------- OR ------------------------------
+		/*
+			iterator iter;
+			iter = first;
+			while (iter != end)
+			{
+				erase(iter);
+				iter++;
+			}
+		*/
 	}
 
  // 7- clear
 	void clear()
 	{
-		erase(begin(), end());
+		if (empty())
+		{
+			//std::cout << "Can't clear anything the tree is empty\n";
+		}
+		else
+			erase(begin(), end());
 	}
 
 };

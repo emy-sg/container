@@ -7,6 +7,8 @@ int main() {
     //ft::vector<int> vec; // default constructor
     //ft::vector<int> vec(5, 6);
 
+   //   --------------------------  std::vector<int>::iterator().base();  ----------------------------------
+    
     // ft::Vector<int> v(3, 4);
     // ft::Vector<int>::iterator it, it1;
 

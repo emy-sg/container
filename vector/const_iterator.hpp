@@ -33,11 +33,11 @@ namespace ft {
     public:
         //typedef T value_type;
     // Member types [aka typedefs]    
-        typedef typename ft::iterator_traits<T*>::difference_type difference_type; // we need that in a-b
-        typedef typename ft::iterator_traits<T*>::value_type value_type;
-        typedef typename ft::iterator_traits<T*>::pointer pointer; // operator ->()
-        typedef typename ft::iterator_traits<T*>::reference reference; // operator []() && operator*() && operator=(int)
-        typedef typename ft::iterator_traits<T*>::iterator_category iterator_category; 
+        typedef typename ft::iterator_traits<T>::difference_type difference_type; // we need that in a-b
+        typedef typename ft::iterator_traits<T>::value_type value_type;
+        typedef typename ft::iterator_traits<T>::pointer pointer; // operator ->()
+        typedef typename ft::iterator_traits<T>::reference reference; // operator []() && operator*() && operator=(int)
+        typedef typename ft::iterator_traits<T>::iterator_category iterator_category; 
 
     private:
         pointer _m_ptr; // <== value_type* _m_ptr;    
@@ -53,24 +53,15 @@ namespace ft {
             //std::cout << "Parameterized Iterator Constructor\n";
             _m_ptr = ptr;
         }
-        my_constIterator(const my_constIterator& inst) { // Copy constructor
+        template <class IT>
+        my_constIterator(const IT& inst) { // Copy constructor
             //std::cout << "Copy Constructor of Iterator\n";
             *this = inst;
         }
-        my_constIterator& operator=(const my_constIterator& inst) { // Assignement operator
+        template <class IT>
+        my_constIterator& operator=(const IT& inst) { // Assignement operator
             //std::cout << "Assignement Constructor of Iterator\n";
-            // ==> Maybe problem of shallow copy
-            
-            this->_m_ptr = inst._m_ptr; // shallow copy
-            
-            /* // deep copy
-            this->_m_ptr = new value_type;
-            *_m_ptr = *(inst._m_ptr);
-            */
-
-
-            // if (this != &inst)
-            //     _m_ptr = inst._m_ptr;
+            _m_ptr = inst.base();
             return *this;
         }
         ~my_constIterator() { // Destructor
@@ -83,6 +74,9 @@ namespace ft {
 //  ------------------ Accessors operator =, * and -> ---------------------------   
 
         // ==> I just add const keyword to all the Accessors
+    const my_constIterator& base() const {
+        return _m_ptr;
+    }
 
     const reference operator=(pointer ptr) {_m_ptr = ptr; return (*this); }
 

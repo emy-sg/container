@@ -48,16 +48,16 @@ namespace ft {
 
 // 1- Iterator
         typedef typename ft::my_Iterator<value_type> iterator;
-        typedef typename ft::my_constIterator<pointer>  const_iterator;
+        //typedef typename ft::my_constIterator<const_pointer>  const_iterator;
 
         // iterator begin();  
         iterator begin() {
             return _array; // why not ? return iterator(_array);
         }
         // const_iterator begin()
-        const_iterator begin() const {
-            return const_iterator(_array);
-        }
+        // const_iterator begin() const {
+        //     return const_iterator(_array);
+        // }
 
     // The past-the-end element is the theoretical element that would follow the last element in the vector. It does not point to any element, and thus shall not be dereferenced.
 
@@ -66,9 +66,9 @@ namespace ft {
             return _array + size(); // WHY NOT? return iterator(_array + size());
         }
         // const_iterator end() const;
-        const_iterator end() const {
-            return const_iterator(_array + size());
-        }
+        // const_iterator end() const {
+        //     return const_iterator(_array + size());
+        // }
 
         //reverse_iterator rbegin();
         //const_reverse_iterator rbegin() const;
@@ -147,6 +147,8 @@ namespace ft {
         // 5- Destructor
         ~Vector() {
             std::cout << "Destructor of vector\n";
+            //if (_capacity > 0)
+            
             // 3- deallocate the _size element of _array
             for (size_type i = 0; i < _size; i++)
                 get_allocator().destroy(_array + i);
@@ -243,11 +245,11 @@ namespace ft {
     */
     // reference back();
     reference back() {
-        return _array + _size; //
+        return _array[_size]; //
     }
     // const_reference back() const;
     const_reference back() const {
-        return _array + _size; // 
+        return _array[_size]; // 
     }
 
  // 5.5- std::vector::data()
@@ -270,7 +272,7 @@ namespace ft {
 
     */
     void reserve(size_type n) {
-        pointer *arr;
+        pointer arr;
 
         if (n > capacity())
         {

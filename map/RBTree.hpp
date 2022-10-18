@@ -119,11 +119,11 @@ class RBTree {
 
 	Node* next_node(Node* curr) {
 		//std::cout << "next node \n";
-		if (_begin_node == &_end_node)
-		{
-			//std::cout << "==> Ana Tree 5awya and nta fl end_node and you are looking for my next node, ali makaynch aslan\n";
-			return curr;
-		}
+		// if (_begin_node == &_end_node)
+		// {
+		// 	//std::cout << "==> Ana Tree 5awya and nta fl end_node and you are looking for my next node, ali makaynch aslan\n";
+		// 	return curr;
+		// }
 		if (curr == &_end_node)
 		{
 			std::cout << "==> Ana Tree 3aaamra and nta fl end_node and you are looking for my next node, which is the max element before end??\n";
@@ -326,16 +326,20 @@ void	case_2Insertion(Node* grandParent) {
 
 void	delete_leaf(Node* node) {
 	// Node to be "deleted" has no children : i.e, it is a lead node
-	_size--;
+	
 	Node* parent = node->parent;
-	if (node->value.first == 0)
-	{
-		std::cout << node << "\n";
-		std::cout << _begin_node << "\n";
-	}
+
+	_size--;
+
+	// if (node->value.first == 0)
+	// {
+	// 	std::cout << node << "\n";
+	// 	std::cout << _begin_node << "\n";
+	// }
+
 	if (node == _begin_node)
 	{
-		std::cout << "You gonna deleate the begin node\n";
+		//std::cout << "You gonna deleate the begin node\n";
 		_begin_node = next_node(node);
 	}
 	if (node->isLeft())
@@ -343,7 +347,7 @@ void	delete_leaf(Node* node) {
 	else
 		parent->r_child = node->r_child;
 	// destroy node
-	//delete node;
+	delete node;
 }
 
 void delete_RBTree(const key_type& key)
@@ -352,14 +356,13 @@ void delete_RBTree(const key_type& key)
 	//printTree();
 	Node* node_to_delete = searchByKey(key);
 	//node_to_delete->printNode();
-	//exit(1);
-	//node_to_delete->printNode();
-	if(node_to_delete == _begin_node)
-		std::cout << "we gonna delete begin node\n";
+
+	// if(node_to_delete == _begin_node)
+	// 	std::cout << "we gonna delete begin node\n";
 	if (node_to_delete)
 		deletion_RBTree(node_to_delete);
-	else
-		 std::cout << "I'm null";
+	// else
+	// 	 std::cout << "I'm null";
 }
 
 //void deletion_RBTree(Node& node_to_delete)

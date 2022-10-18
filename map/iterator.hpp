@@ -15,7 +15,7 @@ class Iterator_map {
         typedef typename ft::iterator_traits<value_type*>::pointer pointer; // operator ->()
         typedef typename ft::iterator_traits<value_type*>::reference reference; // operator*()
 
-    public:
+    private:
         Tree* _Tree;
         Node* _Node;
 
@@ -26,18 +26,10 @@ class Iterator_map {
             _Tree = NULL;
             //_Node = NULL;
         }
-        Iterator_map(Tree* tree, value_type val) { //Initalization constructor
+        Iterator_map(Tree* tree, Node* curr) { //Initalization constructor
             //std::cout << "Parameterized Iterator Constructor\n";
             _Tree = tree;
-            //std::cout << "Wach had l iterator 5adam awla la rah darni f rassi\n";
-            // if (val == _Tree->get_begin()->value)
-            //     _Node = tree->get_begin();
-            // else
-            //     _Node = tree->get_end();
-
-            _Node = _Tree->searchByKey(val.first); // optimization
-            if (!_Node)
-                _Node = tree->get_end();
+            _Node = curr;
             // else
             // {
             //     std::cout << "affichhi had node ali 3titek f iterator\n";
@@ -113,6 +105,7 @@ class Iterator_map {
     }
 
     friend bool operator!=(const Iterator_map& a, const Iterator_map& b) {
+        // compare end_node deleted;
         return a._Node->value != b._Node->value;
     }
 };
