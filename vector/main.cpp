@@ -85,25 +85,83 @@ int main() {
 
     //      ----------------------------------------
 
-    std::cout << "-------------- const Iterators -----------------------\n";
+    // std::cout << "-------------- const Iterators -----------------------\n";
 
-    ft::Vector<int> v(3, 4);
-    ft::Vector<int>::iterator it, it1;
+    // ft::Vector<int> v(3, 4);
+    // ft::Vector<int>::iterator it, it1;
     
-    std::cout << v[0] << "\n";
-    std::cout << v[2] << "\n";
-    std::cout << "size: " << v.size() << "\n";
-    v[3] = 9;
-    v[4] = 4;
-    v[5] = 6;
-    std::cout << "size: " << v.size() << "\n";
-    std::cout << v[9] << "\n";
-    ft::Vector<int> v2;
+    // std::cout << v[0] << "\n";
+    // std::cout << v[2] << "\n";
+    // std::cout << "size: " << v.size() << "\n";
+    // v[3] = 9;
+    // v[4] = 4;
+    // v[5] = 6;
+    // std::cout << "size: " << v.size() << "\n";
+    // std::cout << v[9] << "\n";
+    // ft::Vector<int> v2;
 
-    v2 = v;
-    ft::Vector<int>::const_iterator ci;
+    // v2 = v;
+    // ft::Vector<int>::const_iterator ci;
 
-    ci = v2.begin(); // call const_iterator begin();
+    // ci = v2.begin(); // call const_iterator begin();
 
-    
+    ////////////////////// reserve  ---------------------
+
+    // ft::Vector<int> v;
+
+    // v.reserve(5);
+
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
+
+
+    ////////////////////// push_back -------------------
+
+    //  ft::Vector<int> v;
+    // //std::vector<int> v;
+
+    // v.push_back(5);
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    // v.push_back(5);
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    // v.push_back(5);
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    // v.push_back(5);
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    //////////////////////// resize ----------------------
+
+    // ft::Vector<int> v(3, 4);
+
+    // v.resize(2);
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    //     v.resize(4);
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    //     v.resize(5);
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    //     v.resize(6);
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    ///////////////////////// erase  --------------------------
+
+    // ft::Vector<int> v;
+    std::vector<int> v;
+
+    v.push_back(5);
+    v.push_back(10);
+    std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    std::cout << *(v.erase(v.begin())) << "\n";
+    std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    v.clear();
+    std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    //////////////////////// clear ----------------------------
+
 }

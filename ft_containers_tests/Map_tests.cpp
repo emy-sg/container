@@ -1148,6 +1148,7 @@ void testElementAccess()
                 m1.insert(std::make_pair(i, "string2"));
                 ft_m1.insert(std::make_pair(i, "string2"));
             }
+            
             start = get_time();
             m1[1e6] = "string";
             end = get_time();
@@ -1184,6 +1185,7 @@ void testElementAccess()
             ualarm(0, 0);
             /*----------------------------------------------------*/
         }
+
         std::map<char, std::string> m;
         ft::Map<char, std::string> ft_m;
 
@@ -1214,7 +1216,7 @@ void testModifiers()
             ft::Map<int, std::string> ft_m1;
 
             start = get_time();
-            for (size_t i = 0; i < 1e6; i++)
+            for (size_t i = 0; i < 1e7; i++)
                 m1.insert(std::make_pair(i, "string2"));
             end = get_time();
             diff = end - start;
@@ -1284,7 +1286,7 @@ void testModifiers()
         ft_ret = ft_m.insert(std::pair<char, int>('z', 500));
 
         cond = cond && ret.second == ft_ret.second;
-
+        
         // second insert function version (with hint position):
         std::map<char, int>::iterator it = m.begin();
         ft::Map<char, int>::iterator ft_it = ft_m.begin();
@@ -1304,6 +1306,7 @@ void testModifiers()
         cond = cond && (anothermap.size() == ft_anothermap.size() && anothermap.empty() == ft_anothermap.empty());
 
         cond = cond && compareMaps(ft_m.begin(), ft_m.end(), m.begin(), m.end()) && compareMaps(ft_anothermap.begin(), ft_anothermap.end(), anothermap.begin(), anothermap.end());
+        
         EQUAL(cond);
     }
 
@@ -1332,10 +1335,13 @@ void testModifiers()
             /*-----------------------------------------------------*/
             /*------------------ ft::Maps ---------------------*/
             ualarm(diff * 1e3, 0);
+            std::cout << "\nBefore deletion\n";
             ft_m1.erase(ft_m1.begin(), ft_m1.end());
+            std::cout << "after deletion\n";
             ualarm(0, 0);
             /*----------------------------------------------------*/
         }
+
         std::map<char, int> m;
         ft::Map<char, int> ft_m;
         std::map<char, int>::iterator it;
@@ -1356,70 +1362,70 @@ void testModifiers()
         m['e'] = 50;
         m['f'] = 60;
 
-        if (cond == true)
-            std::cout << "cond true\n";
-        else
-            std::cout << "cond false\n";
+        // if (cond == true)
+        //     std::cout << "cond true\n";
+        // else
+        //     std::cout << "cond false\n";
         cond = m.size() == ft_m.size() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
-        if (cond == true)
-            std::cout << "cond true\n";
-        else
-            std::cout << "cond false\n";
+        // if (cond == true)
+        //     std::cout << "cond true\n";
+        // else
+        //     std::cout << "cond false\n";
         it = m.find('b');
         ft_it = ft_m.find('b');
-        if (cond == true)
-            std::cout << "cond true\n";
-        else
-            std::cout << "cond false\n";
+        // if (cond == true)
+        //     std::cout << "cond true\n";
+        // else
+        //     std::cout << "cond false\n";
         cond = cond && (it->first == ft_it->first) && (it->second == ft_it->second);
-        if (cond == true)
-            std::cout << "cond true\n";
-        else
-            std::cout << "cond false\n";
+        // if (cond == true)
+        //     std::cout << "cond true\n";
+        // else
+        //     std::cout << "cond false\n";
         m.erase(it);       // erasing by iterator
         ft_m.erase(ft_it); // erasing by iterator
-        if (cond == true)
-            std::cout << "cond true\n";
-        else
-            std::cout << "cond false\n";
+        // if (cond == true)
+        //     std::cout << "cond true\n";
+        // else
+        //     std::cout << "cond false\n";
         cond = cond && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
-        if (cond == true)
-            std::cout << "cond true\n";
-        else
-            std::cout << "cond false\n";
+        // if (cond == true)
+        //     std::cout << "cond true\n";
+        // else
+        //     std::cout << "cond false\n";
         int ret = m.erase('c');       // erasing by key
         int ft_ret = ft_m.erase('c'); // erasing by key
-        if (cond == true)
-            std::cout << "cond true\n";
-        else
-            std::cout << "cond false\n";
+        // if (cond == true)
+        //     std::cout << "cond true\n";
+        // else
+        //     std::cout << "cond false\n";
         cond = cond && ret == ft_ret && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
-        if (cond == true)
-            std::cout << "cond true\n";
-        else
-            std::cout << "cond false\n";
+        // if (cond == true)
+        //     std::cout << "cond true\n";
+        // else
+        //     std::cout << "cond false\n";
         it = m.find('e');
         ft_it = ft_m.find('e');
-        if (cond == true)
-            std::cout << "cond true\n";
-        else
-            std::cout << "cond false\n";
+        // if (cond == true)
+        //     std::cout << "cond true\n";
+        // else
+        //     std::cout << "cond false\n";
         cond = cond && (it->first == ft_it->first) && (it->second == ft_it->second) && m.size() == ft_m.size();
-        if (cond == true)
-            std::cout << "cond00 true\n";
-        else
-            std::cout << "cond00 false\n";
+        // if (cond == true)
+        //     std::cout << "cond00 true\n";
+        // else
+        //     std::cout << "cond00 false\n";
         m.erase(it, m.end());          // erasing by range
         ft_m.erase(ft_it, ft_m.end()); // erasing by range
-        if (cond == true)
-            std::cout << "cond0 true\n";
-        else
-            std::cout << "cond0 false\n";
+        // if (cond == true)
+        //     std::cout << "cond0 true\n";
+        // else
+        //     std::cout << "cond0 false\n";
         cond = cond && m.empty() == ft_m.empty() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
-        if (cond == true)
-            std::cout << "cond11 true\n";
-        else
-            std::cout << "cond11 false\n";
+        // if (cond == true)
+        //     std::cout << "cond11 true\n";
+        // else
+        //     std::cout << "cond11 false\n";
         /* ---------- Testing some edge cases ---------- */
 
         std::map<int, std::string> m2;
@@ -1434,47 +1440,48 @@ void testModifiers()
         // std::map<int, std::string>::reverse_iterator it2 = m2.rbegin();
         // ft::Map<int, std::string>::reverse_iterator ft_it2 = ft_m2.rbegin();
 
-        std::cout << "\n";
-        std::cout << m2.size() << "\n";
-        std::cout << ft_m2.size() << "\n";
-        std::cout << "begin m2 " << m2.begin()->first << "\n";
-        std::cout << "begin ft_m2 " << ft_m2.begin()->first << "\n";
+        // std::cout << "\n";
+        // std::cout << m2.size() << "\n";
+        // std::cout << ft_m2.size() << "\n";
+        // std::cout << "begin m2 " << m2.begin()->first << "\n";
+        // std::cout << "begin ft_m2 " << ft_m2.begin()->first << "\n";
         m2.erase(m2.begin());
         ft_m2.erase(ft_m2.begin());            ///  PROBLEM HERE
-        std::cout << "begin m2 " << m2.begin()->first << "\n";
-        std::cout << "begin ft_m2 " << ft_m2.begin()->first << "\n";
-        if (cond == true)
-            std::cout << "cond1 true\n";
-        else
-            std::cout << "cond1 false\n";
+        // std::cout << "begin m2 " << m2.begin()->first << "\n";
+        // std::cout << "begin ft_m2 " << ft_m2.begin()->first << "\n";
+        // if (cond == true)
+        //     std::cout << "cond1 true\n";
+        // else
+        //     std::cout << "cond1 false\n";
 
 
         cond = cond && m2.size() == ft_m2.size() && compareMaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end());
         
-        std::cout << "\n";
-        std::cout << m2.size() << "\n";
-        std::cout << ft_m2.size() << "\n";
+        // std::cout << "\n";
+        // std::cout << m2.size() << "\n";
+        // std::cout << ft_m2.size() << "\n";
         
-        if (cond == true)
-            std::cout << "cond22 true\n";
-        else
-            std::cout << "cond22 false\n";
+        // if (cond == true)
+        //     std::cout << "cond22 true\n";
+        // else
+        //     std::cout << "cond22 false\n";
+
         // m2.erase(it2->first);
         // ft_m2.erase(ft_it2->first);
 
-        if (cond == true)
-            std::cout << "cond2 true\n";
-        else
-            std::cout << "cond2 false\n";
+        // if (cond == true)
+        //     std::cout << "cond2 true\n";
+        // else
+        //     std::cout << "cond2 false\n";
         cond = cond && m2.size() == ft_m2.size() && compareMaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end());
-        if (compareMaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end()) == true)
-            std::cout << "compareMAPS TRUE\n";
-        else
-            std::cout << "compareMAPS false\n";
-        if (cond == true)
-            std::cout << "cond true\n";
-        else
-            std::cout << "cond false\n";
+        // if (compareMaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end()) == true)
+        //     std::cout << "compareMAPS TRUE\n";
+        // else
+        //     std::cout << "compareMAPS false\n";
+        // if (cond == true)
+        //     std::cout << "cond true\n";
+        // else
+        //     std::cout << "cond false\n";
         std::map<int, std::string> m3;
         ft::Map<int, std::string> ft_m3;
         std::vector<int> vec;
@@ -1489,9 +1496,9 @@ void testModifiers()
             ft_m3.insert(std::make_pair(i, "string1"));
         }
 
-        std::cout << "\n";
-        std::cout << m3.size() << "\n";
-        std::cout << ft_m3.size() << "\n";
+        // std::cout << "\n";
+        // std::cout << m3.size() << "\n";
+        // std::cout << ft_m3.size() << "\n";
 
         std::map<int, std::string>::iterator itt;
         ft::Map<int, std::string>:: iterator m_itt;
@@ -1705,70 +1712,74 @@ void testModifiers()
 
     //     EQUAL(cond);
     // }
-    // std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " clear method "
-    //           << "] --------------------]\t\t\033[0m";
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " clear method "
+              << "] --------------------]\t\t\033[0m";
 
-    // {
-    //     {
-    //         time_t start, end, diff;
-    //         /*------------------ std::maps ---------------------*/
-    //         std::map<int, std::string> m1;
-    //         ft::Map<int, std::string> ft_m1;
-    //         for (size_t i = 0; i < 1e6; i++)
-    //         {
-    //             m1.insert(std::make_pair(i, "string2"));
-    //             ft_m1.insert(std::make_pair(i, "string2"));
-    //         }
+    {
+        {
+            time_t start, end, diff;
+            /*------------------ std::maps ---------------------*/
+            std::map<int, std::string> m1;
+            ft::Map<int, std::string> ft_m1;
+            for (size_t i = 0; i < 1e6; i++)
+            {
+                m1.insert(std::make_pair(i, "string2"));
+                ft_m1.insert(std::make_pair(i, "string2"));
+            }
 
-    //         start = get_time();
-    //         m1.clear();
-    //         end = get_time();
-    //         diff = end - start;
-    //         diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
-    //         /*-----------------------------------------------------*/
-    //         /*------------------ ft::Maps ---------------------*/
-    //         ualarm(diff * 1e3, 0);
-    //         ft_m1.clear();
-    //         ualarm(0, 0);
-    //         /*----------------------------------------------------*/
-    //     }
-    //     bool cond(false);
-    //     std::map<char, int> m;
-    //     ft::Map<char, int> ft_m;
+            start = get_time();
+            m1.clear();
+            end = get_time();
+            diff = end - start;
+            diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
+            /*-----------------------------------------------------*/
+            /*------------------ ft::Maps ---------------------*/
+            ualarm(diff * 1e3, 0);
+            ft_m1.clear();
+            ualarm(0, 0);
+            /*----------------------------------------------------*/
+        }
+        bool cond(false);
+        std::map<char, int> m;
+        ft::Map<char, int> ft_m;
 
-    //     m['x'] = 100;
-    //     m['y'] = 200;
-    //     m['z'] = 300;
+        m['x'] = 100;
+        m['y'] = 200;
+        m['z'] = 300;
 
-    //     ft_m['x'] = 100;
-    //     ft_m['y'] = 200;
-    //     ft_m['z'] = 300;
+        ft_m['x'] = 100;
+        ft_m['y'] = 200;
+        ft_m['z'] = 300;
 
-    //     cond = m.size() == ft_m.size();
+        cond = m.size() == ft_m.size();
 
-    //     m.clear();
-    //     ft_m.clear();
+        m.clear();
+        ft_m.clear();
 
-    //     cond = cond && m.empty() == ft_m.empty() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+        cond = cond && m.empty() == ft_m.empty() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
 
-    //     m['a'] = 1101;
-    //     m['b'] = 2202;
-    //     //ft_m.call_print();
-    //     ft_m['a'] = 1101;
-    //     ft_m['b'] = 2202;
+        m['a'] = 1101;
+        m['b'] = 2202;
 
-    //     cond = cond && m.size() == ft_m.size() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+        ft_m['a'] = 1101;
+        ft_m['b'] = 2202;
 
-    //     m = std::map<char, int>();
-    //     ft_m = ft::Map<char, int>();
+        // std::cout << m.size() << ", " << ft_m.size() << std::endl;
 
-    //     m.clear();
-    //     ft_m.clear();
+        cond = cond && m.size() == ft_m.size() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
 
-    //     cond = cond && m.size() == ft_m.size() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+        // m = std::map<char, int>();
+        // ft_m = ft::Map<char, int>();
 
-    //     EQUAL(cond);
-    // }
+        m.clear();
+        ft_m.clear();
+        
+        // std::cout << m.size() << ", " << ft_m.size() << std::endl;
+        cond = cond && m.size() == ft_m.size() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+
+        EQUAL(cond);
+    }
+
 }
 
 // struct ModCmp
@@ -2360,10 +2371,10 @@ int main()
     std::cout << RED << "________________________________________________________________________________________________________" << std::endl;
     std::cout << RED << "**** The test is taking so much time to test the all cases and the time complexity of each method ****" << std::endl;
     std::cout << RED << "--------------------------------------------------------------------------------------------------------" << RESET << std::endl;
-    //signal(SIGALRM, alarm_handler);
+    signal(SIGALRM, alarm_handler);
 
     std::cout << YELLOW << "Testing Iterators;" << RESET << std::endl;
-    TEST_CASE(iterator_tests);
+    // TEST_CASE(iterator_tests);
     // TEST_CASE(const_iterator_tests);
     // TEST_CASE(reverse_iterator_tests);
     std::cout << std::endl;
@@ -2380,9 +2391,9 @@ int main()
     // TEST_CASE(testCapacityMethods)
     // std::cout << std::endl;
 
-    std::cout << YELLOW << "Testing Access Element Methods; " << RESET << std::endl;
-    TEST_CASE(testElementAccess);
-    std::cout << std::endl;
+    // std::cout << YELLOW << "Testing Access Element Methods; " << RESET << std::endl;
+    // TEST_CASE(testElementAccess);
+    // std::cout << std::endl;
 
     std::cout << YELLOW << "Testing Modifiers Methods;" << RESET << std::endl;
     TEST_CASE(testModifiers)

@@ -331,16 +331,19 @@ void	delete_leaf(Node* node) {
 
 	_size--;
 
-	// if (node->value.first == 0)
-	// {
-	// 	std::cout << node << "\n";
-	// 	std::cout << _begin_node << "\n";
-	// }
-
 	if (node == _begin_node)
 	{
 		//std::cout << "You gonna deleate the begin node\n";
 		_begin_node = next_node(node);
+	}
+	
+	if (isRoot(node))    // 3ad zatha, and it works and fix the problem
+	{
+
+		//std::cout << "delete leaf which is Root\n";
+		//printTree();
+		_root = NULL;
+
 	}
 	if (node->isLeft())
 		parent->l_child = node->l_child;
@@ -350,27 +353,31 @@ void	delete_leaf(Node* node) {
 	delete node;
 }
 
-void delete_RBTree(const key_type& key)
+size_t erase(const key_type& key)
 {
-	//std::cout << "delete_RBTree\n";
-	//printTree();
 	Node* node_to_delete = searchByKey(key);
-	//node_to_delete->printNode();
 
-	// if(node_to_delete == _begin_node)
-	// 	std::cout << "we gonna delete begin node\n";
+
 	if (node_to_delete)
+	{
 		deletion_RBTree(node_to_delete);
-	// else
-	// 	 std::cout << "I'm null";
+		return 1;
+	}
+	return 0;
 }
 
 //void deletion_RBTree(Node& node_to_delete)
 void deletion_RBTree(Node* node_to_delete)
 {
+	// std::cout << "deletion_RBTree\n";
+	// node_to_delete->printNode();
+
 	// Case 1:
 	if (isRoot(node_to_delete) && node_to_delete->is_leaf())
+	{
+	//	std::cout << "I think this is the case, the case of deleting a root node\n";
 		delete_leaf(node_to_delete);
+	}
 	// Case 2:
 	else if (node_to_delete->is_leaf() && node_to_delete->color == Red)
 		delete_leaf(node_to_delete); // is Red leaf
@@ -558,20 +565,26 @@ Node* choose_replacement_of_node(Node* node_to_delete)
 {
 	// Replace the node to be deleted With RED node if possible
 	// 	 [ InOrderSuccessor OR InOrderPredecessor ]
-	Node* InOrderSuccessor = node_to_delete->inOrderSuccessor();
-	Node* InOrderPredecessor = node_to_delete->inOrderPredecessor();
+	// Node* InOrderSuccessor = node_to_delete->inOrderSuccessor();
+	// Node* InOrderPredecessor = node_to_delete->inOrderPredecessor();
 
-	if (!InOrderSuccessor)//(InOrderSuccessor->is_null())
-		return InOrderPredecessor;
-	else if (!InOrderPredecessor)//(InOrderPredecessor->is_null())
-		return InOrderSuccessor;
+	// if (!InOrderSuccessor)//(InOrderSuccessor->is_null())
+	// 	return InOrderPredecessor;
+	// else if (!InOrderPredecessor)//(InOrderPredecessor->is_null())
+	// 	return InOrderSuccessor;
+
+
+	if ((node_to_delete->r_child)->is_null() || node_to_delete->inOrderSuccessor()->color == Black)
+		return node_to_delete->inOrderPredecessor();
+	return node_to_delete->inOrderSuccessor();
+
 	// This solution
-	else
-	 	return InOrderSuccessor;
+	// else
+	//  	return InOrderSuccessor;
 	// Or this :
-	/*else if (InOrderSuccessor->color == Red)  
-		return InOrderSuccessor;
-	return InOrderPredecessor;*/
+	// else if (InOrderSuccessor->color == Red)  
+	// 	return InOrderSuccessor;
+	// return InOrderPredecessor;
 }
 
 void fix_DB(Node* DB_node)
@@ -624,22 +637,6 @@ void fix_DB(Node* DB_node)
 			case_4Deletion(DB_node);
 	}
 }
-
-// // Case 0: sibling is Black and NULL
-// void case_0Deletion(Node* DB_node) {
-// 	//std::cout << "case_1Deletion\n";
-// 	Node* sibling = DB_node->sibling();
-
-// 	DB_node->color = Black;
-// 	//sibling->color = Red;
-// 	if ((DB_node->parent)->color == Black)
-// 	{
-// 		(DB_node->parent)->color = DB;
-// 		fix_DB(DB_node->parent);
-// 	}
-// 	else
-// 		(DB_node->parent)->color = Black;
-// }
 
 // Case 1: sibling is Black and Both of this children are black
 void case_1Deletion(Node* DB_node) {

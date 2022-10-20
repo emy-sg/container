@@ -55,9 +55,9 @@ namespace ft {
             return _array; // why not ? return iterator(_array);
         }
         // const_iterator begin()
-        // const_iterator begin() const {
-        //     return const_iterator(_array);
-        // }
+        const_iterator begin() const {
+            return const_iterator(_array);
+        }
 
     // The past-the-end element is the theoretical element that would follow the last element in the vector. It does not point to any element, and thus shall not be dereferenced.
 
@@ -65,10 +65,10 @@ namespace ft {
         iterator end() {
             return _array + size(); // WHY NOT? return iterator(_array + size());
         }
-        // const_iterator end() const;
-        // const_iterator end() const {
-        //     return const_iterator(_array + size());
-        // }
+        //const_iterator end() const;
+        const_iterator end() const {
+            return const_iterator(_array + size());
+        }
 
         //reverse_iterator rbegin();
         //const_reverse_iterator rbegin() const;
@@ -83,10 +83,10 @@ namespace ft {
         
 // 3- default constructor
         Vector() {
-            std::cout << "Default vector constructor\n";
+            //std::cout << "Default vector constructor\n";
             _size = 0;
             _capacity = 0;
-            std::cout << _array << "\n";
+            //std::cout << _array << "\n";
             //std::cout << "size " << i.size() << std::endl;  // size = 0
 	        //std::cout << "max_size " << i.max_size() << std::endl; // max_size = 4611686018427387903
 	        //std::cout << "capacity " << i.capacity() << std::endl; // capacity = 0
@@ -114,10 +114,15 @@ namespace ft {
         //     value_type* array;
                 
         //     size_type i = 0;
-        //     for(iterator it = first; it < last; ++it)
+        //     /*for(iterator it = first; it != last; ++it)
         //     {
         //         array[i] = *it;
         //         ++i;
+        //     }*/
+        //     while (first != last)
+        //     {
+        //         array[i] = *(++first);
+        //         i++;
         //     }
         //     // Step 2: Allocate for i element in the vector
         //     _array = get_allocator().allocate(i);
@@ -132,13 +137,15 @@ namespace ft {
         // }
         // 4- Copy Constructor
         Vector(const Vector& inst) {
-            std::cout << "Copy Constructor of vector\n";
+            //std::cout << "Copy Constructor of vector\n";
             *this = inst;
         }
 
         Vector& operator=(const Vector& inst) {
-            std::cout << "Assignement copy Constructor of vector\n";
+            //std::cout << "Assignement copy Constructor of vector\n";
 
+            _capacity = inst._capacity;
+            _size = inst._size;
             _array = get_allocator().allocate(inst._capacity);
             for (size_type j=0; j < inst._size; j++)
                 get_allocator().construct(_array + j, _array[j]);
@@ -146,15 +153,15 @@ namespace ft {
         }
         // 5- Destructor
         ~Vector() {
-            std::cout << "Destructor of vector\n";
-            //if (_capacity > 0)
+            //std::cout << "Destructor of vector\n";
             
-            // 3- deallocate the _size element of _array
+            //3- deallocate the _size element of _array
             for (size_type i = 0; i < _size; i++)
                 get_allocator().destroy(_array + i);
             // 4- deallocate space for _capacity of _array
-            get_allocator().deallocate(_array, _capacity);
-
+            if (_capacity > 0)
+                get_allocator().deallocate(_array, _capacity);
+    
         }
 
 // 4- empty(), size(),capacity(), max_size()
@@ -266,13 +273,17 @@ namespace ft {
         return _array;
     }
 
-// 6- resize(), reserve(),
- //void reserve(size_type n);
+// 6- reserve(), resize(), push_back, and pop_back
+ 
+ // 6.1- void reserve(size_type n);
     /*
-
+        Reserve, request a change in capacity.
+        if (n > capacity())
+            reallocate for n elements
     */
     void reserve(size_type n) {
-        pointer arr;
+        // std::cout << "reserve fct \n";
+        value_type* arr;
 
         if (n > capacity())
         {
@@ -280,61 +291,113 @@ namespace ft {
             //     throw std::length_error("");
             //else
             {
-                // Allocate space:
+                // 1- Allocate space:
                 arr = get_allocator().allocate(n);
-                // Construct:
+                // 2- Construct:
                 for (size_type i = 0; i < size(); i++)
                     get_allocator().construct(arr+ i, _array[i]);
-                //Destroy the other _array;
+                
+                // // 3- Destroy the other _array;
                 for (size_type i = 0; i < size(); i++)
                     get_allocator().destroy(_array + i);
-                // Deallocate the other _array;
-                get_allocator().deallocate(_array, capacity());
+                // 4- Deallocate the other _array;
+                if (_capacity > 0)
+                    get_allocator().deallocate(_array, capacity());
 
+                // 5- upgrade the capacity()
+                _capacity = n;
+                // 6- assign the new array to the _array
                 _array = arr;
             }
         }
     }
 
- //void resize(size_type n, value_type val = value_type());
+ // 6.2- void resize(size_type n, value_type val = value_type());
+
+    /*
+        Resizes the container so that it contains n elements.
+        if (n < size())
+            reduce the container to its n first element (using pop_back)
+        else
+            expend the container to n size by adding new element (using push_back)
+    */
     void resize(size_type n, value_type val = value_type()) {
-        if (size() == n)
-            return ;
-        if (size() > n)
+        // std::cout << "resize()\n";
+        // if (size() == n)
+        //     return ;
+        if (size() > n) // size > n value ==> pop_back()
         {
             while (size() > n)
                 pop_back();
         }
-        else if (capacity() > n)
+        else if (capacity() >= n) // capacity >= n value ==> construct new element
         {
             while (size() > n)
-                push_back(val); 
+            {
+                get_allocator().construct(_array + _size, val);
+                _size++;
+            }
+
+            // -------------- OR -----------------
+            // while (size() > n)
+            //     push_back(val);
+
         }
+        // if capacity < n ==> reserve(upgrade capacity) then construct
         else {
             reserve(n);
             while (size() > n)
-                push_back(val); 
+            {
+                get_allocator().construct(_array, val);
+                _size++;
+            }
         }
     }
 
- //void push_back (const value_type& val);
+ // 6.3- void push_back (const value_type& val);
+    
+    /*
+        Adds a new element to the end of the vector.
+        This effectively increases the container size by one,
+            which causes an automatic reallocation if needed.
+    */
     void push_back (const value_type& val) {
+        //std::cout << "push_back " << size() << " | " << capacity()<< "\n";
+        
+        // 1- check if there is enough space to add new element
         if (size() == capacity())
         {
-            if (size() % 2) // odd
-                reserve(size() + 1);
+            if (capacity() == 0 || capacity() % 2 != 0) // odd
+                reserve(capacity() + 1);
             else
-                reserve(size() * 2);
+                reserve(capacity() * 2);
         }
+
+        // ==> Still idk if I can replace those two beautiful lines by resize()
+        //  SHOULD test if resize duplicate the capacity in case it's even number case
+
+        // 2- construct for the new element
         get_allocator().construct(_array + _size, val);
+
+        // 3- upgrade the size of the container
+        _size++;
     }
 
- //void pop_back();
+ // 6.4- void pop_back();
+
+    /*
+        Removes the last element in the vector.
+    */
     void pop_back() {
+        //std::cout << "pop_back\n";
+        // 1- Destroy the last element
         get_allocator().destroy(_array + (_size - 1));
+
+        // 2- increase the size of the container by one
+        _size--;
     }
 
- //iterator erase (iterator position);
+// 7- erase (), clear()
     /*
         Return an iterator pointing to the element that followed the element erased by the function.
         P.S:
@@ -343,16 +406,41 @@ namespace ft {
             ...
     */
     iterator erase (iterator position) {
+        // std::cout << "erase()\n";
         iterator it;
 
+        // 1- store the next element in the container
         it = position++;
-        get_allocator().destroy(*position);
-        return it;
-    }
- //iterator erase (iterator first, iterator last);
-    iterator erase (iterator first, iterator last) {
+        // 2- destroy the element in the curr position
+        get_allocator().destroy(_array + (it - begin() + 1));
+        // 3- decrease the size of the container
+        _size--;
 
+        // 4- return the next position
+        return position;
     }
+
+    iterator erase (iterator first, iterator last) {
+        // std::cout << "erase(range)\n";
+
+        while (first != last)
+            first = erase(first);
+        return first;
+    }
+
+    // void clear();
+    /*
+        Removes all elements from the vector (which are destroyed), leaving the container with a size of 0.
+    */
+    void clear() {
+        erase(begin(), end());
+    }
+
+// 8- Diff btw Assign() VS Insert()
+
+    /*
+    
+    */
  //void assign (size_type n, const value_type& val);
     void assign (size_type n, const value_type& val) {
 
@@ -377,6 +465,11 @@ namespace ft {
     void insert (iterator position, InputIterator first, InputIterator last) {
 
     }
+
+// 9- swap
+
+    /*
+    */
 
 };
 }

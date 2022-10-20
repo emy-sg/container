@@ -1,6 +1,7 @@
 #include "Map.hpp"
 #include <map>
 #include <type_traits>
+#include <strings.h>
 
 int main() {
     // ft::Map<int, int> me;
@@ -46,23 +47,23 @@ int main() {
     // iter++;
     // std::cout << iter->second << "\n";
 
-//  -------------- at() and operator[] ---------------
-    ft::Map<int, int> my;
-    my[1] =1;
-    my[2] = 2;
-    my[3] =3;
-    my[100] = 100;
+//  -------------- at() and operator[] and erase ---------------
+    // ft::Map<int, int> my;
+    // my[1] =1;
+    // my[2] = 2;
+    // my[3] =3;
+    // my[100] = 100;
 
-    ft::Map<int, int>::iterator it = my.begin();
-    //while (it != my.end())
-    {
-        std::cout << my.size() << "\n";
-        std::cout << "begin  " << my.begin()->first << "\n";
-        my.erase(it);
-        std::cout << my.size() << "\n";
-        std::cout << "begin  " << my.begin()->first << "\n";
-        it++;
-    }
+    // ft::Map<int, int>::iterator it = my.begin();
+    // //while (it != my.end())
+    // {
+    //     std::cout << my.size() << "\n";
+    //     std::cout << "begin  " << my.begin()->first << "\n";
+    //     my.erase(it);
+    //     std::cout << my.size() << "\n";
+    //     std::cout << "begin  " << my.begin()->first << "\n";
+    //     it++;
+    // }
     //my.call_print();
     //my.erase(2);
     //my.call_print();
@@ -74,6 +75,68 @@ int main() {
     // std::cout <<  my.find("I")->first << " | " <<  my.find("I")->second << "\n";
     //my.call_print();
 
+//  ---------------- swap() -------------------------
+    // std::map<int, int> m1;
+    // m1[1] =5;
+    // m1[2] = 6;
+    // m1[3] =7;
+    // m1[4] = 8;
+
+    // std::map<int, int> m2;
+    // m2[1] =1;
+    // m2[2] = 2;
+
+    // m1.swap(m2);
+    // std::cout << "m1 size: " << m1.size() << "\n";
+    // std::map<int, int>::iterator it1 = m1.begin();
+    // while(it1 != m1.end())
+    // {
+    //     std::cout << it1->second <<"\n";
+    //     it1++;
+    // }
+
+    // std::cout << "m2 size: " << m2.size() << "\n";
+    // std::map<int, int>::iterator it2 = m2.begin();
+    // while(it2 != m2.end())
+    // {
+    //     std::cout << it2->second <<"\n";
+    //     it2++;
+    // }
+
+    //////////////// erase and clear  -------------------
+        // std::map<char, int> m;
+        // ft::Map<char, int> ft_m;
+        // m['x'] = 100;
+        // m['y'] = 200;
+        // m['z'] = 300;
+
+        // ft_m['x'] = 100;
+        // ft_m['y'] = 200;
+        // ft_m['z'] = 300;
+
+        // m.clear();
+        // ft_m.clear();
+
+        // m['a'] = 1101;
+        // m['b'] = 2202;
+
+        // ft_m['a'] = 1101;
+        // ft_m['b'] = 2202;
+
+        // ft_m.call_print();
+        
+        // m.clear();
+        // ft_m.clear();
+
+        // ft_m.call_print();
+
+        // std::cout << m.size() << " | " << ft_m.size() << "\n";
+
+    ////////////////// assign() and insert() -------------------------
+
+        ft::Map<char, int> m;
+
+        m.clear();
 
 
 }

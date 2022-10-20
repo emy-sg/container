@@ -61,7 +61,7 @@ class Map {
 
 // --------------------------- 3- Private attributes ------------------------------------
 
-	private:
+	// private:
     // Idk why: when I use pointer to _Tree* ==> I get segmentation dump
         RBTree<key_type, value_type, allocator_type> _Tree;
  
@@ -210,6 +210,7 @@ class Map {
         Node<value_type>* node;
         iterator it;
 
+
 		//std::cout <<  "--------------------------- Lets search for this Key ==> " << k << " --------------------------------------\n";
         node = _Tree.searchByKey(k);
 		//std::cout << " --------------------------- search done -------------------------------------------------- \n";
@@ -322,8 +323,7 @@ class Map {
 	// 5.2- iterator insert(iterator position, const value_type& val);
 	iterator insert(iterator position, const_reference val) {
 		iterator iter;
-
-    std::cout << "------------ NOT TESTED : insert  -----------\n";
+		
 		iter = find(val.first);
 		if (iter == position)
 			return position;
@@ -342,68 +342,123 @@ class Map {
 	}
 
  // 6- std::map::erase
-    
-	// 6.1- void erase(iterator position);
+
+	// 6.1- size_type erase(const key_type& k);
+	size_type erase(const key_type& key)
+	{
+		return _Tree.erase(key);
+
+		// //std::cout << "ERase 2\n";
+		// if (find(key) != end())
+		// {
+		// 	_Tree.delete_RBTree(key);
+		// 	//std::cout << "end ERase 2\n";
+		// 	return 1;
+		// }
+		// //std::cout << "end ERase 2\n";
+		// return 0;
+	}
+	
+	// 6.2- void erase(iterator position);
 	void erase(iterator position)
 	{
 		//std::cout << "ERase Position\n";
 		//_Tree.printTree();
 		//std::cout << "KEY to erase: "<< position->first << "\n";
-		if (empty())
-		{
-			std::cout << "Erase position of empty Tree, should be protected from loop call\n";
-			return ;
-		}
-		if (position == begin())
-			std::cout << "erase position of begin\n";
+		// if (empty())
+		// {
+		// 	//std::cout << "Erase position of empty Tree, should be protected from loop call\n";
+		// 	return ;
+		// }
+		//if (position == begin())
+			//std::cout << "erase position of begin\n";
 		//if (find((*position).first) != end()) // work for Me the problem solved
-		_Tree.delete_RBTree(position->first);
+		
+		
+		//_Tree.delete_RBTree(position->first);
+
+		_Tree.erase(position->first);
+
 		//std::cout << "end ERase 1\n";
-	}
-    
-	// 6.2- size_type erase(const key_type& k);
-	size_type erase(const key_type& key)
-	{
-		//std::cout << "ERase 2\n";
-		if (find(key) != end())
-		{
-			_Tree.delete_RBTree(key);
-			//std::cout << "end ERase 2\n";
-			return 1;
-		}
-		//std::cout << "end ERase 2\n";
-		return 0;
 	}
     
 	// 6.3- void erase(iterator first, iterator last);
 	void erase(iterator first, iterator end)
 	{
 		while (first != end)
-			erase(++first);
-
+		{
+			//std::cout << first->first << " | " << first->second << "\n";
+			erase(first++);
+		}
+		// std::cout << _Tree._end_node << "\n";
+		// _Tree._begin_node = &_Tree._end_node;
 		//  --------------------- OR ------------------------------
-		/*
-			iterator iter;
-			iter = first;
-			while (iter != end)
-			{
-				erase(iter);
-				iter++;
-			}
-		*/
+		
+			// iterator iter;
+			// iter = first;
+			// int i = 0;
+			// while (iter != end)
+			// {
+			// 	std::cout << ++i << "\n";
+			// 	erase(iter);
+			// 	iter++;
+			// }
+			// std::cout << "AFTER deletion from begin to end\n";
+			// _Tree.printTree();
 	}
 
  // 7- clear
 	void clear()
 	{
-		if (empty())
-		{
-			//std::cout << "Can't clear anything the tree is empty\n";
-		}
-		else
+		// if (empty())
+		// {
+		// 	//std::cout << "Can't clear anything the tree is empty\n";
+		// }
+		// else
 			erase(begin(), end());
 	}
 
+// 	--------------------------------- 12- swap() ----------------------------------------
+   	// void swap (vector& x);
+	/*
+		Exchanges the content of the container by the content of inst.
+			which is another map of the same type.
+
+		==> Notice that a non-member function exists with the same name,
+		==> Exchanges the contents of the container with those of other. Does not invoke any move, copy, or swap operations on individual elements.
+	*/
+	void swap(Map& inst) {
+		
+		// iterator it1;
+		// iterator end_it1;
+		// iterator it2;
+		// iterator end_it2;
+
+		// it1 = this->begin();
+		// end_it1 = this->end();
+		// it2 = inst.begin();
+		// end_it2 = inst.end();
+
+		// if (size() >= inst.size())
+		// {
+		// 	while (it2 != end_it2)
+		// 		++it1 = ++it2;
+		// 	while (it1 != end_it1)
+		// 		++it2 = ++it1;
+		// 	it1 = end_it2;
+		// 	it2 = end_it1;
+
+		// 	size_t _size = size();
+		// 	_Tree->_size = inst.size();
+		// 	inst->_Tree._size = _size;
+
+		// }
+		// else
+		// {
+		
+		// }
+
+	}
 };
 
 }
