@@ -7,8 +7,9 @@
 *
 *  This array may need to be reallocated in order to grow in size when new elements are inserted, which implies allocating a new array and moving all elements to it.
 */
-#include "iterator.hpp"
-#include "const_iterator.hpp"
+// #include "iterator.hpp"
+#include "reverse_iterator.hpp"
+#include "my_Iterator.hpp"
 #include <cstddef>
 #include <iostream>
 #include <memory.h>
@@ -47,8 +48,10 @@ namespace ft {
     public:
 
 // 1- Iterator
-        typedef typename ft::my_Iterator<value_type> iterator;
-        typedef typename ft::my_Iterator<const value_type>  const_iterator;
+        // typedef typename ft::my_Iterator<value_type> iterator;
+        // typedef typename ft::my_Iterator<const value_type>  const_iterator;
+        typedef typename ft::my_Iterator<pointer> iterator;
+        typedef typename ft::my_Iterator<const_pointer>  const_iterator;
 
         // iterator begin();  
         iterator begin() {
@@ -70,18 +73,36 @@ namespace ft {
             return const_iterator(_array + size());
         }
 
-        //reverse_iterator rbegin();
-        //const_reverse_iterator rbegin() const;
-        //reverse_iterator rend();
-        //const_reverse_iterator rend() const;
+// 2- Reverse_iterator:
 
-// 2- get_allocator(): returns a copy of the allocator object associated with the vector
+        // typedef typename ft::my_reverseIterator<iterator> reverse_iterator;
+        // typedef typename ft::my_reverseIterator<const_iterator> const_reverse_iterator;
+
+        // //reverse_iterator rbegin();
+        // reverse_iterator rbegin() {
+        //     return _array + size();
+        // }
+        // //const_reverse_iterator rbegin() const;
+        // const_reverse_iterator rbegin() const {
+        //     return const_reverse_iterator(_array + size());
+        // }
+
+        // //reverse_iterator rbegin();
+        // reverse_iterator rend() {
+        //     return _array;
+        // }
+        // //const_reverse_iterator rbegin() const;
+        // const_reverse_iterator rend() const {
+        //     return const_reverse_iterator(_array);
+        // }
+
+// 3- get_allocator(): returns a copy of the allocator object associated with the vector
         allocator_type get_allocator() const
         {
             return allocator_type();
         }
         
-// 3- default constructor
+// 4- default constructor
         Vector() {
             //std::cout << "Default vector constructor\n";
             _size = 0;
@@ -164,7 +185,7 @@ namespace ft {
     
         }
 
-// 4- empty(), size(),capacity(), max_size()
+// 5- empty(), size(),capacity(), max_size()
         bool empty() const {
             if (_size == 0)
                 return true;
@@ -183,7 +204,7 @@ namespace ft {
             return (9223372036854775807 / sizeof(value_type)); // suppose (2^64 -1) / sizeof()        }
         }
 
-// 5- Accessors: at, operator[], front(), back(), data()
+// 6- Accessors: at, operator[], front(), back(), data()
 
  // 5.1- std::vector::operator[]
     /*
@@ -273,7 +294,7 @@ namespace ft {
         return _array;
     }
 
-// 6- reserve(), resize(), push_back, and pop_back
+// 7- reserve(), resize(), push_back, and pop_back
  
  // 6.1- void reserve(size_type n);
     /*
@@ -397,7 +418,7 @@ namespace ft {
         _size--;
     }
 
-// 7- erase (), clear()
+// 8- erase (), clear()
     /*
         Return an iterator pointing to the element that followed the element erased by the function.
         P.S:
@@ -436,37 +457,61 @@ namespace ft {
         erase(begin(), end());
     }
 
-// 8- Diff btw Assign() VS Insert()
+// 9- Diff btw Assign() VS Insert()
 
     /*
-    
+        With assign vector content, 
+            The container destroy all the content, and construct n new values.
+        ==> The capacity of the container will not change only the size.
+
     */
  //void assign (size_type n, const value_type& val);
-    void assign (size_type n, const value_type& val) {
-
+    void assign (size_type n, const value_type& val)
+    {       
+        clear();
+        resize(n, val);
     }
 
  //template <class InputIterator>  void assign (InputIterator first, InputIterator last);
     template <class InputIterator>
     void assign (InputIterator first, InputIterator last) {
+       clear();
+       while (first++ != last)
+            push_back(*first);
+    }
 
+    /*
+        With insert, no clearing of the container.
+        ==> Inserting elements in positions other than the "vector end",
+             causes the container to relocate all the elements after position.
+             bcuz vectors use an array as their underlying storage.  
+    */
+
+ //iterator insert (iterator position, const value_type& val);
+    iterator insert (iterator position, const value_type& val) {
+        if (position == end())
+        {
+            push_back(val);
+            return iterator(_array + size());
+        }
+        int i;
+
+        i = 0;
+        
     }
 
  //void insert (iterator position, size_type n, const value_type& val);
     void insert (iterator position, size_type n, const value_type& val) {
 
- }
- //iterator insert (iterator position, const value_type& val);
-    iterator insert (iterator position, const value_type& val) {
-
     }
+
  //template <class InputIterator>    void insert (iterator position, InputIterator first, InputIterator last);
     template <class InputIterator>
     void insert (iterator position, InputIterator first, InputIterator last) {
 
     }
 
-// 9- swap
+// 10- swap
 
     /*
     */

@@ -12,13 +12,13 @@
 /*
     This means that our custom iterator should inheritate from std::iterator<std::random_access_iterator_tag, T>
     It contains, member types definition.
-    that the our custom iterator need, and so iterator_traits need too.
+    Iterator types definition in can be needed by another algo, and so iterator_traits needs too.
 */
 
 namespace ft {
 
     template <class T>
-    class my_Iterator : std::iterator<std::random_access_iterator_tag, T> {
+    class Iterator : std::iterator<std::random_access_iterator_tag, T> {
     public:
         //typedef T value_type;
     // Member types [aka typedefs]    
@@ -34,27 +34,27 @@ namespace ft {
     public:
 
     // Step 1: Constructors
-        my_Iterator() { // Default constructor
+        Iterator() { // Default constructor
             //std::cout << "Default Iterator Constructor\n";
             _m_ptr = NULL;
         }
-        my_Iterator(value_type* ptr) { //Initalization constructor
+        Iterator(value_type* ptr) { //Initalization constructor
             //std::cout << "Parameterized Iterator Constructor\n";
             _m_ptr = ptr;
         }
         // template <class IT>
-        my_Iterator(const my_Iterator& inst) { // Copy constructor
+        Iterator(const Iterator& inst) { // Copy constructor
             //std::cout << "Copy Constructor of Iterator\n";
             *this = inst;
         }
         // template <class IT>
-        my_Iterator& operator=(const my_Iterator& inst) { // Assignement operator
+        Iterator& operator=(const Iterator& inst) { // Assignement operator
             //std::cout << "Assignement Constructor of Iterator\n";          
             this->_m_ptr = inst._m_ptr;
             
             return *this;
         }
-        ~my_Iterator() { // Destructor
+        ~Iterator() { // Destructor
             //std::cout << "Destructor of Iterator\n";
         }
 
@@ -63,7 +63,7 @@ namespace ft {
 
 //  ------------------ Accessors operator =, * and -> ---------------------------   
 
-    operator my_Iterator<const T>() {
+    operator Iterator<const T>() {
         return _m_ptr;
     }
 
@@ -77,36 +77,36 @@ namespace ft {
 //  --------------------  [iter + n] [iter - n]  ---------------------------------
 
     // 1- operator+(difference_type n) : 
-        /* std::my_Iterator::operator+
-            my_Iterator operator+(difference_type n) const;
+        /* std::Iterator::operator+
+            Iterator operator+(difference_type n) const;
         */
-    my_Iterator<value_type> operator+(difference_type n) const {
-        my_Iterator<value_type>  iter_addition(*this);
+    Iterator<value_type> operator+(difference_type n) const {
+        Iterator<value_type>  iter_addition(*this);
         iter_addition._m_ptr += n;
         return iter_addition;
     }
     // 2- operator-(difference_type n) :
-        /* std::my_Iterator::operator-
-            my_Iterator operator-(difference_type n) const;
+        /* std::Iterator::operator-
+            Iterator operator-(difference_type n) const;
         */
-    my_Iterator<value_type> operator-(difference_type n) const {
-        my_Iterator<value_type>  iter_soustraction(*this);
+    Iterator<value_type> operator-(difference_type n) const {
+        Iterator<value_type>  iter_soustraction(*this);
         iter_soustraction._m_ptr -= n;
         return iter_soustraction;
     }
     // 3- operator+=(difference_type n) : 
-        /* std::my_Iterator::operator+=
-            my_Iterator operator+=(difference_type n) const;
+        /* std::Iterator::operator+=
+            Iterator operator+=(difference_type n) const;
         */
-    my_Iterator<value_type> operator+=(difference_type n) {
+    Iterator<value_type> operator+=(difference_type n) {
         _m_ptr += n;
         return *this;
     }
     // 4- operator-=(difference_type n) : 
-        /* std::my_Iterator::operator-=
-            my_Iterator operator-=(difference_type n) const;
+        /* std::Iterator::operator-=
+            Iterator operator-=(difference_type n) const;
         */
-    my_Iterator<value_type> operator-=(difference_type n) {
+    Iterator<value_type> operator-=(difference_type n) {
         _m_ptr -= n;
         return *this;
     }
@@ -123,25 +123,25 @@ namespace ft {
     */
 
     // 1- Prefix increment:
-    my_Iterator& operator++() {
+    Iterator& operator++() {
         _m_ptr++;
         return *this;
     }
     // 2- Prefix decrement:
-    my_Iterator& operator--() {
+    Iterator& operator--() {
         _m_ptr--;
         return *this;
     }
     // 3- Postfix increment
-    my_Iterator operator++(int) {
+    Iterator operator++(int) {
         //std::cout << "\n ------------ Post increment ----------------- \n";
-        my_Iterator tmp = *this; // create a copy
+        Iterator tmp = *this; // create a copy
         _m_ptr++; // ==> ++(*this)
         return tmp;
     }
     // 4- Postfix decrement
-    my_Iterator operator--(int) {
-        my_Iterator tmp(*this); // create a copy
+    Iterator operator--(int) {
+        Iterator tmp(*this); // create a copy
         _m_ptr--; // ==>   --(*this); 
         return tmp;
     }
@@ -151,19 +151,19 @@ namespace ft {
     // Step 4: Member friends : The operators [n + a]
     /*  Template friend : [n + a]
         template <value_type>
-        friend my_Iterator<value_type> operator+(difference_type n, const my_Iterator<value_type>& iter);
+        friend Iterator<value_type> operator+(difference_type n, const Iterator<value_type>& iter);
     */
-    friend my_Iterator<value_type> operator+(difference_type n, const my_Iterator<value_type>& iter) {
+    friend Iterator<value_type> operator+(difference_type n, const Iterator<value_type>& iter) {
         return (iter + n);
     }
     // -------------------------------------------
 
     // Step 5: Member friends : The operators [== != ]  > < >= <= ]
-    friend bool operator==(const my_Iterator& a, const my_Iterator& b) {
+    friend bool operator==(const Iterator& a, const Iterator& b) {
         return a._m_ptr == b._m_ptr;
     }
 
-    friend bool operator!=(const my_Iterator& a, const my_Iterator& b) {
+    friend bool operator!=(const Iterator& a, const Iterator& b) {
         return a._m_ptr != b._m_ptr;
     }
 
@@ -171,36 +171,36 @@ namespace ft {
     
     /* Template friend : [a - b]
         template <value_type>
-        friend difference_type operator-(const my_Iterator<value_type>& lhs, const my_Iterator<value_type>& rhs);
+        friend difference_type operator-(const Iterator<value_type>& lhs, const Iterator<value_type>& rhs);
     */
-    friend difference_type operator-(const my_Iterator<value_type>& lhs, const my_Iterator<value_type>& rhs) {
+    friend difference_type operator-(const Iterator<value_type>& lhs, const Iterator<value_type>& rhs) {
         //std::cout << "operator - \n";
         return std::distance(rhs._m_ptr, lhs._m_ptr);  // distance(first, last) = last - first; ==> (rhs, lhs) = lhs - rhs;
     }
     // ---------------------------------------------
 
     // Step 7: Member friends : The operators [ > < >= <= ]
-    friend bool operator>(const my_Iterator& a, const my_Iterator& b) {
+    friend bool operator>(const Iterator& a, const Iterator& b) {
         if ((a - b) > 0)
             return true;
         return false;
     }
         
-    friend bool operator>=(const my_Iterator& a, const my_Iterator& b) {
+    friend bool operator>=(const Iterator& a, const Iterator& b) {
         //return !(a < b);
         if (a == b || a > b)
             return true;
         return false;
     }
 
-    friend bool operator<(const my_Iterator& a, const my_Iterator& b) {
+    friend bool operator<(const Iterator& a, const Iterator& b) {
         //return !(a >= b);
         if (a >= b)
             return false;
         return true;
     }
 
-    friend bool operator<=(const my_Iterator& a, const my_Iterator& b) {
+    friend bool operator<=(const Iterator& a, const Iterator& b) {
         //return !(a < b);
         if (a > b)
             return false;

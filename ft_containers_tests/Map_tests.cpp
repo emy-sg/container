@@ -150,13 +150,13 @@ void iterator_tests(void)
         ft::Map<int, char>::iterator ob(my_it);
         EQUAL(&(*my_it) == &(*ob));
     }
-    // std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " iterator to const_iterator "
-    //           << "] --------------------]\t\t\033[0m";
-    // {
-    //     ft::Map<int, char>::const_iterator c_it, c_ob(my_it);
-    //     c_it = my_it;
-    //     EQUAL(&(*my_it) == &(*c_it) && (&(*my_it) == &(*c_ob)));
-    // }
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " iterator to const_iterator "
+              << "] --------------------]\t\t\033[0m";
+    {
+        ft::Map<int, char>::const_iterator c_it, c_ob(my_it);
+        c_it = my_it;
+        EQUAL(&(*my_it) == &(*c_it) && (&(*my_it) == &(*c_ob)));
+    }
     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
               << "] --------------------]\t\t\033[0m";
     EQUAL((it == it1) == (my_it == my_it1));
@@ -300,74 +300,74 @@ void iterator_tests(void)
     EQUAL(*my_it != *tmp && *my_it == *(my_m.begin()));
 }
 
-// void const_iterator_tests(void)
-// {
-//     /*------------ std::map ---------*/
-//     std::map<int, char> m;
-//     std::map<int, char>::const_iterator it, it1;
+void const_iterator_tests(void)
+{
+    /*------------ std::map ---------*/
+    std::map<int, char> m;
+    std::map<int, char>::const_iterator it, it1;
 
-//     ft::Map<int, char> my_m;
-//     ft::Map<int, char>::const_iterator my_it, my_it1, tmp;
+    ft::Map<int, char> my_m;
+    ft::Map<int, char>::const_iterator my_it, my_it1, tmp;
 
-//     for (int i = 0; i < 10; ++i)
-//     {
-//         my_m.insert(ft::make_pair(i, static_cast<char>(i + 97)));
-//         m.insert(std::make_pair(i, static_cast<char>(i + 97)));
-//     }
+    for (int i = 0; i < 10; ++i)
+    {
+        my_m.insert(std::make_pair(i, static_cast<char>(i + 97)));
+        m.insert(std::make_pair(i, static_cast<char>(i + 97)));
+    }
 
-//     it = m.begin();
-//     it1 = ++(m.begin());
-//     my_it = my_m.begin();
-//     my_it1 = ++(my_m.begin());
-//     /*----------------------------------*/
+    it = m.begin();
+    it1 = ++(m.begin());
+    my_it = my_m.begin();
+    my_it1 = ++(my_m.begin());
+    /*----------------------------------*/
 
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         ft::Map<int, char>::const_iterator ob(my_it);
-//         EQUAL(*my_it == *ob);
-//     }
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((it == it1) == (my_it == my_it1));
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " != operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((it != it1) == (my_it != my_it1));
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -> operator "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         /*--------------- std::map-------------------- */
-//         std::map<int, std::string> m;
-//         ft::Map<int, std::string> my_m;
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
+              << "] --------------------]\t\t\033[0m";
+    {
+        ft::Map<int, char>::const_iterator ob(my_it);
+        EQUAL(*my_it == *ob);
+    }
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((it == it1) == (my_it == my_it1));
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " != operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((it != it1) == (my_it != my_it1));
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -> operator "
+              << "] --------------------]\t\t\033[0m";
+    {
+        /*--------------- std::map-------------------- */
+        std::map<int, std::string> m;
+        ft::Map<int, std::string> my_m;
 
-//         for (int i = 0; i < 5; ++i)
-//         {
-//             m.insert(std::make_pair(13, "HELLO"));
-//             my_m.insert(ft::make_pair(13, "HELLO"));
-//         }
+        for (int i = 0; i < 5; ++i)
+        {
+            m.insert(std::make_pair(13, "HELLO"));
+            my_m.insert(std::make_pair(13, "HELLO"));
+        }
 
-//         ft::Map<int, std::string>::iterator my_it = my_m.begin();
-//         std::map<int, std::string>::iterator it = m.begin();
-//         /*---------------------------------------------- */
-//         EQUAL(it->second.length() == my_it->second.length());
-//     }
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " ++it operator "
-//               << "] --------------------]\t\t\033[0m";
-//     ++my_it; // I incremented here to make sure that the object changes
-//     EQUAL(*my_it == *my_it1);
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " --it operator "
-//               << "] --------------------]\t\t\033[0m";
-//     --my_it; // I decremented here to make sure that the object changes
-//     EQUAL(*my_it != *my_it1);
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " it++ operator "
-//               << "] --------------------]\t\t\033[0m";
-//     tmp = my_it++;
-//     EQUAL(*my_it != *tmp && *my_it == *my_it1);
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " it-- operator "
-//               << "] --------------------]\t\t\033[0m";
-//     tmp = my_it--;
-//     EQUAL(*my_it != *tmp && *my_it == *(my_m.begin()));
-// }
+        ft::Map<int, std::string>::iterator my_it = my_m.begin();
+        std::map<int, std::string>::iterator it = m.begin();
+        /*---------------------------------------------- */
+        EQUAL(it->second.length() == my_it->second.length());
+    }
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " ++it operator "
+              << "] --------------------]\t\t\033[0m";
+    ++my_it; // I incremented here to make sure that the object changes
+    EQUAL(*my_it == *my_it1);
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " --it operator "
+              << "] --------------------]\t\t\033[0m";
+    --my_it; // I decremented here to make sure that the object changes
+    EQUAL(*my_it != *my_it1);
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " it++ operator "
+              << "] --------------------]\t\t\033[0m";
+    tmp = my_it++;
+    EQUAL(*my_it != *tmp && *my_it == *my_it1);
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " it-- operator "
+              << "] --------------------]\t\t\033[0m";
+    tmp = my_it--;
+    EQUAL(*my_it != *tmp && *my_it == *(my_m.begin()));
+}
 
 // void reverse_iterator_tests(void)
 // {
@@ -1334,7 +1334,7 @@ void testModifiers()
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
             /*-----------------------------------------------------*/
             /*------------------ ft::Maps ---------------------*/
-            ualarm(diff * 1e3, 0);
+            ualarm(diff * 1e4, 0);
             std::cout << "\nBefore deletion\n";
             ft_m1.erase(ft_m1.begin(), ft_m1.end());
             std::cout << "after deletion\n";
@@ -2375,7 +2375,7 @@ int main()
 
     std::cout << YELLOW << "Testing Iterators;" << RESET << std::endl;
     // TEST_CASE(iterator_tests);
-    // TEST_CASE(const_iterator_tests);
+    TEST_CASE(const_iterator_tests);
     // TEST_CASE(reverse_iterator_tests);
     std::cout << std::endl;
 
@@ -2395,9 +2395,9 @@ int main()
     // TEST_CASE(testElementAccess);
     // std::cout << std::endl;
 
-    std::cout << YELLOW << "Testing Modifiers Methods;" << RESET << std::endl;
-    TEST_CASE(testModifiers)
-    std::cout << std::endl;
+    // std::cout << YELLOW << "Testing Modifiers Methods;" << RESET << std::endl;
+    // TEST_CASE(testModifiers)
+    // std::cout << std::endl;
 
     // std::cout << YELLOW << "Testing Observers Methods;" << RESET << std::endl;
     // TEST_CASE(testObservers)
@@ -2407,9 +2407,9 @@ int main()
     // TEST_CASE(testOperations)
     // std::cout << std::endl;
 
-    std::cout << YELLOW << "Testing Allocator Methods;" << RESET << std::endl;
-    TEST_CASE(testAllocatorMethodes)
-    std::cout << std::endl;
+    // std::cout << YELLOW << "Testing Allocator Methods;" << RESET << std::endl;
+    // TEST_CASE(testAllocatorMethodes)
+    // std::cout << std::endl;
 
     // std::cout << YELLOW << "Testing Retional Operators; " << RESET << std::endl;
     // TEST_CASE(testRetionalOperators);

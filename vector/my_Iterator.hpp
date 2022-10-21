@@ -1,8 +1,9 @@
-# ifndef CONST_ITERATOR_HPP
-#define CONST_ITERATOR_HPP
+# ifndef MY_ITERATOR_HPP
+#define MY_ITERATOR_HPP
 
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include "../iterator_traits.hpp"
 
 // First question why implementing this Fucker of constIterator, when we already have an iterator ??
@@ -29,10 +30,11 @@
 namespace ft {
 
     template <class T>
-    class my_constIterator {
+    class my_Iterator {
     public:
         //typedef T value_type;
-    // Member types [aka typedefs]    
+    // Member types [aka typedefs]
+        //typedef std::random_access_iterator_tag                   iterator_category;
         typedef typename ft::iterator_traits<T>::difference_type difference_type; // we need that in a-b
         typedef typename ft::iterator_traits<T>::value_type value_type;
         typedef typename ft::iterator_traits<T>::pointer pointer; // operator ->()
@@ -45,26 +47,26 @@ namespace ft {
     public:
 
     // Step 1: Constructors
-        my_constIterator() { // Default constructor
+        my_Iterator() { // Default constructor
             //std::cout << "Default Iterator Constructor\n";
             _m_ptr = NULL;
         }
-        my_constIterator(value_type* ptr) { //Initalization constructor
+        my_Iterator(value_type* ptr) { //Initalization constructor
             //std::cout << "Parameterized Iterator Constructor\n";
             _m_ptr = ptr;
         }
         template <class IT>
-        my_constIterator(const IT& inst) { // Copy constructor
+        my_Iterator(const my_Iterator<IT>& inst) { // Copy constructor
             //std::cout << "Copy Constructor of Iterator\n";
             *this = inst;
         }
         template <class IT>
-        my_constIterator& operator=(const IT& inst) { // Assignement operator
+        my_Iterator& operator=(const my_Iterator<IT>& inst) { // Assignement operator
             //std::cout << "Assignement Constructor of Iterator\n";
-            _m_ptr = inst.base();
+            *this = inst.base();
             return *this;
         }
-        ~my_constIterator() { // Destructor
+        ~my_Iterator() { // Destructor
             //std::cout << "Destructor of Iterator\n";
         }
 
@@ -73,51 +75,55 @@ namespace ft {
 
 //  ------------------ Accessors operator =, * and -> ---------------------------   
 
-        // ==> I just add const keyword to all the Accessors
-    const my_constIterator& base() const {
+    // ==> I just add const keyword to all the Accessors
+    // operator my_Iterator<const T>() {
+    //     return _m_ptr;
+    // }
+
+    my_Iterator base() const {
         return _m_ptr;
     }
 
-    const reference operator=(pointer ptr) {_m_ptr = ptr; return (*this); }
+    reference operator=(pointer ptr) {_m_ptr = ptr; return (*this); }
 
-    const reference operator*() const {return *_m_ptr; }
-    const reference operator[] (difference_type n) const { return *(_m_ptr + n);}
+    reference operator*() const {return *_m_ptr; }
+    reference operator[] (difference_type n) const { return *(_m_ptr + n);}
 
-    const pointer operator->() {return _m_ptr; }
+    pointer operator->() {return _m_ptr; }
 
 //  --------------------  [iter + n] [iter - n]  ---------------------------------
 
     // 1- operator+(difference_type n) : 
-        /* std::my_constIterator::operator+
-            my_constIterator operator+(difference_type n) const;
+        /* std::my_Iterator::operator+
+            my_Iterator operator+(difference_type n) const;
         */
-    my_constIterator<value_type> operator+(difference_type n) const {
-        my_constIterator<value_type>  iter_addition(*this);
+    my_Iterator operator+(difference_type n) const {
+        my_Iterator  iter_addition(*this);
         iter_addition._m_ptr += n;
         return iter_addition;
     }
     // 2- operator-(difference_type n) :
-        /* std::my_constIterator::operator-
-            my_constIterator operator-(difference_type n) const;
+        /* std::my_Iterator::operator-
+            my_Iterator operator-(difference_type n) const;
         */
-    my_constIterator<value_type> operator-(difference_type n) const {
-        my_constIterator<value_type>  iter_soustraction(*this);
+    my_Iterator operator-(difference_type n) const {
+        my_Iterator iter_soustraction(*this);
         iter_soustraction._m_ptr -= n;
         return iter_soustraction;
     }
     // 3- operator+=(difference_type n) : 
-        /* std::my_constIterator::operator+=
-            my_constIterator operator+=(difference_type n) const;
+        /* std::my_Iterator::operator+=
+            my_Iterator operator+=(difference_type n) const;
         */
-    my_constIterator<value_type> operator+=(difference_type n) {
+    my_Iterator operator+=(difference_type n) {
         _m_ptr += n;
         return *this;
     }
     // 4- operator-=(difference_type n) : 
-        /* std::my_constIterator::operator-=
-            my_constIterator operator-=(difference_type n) const;
+        /* std::my_Iterator::operator-=
+            my_Iterator operator-=(difference_type n) const;
         */
-    my_constIterator<value_type> operator-=(difference_type n) {
+    my_Iterator operator-=(difference_type n) {
         _m_ptr -= n;
         return *this;
     }
@@ -134,25 +140,25 @@ namespace ft {
     */
 
     // 1- Prefix increment:
-    my_constIterator& operator++() {
+    my_Iterator& operator++() {
         _m_ptr++;
         return *this;
     }
     // 2- Prefix decrement:
-    my_constIterator& operator--() {
+    my_Iterator& operator--() {
         _m_ptr--;
         return *this;
     }
     // 3- Postfix increment
-    my_constIterator operator++(int) {
+    my_Iterator operator++(int) {
         //std::cout << "\n ------------ Post increment ----------------- \n";
-        my_constIterator tmp = *this; // create a copy
+        my_Iterator tmp = *this; // create a copy
         _m_ptr++; // ==> ++(*this)
         return tmp;
     }
     // 4- Postfix decrement
-    my_constIterator operator--(int) {
-        my_constIterator tmp(*this); // create a copy
+    my_Iterator operator--(int) {
+        my_Iterator tmp(*this); // create a copy
         _m_ptr--; // ==>   --(*this); 
         return tmp;
     }
@@ -162,19 +168,19 @@ namespace ft {
     // Step 4: Member friends : The operators [n + a]
     /*  Template friend : [n + a]
         template <value_type>
-        friend my_constIterator<value_type> operator+(difference_type n, const my_constIterator<value_type>& iter);
+        friend my_Iterator<value_type> operator+(difference_type n, const my_Iterator<value_type>& iter);
     */
-    friend my_constIterator<value_type> operator+(difference_type n, const my_constIterator<value_type>& iter) {
+    friend my_Iterator operator+(difference_type n, const my_Iterator& iter) {
         return (iter + n);
     }
     // -------------------------------------------
 
     // Step 5: Member friends : The operators [== != ]  > < >= <= ]
-    friend bool operator==(const my_constIterator& a, const my_constIterator& b) {
+    friend bool operator==(const my_Iterator& a, const my_Iterator& b) {
         return a._m_ptr == b._m_ptr;
     }
 
-    friend bool operator!=(const my_constIterator& a, const my_constIterator& b) {
+    friend bool operator!=(const my_Iterator& a, const my_Iterator& b) {
         return a._m_ptr != b._m_ptr;
     }
 
@@ -182,36 +188,36 @@ namespace ft {
     
     /* Template friend : [a - b]
         template <value_type>
-        friend difference_type operator-(const my_constIterator<value_type>& lhs, const my_constIterator<value_type>& rhs);
+        friend difference_type operator-(const my_Iterator<value_type>& lhs, const my_Iterator<value_type>& rhs);
     */
-    friend difference_type operator-(const my_constIterator<value_type>& lhs, const my_constIterator<value_type>& rhs) {
+    friend difference_type operator-(const my_Iterator<value_type>& lhs, const my_Iterator& rhs) {
         //std::cout << "operator - \n";
         return std::distance(rhs._m_ptr, lhs._m_ptr);  // distance(first, last) = last - first; ==> (rhs, lhs) = lhs - rhs;
     }
     // ---------------------------------------------
 
     // Step 7: Member friends : The operators [ > < >= <= ]
-    friend bool operator>(const my_constIterator& a, const my_constIterator& b) {
+    friend bool operator>(const my_Iterator& a, const my_Iterator& b) {
         if ((a - b) > 0)
             return true;
         return false;
     }
         
-    friend bool operator>=(const my_constIterator& a, const my_constIterator& b) {
+    friend bool operator>=(const my_Iterator& a, const my_Iterator& b) {
         //return !(a < b);
         if (a == b || a > b)
             return true;
         return false;
     }
 
-    friend bool operator<(const my_constIterator& a, const my_constIterator& b) {
+    friend bool operator<(const my_Iterator& a, const my_Iterator& b) {
         //return !(a >= b);
         if (a >= b)
             return false;
         return true;
     }
 
-    friend bool operator<=(const my_constIterator& a, const my_constIterator& b) {
+    friend bool operator<=(const my_Iterator& a, const my_Iterator& b) {
         //return !(a < b);
         if (a > b)
             return false;

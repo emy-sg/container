@@ -2441,8 +2441,8 @@ int main(void)
     signal(SIGALRM, alarm_handler);
     iterator_tests();
     const_iterator_tests();
-    //reverse_iterator_tests();
-    //reverse_iterator_with_ft_vector();
-    vector_tests();
+    // reverse_iterator_tests();
+    // reverse_iterator_with_ft_vector();
+    //vector_tests();
     return 0;
 }

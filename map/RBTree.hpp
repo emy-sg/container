@@ -9,6 +9,12 @@
 
 /* Red-Black Tree is a self-balanced Binary Tree */
 // Search and Insert and Remove this operation in O log(n) time complexity
+// Ressource:
+/*
+	https://medium.com/analytics-vidhya/deletion-in-red-black-rb-tree-92301e1474ea
+
+	https://www.youtube.com/watch?v=w5cvkTXY0vQ&t=474s&ab_channel=Jenny%27slecturesCS%2FITNET%26JRF
+*/
 
 template <class key_type, class value_type, class allocator_type>
 class RBTree {

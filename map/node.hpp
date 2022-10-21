@@ -145,37 +145,54 @@ class Node {
         //     Successor and Predecessor  //
         ////////////////////////////////////
 		
-	// Node* next_node(Node* root) {
-	// 	if ((this->r_child)->is_null())
-	// 	{
-	// 		if (this->isLeft())
-	// 			return this->parent;
-	// 		else {
-	// 			Node* p = this->parent;
-	// 			while (p->value != root->value && p->isRight())
-	// 				p = p->parent;
-	// 			return p->parent; // return end_node OR another node
-	// 		}
-	// 	}
-	// 	else
-	// 		return this->inOrderSuccessor();
-	// }
+	Node* next_node(Node* end_node) {
+		//Node* curr = this;
+		Node* root = end_node->l_child;
 
-	// Node* previous_node(Node* root) {
-	// 	if ((this->l_child)->is_null())
-	// 	{
-	// 		if (this->isRight())
-	// 			return this->parent;
-	// 		else {
-	// 			Node* p = this->parent;
-	// 			while (p->value != root->value && p->isLeft())
-	// 				p = p->parent;
-	// 			return p->parent; // return end_node OR another node
-	// 		}
-	// 	}
-	// 	else
-	// 		return this->inOrderPredecessor();
-	// }
+		if (this == end_node)
+		{
+			//std::cout << "==> Ana Tree 3aaamra and nta fl end_node and you are looking for my next node, which is the max element before end??\n";
+			return this->previous_node(end_node);			
+		}
+		//this->printNode();
+		if ((this->r_child)->is_null())
+		{
+			if (this->isLeft())
+				return this->parent;
+			else {
+				Node* p = this->parent;
+				while ((p != root) && p->isRight())
+					p = p->parent;
+				return p->parent; // return end_node OR another node
+			}
+		}
+		else
+			return this->inOrderSuccessor();
+	}
+
+	Node* previous_node(Node* end_node) {
+		//Node* this = this;
+		Node* root = end_node->l_child;
+		//std::cout << "previous node \n";
+
+		if ((this->l_child)->is_null())
+		{
+			//std::cout << "ROOT is null\n";
+			if (this->isRight())
+				return this->parent;
+			else {
+				Node* p = this->parent;
+				while ((p != root) && p->isLeft())
+					p = p->parent;
+				return p->parent; // return end_node OR another node
+			}
+		}
+		else
+		{
+			//std::cout << "==> my left is root\n";
+			return this->inOrderPredecessor();
+		}
+	}
 
     Node* inOrderSuccessor() {
 	    // What is node's Successor in a BST ?

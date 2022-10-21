@@ -3,6 +3,8 @@
 
 #include "RBTree.hpp"
 #include "iterator.hpp"
+#include "const_iterator.hpp"
+#include <cstddef>
 #include <stdexcept>
 #include <utility>
 //#include <cstddef>
@@ -31,24 +33,38 @@ class Map {
         typedef typename allocator_type::pointer pointer;
         typedef typename allocator_type::const_pointer const_pointer;
 
-        /*typedef typename Alloc:: template rebind<Node> nodeAllocatorType;
+        // typedef typename Alloc:: template rebind<Node> nodeAllocatorType;
 
-        typedef iterator;
-        typedef const_iterator;
+// --------------------------- 2- Private attributes ------------------------------------
 
-        typedef reverse_iterator;
-        typedef const_reverse_iterator;*/
+	private:
+    // Idk why: when I use pointer to _Tree* ==> I get segmentation dump
+        RBTree<key_type, value_type, allocator_type> _Tree;
+		//allocator_type _alloc;
+		//key_compare _compare; 
 
-// -------------------------- 2- Member Class [implement value_compare] -----------------
-    /*
-      template <class Key, class T, class Compare, class Alloc>
-      class map<Key,T,Compare,Alloc>::value_compare
-      {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
+//	------------------------- 3- Public Member Functions of Map -------------------------
+
+	public:
+
+ // Returns a copy of the allocator object associated with the map.
+	allocator_type get_allocator() const { return allocator_type(); }
+
+// -------------------------- 4- Member Class [implement value_compare] -----------------
+
+    //   template <class Key, class T, class Compare, class Alloc>
+    //   class map<Key,T,Compare,Alloc>::value_compare
+
+	class value_compare
+    {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
         friend class map;
-      protected:
-        Compare comp;
-        value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
-      public:
+      		
+		protected:
+        	Compare comp;
+        	value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+      		
+		public:
+
         typedef bool result_type;
         typedef value_type first_argument_type;
         typedef value_type second_argument_type;
@@ -56,26 +72,9 @@ class Map {
         {
           return comp(x.first, y.first);
         }
-      };
-    */
-
-// --------------------------- 3- Private attributes ------------------------------------
-
-	// private:
-    // Idk why: when I use pointer to _Tree* ==> I get segmentation dump
-        RBTree<key_type, value_type, allocator_type> _Tree;
- 
-
-//	------------------------- 4- Public Member Functions of Map -------------------------
-
-	public:
+    };
 
 //	-------------------------- 5- Canonical Form of map ---------------------------------
-
-	// Returns a copy of the allocator object associated with the map.
-	allocator_type get_allocator() const {
-		return allocator_type();
-	}
 
     explicit Map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {
         //std::cout << "Default constructor of map\n";
@@ -129,21 +128,33 @@ class Map {
 //  -------------------------- 7- Public Typedef of Iterator ----------------------------
 
 	public:
-		typedef typename ft::Iterator_map<RBTree<key_type, value_type, allocator_type>, value_type > iterator;
+		// typedef typename ft::Iterator_map<RBTree<key_type, value_type, allocator_type>, value_type > iterator;
+		// typedef typename ft::Iterator<RBTree<key_type, value_type, allocator_type>, value_type > iterator;
+		// typedef typename ft::Iterator<RBTree<key_type, value_type, allocator_type>, const value_type > const_iterator;
+
+		typedef typename ft::Iterator<value_type > iterator;
+		typedef typename ft::Iterator<const value_type > const_iterator;
 
 //	-------------------------- 8- begin() and end() -------------------------------------
 	iterator begin() {
 		//return _Tree.get_begin();
-    	return iterator(&_Tree, _Tree.get_begin());
+    	return iterator(_Tree.get_end(), _Tree.get_begin());
 		
 	}
 	// const_iterator begin() const {};
+	const_iterator begin() const {
+		return const_iterator(_Tree.get_end(), _Tree.get_begin());
+	}
 
 	iterator end() {
 		//return _Tree.get_end();
-    	return iterator(&_Tree, _Tree.get_end());
+    	return iterator(_Tree.get_end(), _Tree.get_end());
 	}
 	// const_iterator end() const {};
+	const_iterator end() const {
+		//return _Tree.get_end();
+    	return const_iterator(_Tree.get_end(), _Tree.get_end());
+	}
 
 //	-------------------------- 9- Accessors at() && operator[] --------------------------
 
@@ -221,7 +232,7 @@ class Map {
 		}
 		//std::cout << "=====> Node find() WITH THAT KEY ==> " << k << " " << node << "\n\n";
 		//node->printNode();
-        it = iterator(&_Tree, node);//it = node; // Is this construct from node to Iterator and How ????????????
+        it = iterator(_Tree.get_end(), node);//it = node; // Is this construct from node to Iterator and How ????????????
 		//std::cout << "\n The content of the iterator in find() method " << it->first << " | " << it->second << "\n";
         return it;
     }
@@ -252,7 +263,7 @@ class Map {
 
 		node = _Tree.searchByKey(key);
 		if (node)
-			return iterator(_Tree, _Tree.next_node(node));
+			return iterator(_Tree.get_end(), _Tree.next_node(node));
 		return end();
 	}
 	// const_iterator upper_bound( const Key& key ) const;
@@ -270,7 +281,7 @@ class Map {
 		node = _Tree.searchByKey(key);
 		if (node)
 		{
-			return iterator(_Tree, node);
+			return iterator(_Tree.get_end(), node);
 		}
 		return end();;
 	}
@@ -291,15 +302,9 @@ class Map {
 	//pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 
 //	-------------------------- 11- Methods insert(), erase() ----------------------------
-
- // Helper
-	void call_print() {
-		_Tree.printTree();
-	}
-
- // 5- std::map::insert
+ // 11- std::map::insert
     
-	// 5.1- std::pair<iterator, bool> insert(const value_type& val);
+	// 11.1- std::pair<iterator, bool> insert(const value_type& val);
 	std::pair<iterator, bool> insert(const_reference val) {
 		
 		iterator iter_exist;
@@ -311,7 +316,7 @@ class Map {
 		if (iter_exist == this->end())
 		{
 		//	std::cout << "        --------Element not found -------                \n";
-			iter_exist = iterator(&_Tree, _Tree.insertion_RBTree(val));
+			iter_exist = iterator(_Tree.get_end(), _Tree.insertion_RBTree(val));
 			//_Tree.printTree();
 		//	std::cout << (*iter_exist).first << " | " << (*iter_exist).second << "\n";
 		//	std::cout << "-----------------------------------------------------------\n";
@@ -347,39 +352,12 @@ class Map {
 	size_type erase(const key_type& key)
 	{
 		return _Tree.erase(key);
-
-		// //std::cout << "ERase 2\n";
-		// if (find(key) != end())
-		// {
-		// 	_Tree.delete_RBTree(key);
-		// 	//std::cout << "end ERase 2\n";
-		// 	return 1;
-		// }
-		// //std::cout << "end ERase 2\n";
-		// return 0;
 	}
 	
 	// 6.2- void erase(iterator position);
 	void erase(iterator position)
 	{
-		//std::cout << "ERase Position\n";
-		//_Tree.printTree();
-		//std::cout << "KEY to erase: "<< position->first << "\n";
-		// if (empty())
-		// {
-		// 	//std::cout << "Erase position of empty Tree, should be protected from loop call\n";
-		// 	return ;
-		// }
-		//if (position == begin())
-			//std::cout << "erase position of begin\n";
-		//if (find((*position).first) != end()) // work for Me the problem solved
-		
-		
-		//_Tree.delete_RBTree(position->first);
-
 		_Tree.erase(position->first);
-
-		//std::cout << "end ERase 1\n";
 	}
     
 	// 6.3- void erase(iterator first, iterator last);
@@ -388,7 +366,7 @@ class Map {
 		while (first != end)
 		{
 			//std::cout << first->first << " | " << first->second << "\n";
-			erase(first++);
+			erase(++first);
 		}
 		// std::cout << _Tree._end_node << "\n";
 		// _Tree._begin_node = &_Tree._end_node;
@@ -410,11 +388,11 @@ class Map {
  // 7- clear
 	void clear()
 	{
-		// if (empty())
-		// {
-		// 	//std::cout << "Can't clear anything the tree is empty\n";
-		// }
-		// else
+		if (empty())
+		{
+			//std::cout << "Can't clear anything the tree is empty\n";
+		}
+		else
 			erase(begin(), end());
 	}
 
@@ -426,6 +404,11 @@ class Map {
 
 		==> Notice that a non-member function exists with the same name,
 		==> Exchanges the contents of the container with those of other. Does not invoke any move, copy, or swap operations on individual elements.
+	
+		P.S:
+			void swap( map& other );
+Exchanges the contents of the container with those of other. Does not invoke any move, copy, or swap operations on individual elements.
+
 	*/
 	void swap(Map& inst) {
 		
