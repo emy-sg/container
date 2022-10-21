@@ -60,13 +60,13 @@ void iterator_tests(void)
         ft::Vector<int>::iterator ob(my_it);
         EQUAL(&(*my_it) == &(*ob));
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " iterator to const_iterator "
-              << "] --------------------]\t\t\033[0m";
-    {
-        ft::Vector<int>::const_iterator c_it, c_ob(my_it);
-        c_it = my_it;
-        EQUAL(&(*my_it) == &(*c_it) && (&(*my_it) == &(*c_ob)));
-    }
+    // std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " iterator to const_iterator "
+    //           << "] --------------------]\t\t\033[0m";
+    // {
+    //     ft::Vector<int>::const_iterator c_it, c_ob(my_it);
+    //     c_it = my_it;
+    //     EQUAL(&(*my_it) == &(*c_it) && (&(*my_it) == &(*c_ob)));
+    // }
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
               << "] --------------------]\t\t\033[0m";
     EQUAL((it == it1) == (my_it == my_it1));

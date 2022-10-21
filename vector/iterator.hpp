@@ -26,7 +26,7 @@ namespace ft {
         typedef typename std::iterator<std::random_access_iterator_tag, T> ::value_type value_type;
         typedef typename std::iterator<std::random_access_iterator_tag, T> ::pointer pointer; // operator ->()
         typedef typename std::iterator<std::random_access_iterator_tag, T> ::reference reference; // operator []() && operator*() && operator=(int)
-        typedef typename std::iterator<std::random_access_iterator_tag, T> ::iterator_category iterator_category; 
+        typedef typename std::iterator<std::random_access_iterator_tag, T> ::iterator_category iterator_category; //v??????
 
     private:
         pointer _m_ptr; // <== value_type* _m_ptr;    

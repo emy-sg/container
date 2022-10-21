@@ -76,9 +76,9 @@ namespace ft {
 //  ------------------ Accessors operator =, * and -> ---------------------------   
 
     // ==> I just add const keyword to all the Accessors
-    // operator my_Iterator<const T>() {
-    //     return _m_ptr;
-    // }
+    operator my_Iterator<const value_type *>() {
+        return _m_ptr;
+    }
 
     my_Iterator base() const {
         return _m_ptr;
@@ -190,7 +190,7 @@ namespace ft {
         template <value_type>
         friend difference_type operator-(const my_Iterator<value_type>& lhs, const my_Iterator<value_type>& rhs);
     */
-    friend difference_type operator-(const my_Iterator<value_type>& lhs, const my_Iterator& rhs) {
+    friend difference_type operator-(const my_Iterator& lhs, const my_Iterator& rhs) {
         //std::cout << "operator - \n";
         return std::distance(rhs._m_ptr, lhs._m_ptr);  // distance(first, last) = last - first; ==> (rhs, lhs) = lhs - rhs;
     }
