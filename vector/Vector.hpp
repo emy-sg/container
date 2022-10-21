@@ -54,8 +54,8 @@ namespace ft {
         // typedef my_Iterator<const value_type>  const_iterator;
 
         // The second implementation of iterator that does not work
-        typedef my_Iterator<value_type*> iterator;
-        typedef my_Iterator<const value_type *>  const_iterator;
+        typedef my_Iterator<pointer> iterator;
+        typedef my_Iterator<const_pointer>  const_iterator;
 
         // iterator begin();  
         iterator begin() {

@@ -32,9 +32,6 @@ namespace ft {
     template <class T>
     class my_Iterator {
     public:
-        //typedef T value_type;
-    // Member types [aka typedefs]
-        //typedef std::random_access_iterator_tag                   iterator_category;
         typedef typename ft::iterator_traits<T>::difference_type difference_type; // we need that in a-b
         typedef typename ft::iterator_traits<T>::value_type value_type;
         typedef typename ft::iterator_traits<T>::pointer pointer; // operator ->()
@@ -42,7 +39,7 @@ namespace ft {
         typedef typename ft::iterator_traits<T>::iterator_category iterator_category; 
 
     private:
-        pointer _m_ptr; // <== value_type* _m_ptr;    
+        pointer _m_ptr; // <== (const value_type) *  
     
     public:
 
@@ -63,7 +60,7 @@ namespace ft {
         template <class IT>
         my_Iterator& operator=(const my_Iterator<IT>& inst) { // Assignement operator
             //std::cout << "Assignement Constructor of Iterator\n";
-            *this = inst.base();
+            this->_m_ptr = inst.base();
             return *this;
         }
         ~my_Iterator() { // Destructor
@@ -76,11 +73,12 @@ namespace ft {
 //  ------------------ Accessors operator =, * and -> ---------------------------   
 
     // ==> I just add const keyword to all the Accessors
-    operator my_Iterator<const value_type *>() {
-        return _m_ptr;
-    }
 
-    my_Iterator base() const {
+    // operator my_Iterator<const value_type *>() {
+    //     return _m_ptr;
+    // }
+
+    pointer base() const {
         return _m_ptr;
     }
 
