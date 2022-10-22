@@ -19,7 +19,7 @@ class Iterator {
             typedef T&                                                reference;
             typedef std::bidirectional_iterator_tag                    iterator_category;
             typedef typename ::Node<value_type>                    Node;
-            typedef typename ::Node<const value_type>                const_node;
+            typedef typename ::Node<const typename iterator_traits<value_type*>::value_type>                const_node;
 
     private:
         Node* _end_node;

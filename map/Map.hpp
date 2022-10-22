@@ -7,8 +7,9 @@
 #include <cstddef>
 #include <stdexcept>
 #include <utility>
-//#include <cstddef>
-//#include <memory.h>
+#include "../pair.hpp"
+#include <cstddef>
+#include <memory.h>
 
 namespace ft {
 
@@ -21,7 +22,7 @@ class Map {
 
         typedef Key key_type;
         typedef T   mapped_type;
-        typedef std::pair<const key_type, mapped_type>  value_type;
+        typedef ft::pair<const key_type, mapped_type>  value_type;
         typedef std::size_t size_type;
         typedef std::ptrdiff_t difference_type;
         typedef Compare key_compare;
@@ -139,7 +140,7 @@ class Map {
 	}
 	// const_iterator begin() const {};
 	const_iterator begin() const {
-		return const_iterator(_Tree.get_end(), _Tree.get_begin());
+		return const_iterator((Node<const value_type>*)_Tree.get_end(), (Node<const value_type>*)_Tree.get_begin());
 	}
 
 	iterator end() {
@@ -149,7 +150,7 @@ class Map {
 	// const_iterator end() const {};
 	const_iterator end() const {
 		//return _Tree.get_end();
-    	return const_iterator(_Tree.get_end(), _Tree.get_end());
+    	return const_iterator((Node<const value_type>*)_Tree.get_end(), (Node<const value_type>*)_Tree.get_end());
 	}
 
 //	-------------------------- 9- Accessors at() && operator[] --------------------------
@@ -201,7 +202,7 @@ class Map {
 		else
 		{
 			//std::cout << "operator[] insert new key\n";
-			iter = insert(std::make_pair(key, mapped_type())).first;
+			iter = insert(ft::make_pair(key, mapped_type())).first;
 			//_Tree.printTree();
 			//std::cout << "--------------\n";
 			return (*iter).second;
@@ -292,8 +293,8 @@ class Map {
 			with both iterators pointing to the first element thas has a key
 	*/
 	//pair<iterator,iterator> equal_range (const key_type& k);
-	std::pair<iterator,iterator> equal_range (const key_type& k) {
-		return std::make_pair(lower_bound(), upper_bound());
+	ft::pair<iterator,iterator> equal_range (const key_type& k) {
+		return ft::make_pair(lower_bound(), upper_bound());
 	}
 	//pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 
@@ -301,7 +302,7 @@ class Map {
  // 11- std::map::insert
     
 	// 11.1- std::pair<iterator, bool> insert(const value_type& val);
-	std::pair<iterator, bool> insert(const_reference val) {
+	ft::pair<iterator, bool> insert(const_reference val) {
 		
 		iterator iter_exist;
 
@@ -316,9 +317,9 @@ class Map {
 			//_Tree.printTree();
 		//	std::cout << (*iter_exist).first << " | " << (*iter_exist).second << "\n";
 		//	std::cout << "-----------------------------------------------------------\n";
-			return std::make_pair(iter_exist, true);
+			return ft::make_pair(iter_exist, true);
 		}
-		return std::make_pair(iter_exist, false);
+		return ft::make_pair(iter_exist, false);
 	}
 	
 	// 5.2- iterator insert(iterator position, const value_type& val);

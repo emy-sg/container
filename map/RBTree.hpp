@@ -2,6 +2,7 @@
 #define RBTREE_HPP
 
 #include "node.hpp"
+#include "../iterator_traits.hpp"
 #include "iterator.hpp"
 #include <cstddef>
 #include <cstdlib>
@@ -20,6 +21,7 @@ template <class key_type, class value_type, class alloc>
 class RBTree {
     private:
 		typedef ::Node<value_type> Node;
+		typedef typename ::Node<const typename ft::iterator_traits<value_type*>::value_type> constNode;
 		typedef typename alloc:: template rebind<Node> nodeAllocatorType;
 		size_t _size;
 		Node _end_node; 		// We suppose that: Root = end_node->left_child
@@ -44,7 +46,7 @@ class RBTree {
 		return get_end()->l_child;
 	}
 
-	Node* get_root() const {
+	constNode* get_root() const {
 		return get_end()->l_child;
 	}
 	
@@ -56,8 +58,8 @@ class RBTree {
 		return _begin_node;
 	}
 
-	Node* get_begin() const { // don't use const, bcuz iterator in case of iterator
-		return _begin_node;
+	constNode* get_begin() const { // don't use const, bcuz iterator in case of iterator
+		return (constNode*)_begin_node;
 	}
 
 
@@ -65,9 +67,10 @@ class RBTree {
 		return &_end_node;
 	}
 
-	Node* get_end() const { // don't use const, bcuz iterator in case of iterator
-		return &_end_node;
+	constNode* get_end() const { // don't use const, bcuz iterator in case of iterator
+		return (constNode*)&_end_node;
 	}
+
 	void printHelper(Node *root, std::string indent, bool last) {
     if (root != &_NIL) {
       std::cout << indent;

@@ -2443,6 +2443,6 @@ int main(void)
     const_iterator_tests();
     // reverse_iterator_tests();
     // reverse_iterator_with_ft_vector();
-    vector_tests();
+    //vector_tests();
     return 0;
 }

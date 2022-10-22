@@ -47,16 +47,16 @@ namespace ft {
 
 //  ------------------ Accessors operator =, * and -> --------------------------- 
 
-    pointer base() const {
+    Iter base() const {
         return _iterator;
     }
 
     reference operator=(pointer ptr) {_iterator = ptr; return (*this); }
 
-    reference operator*() const {return *_iterator; }
-    reference operator[] (difference_type n) const { return *(_iterator + n);}
+    reference operator*() const {return *(_iterator - 1); }
+    reference operator[] (difference_type n) const { return *(_iterator + n -1);}
 
-    pointer operator->() {return _iterator; }
+    pointer operator->() {return (_iterator - 1).operator->(); }
 
 //  --------------------  [iter + n] [iter - n]  ---------------------------------
 
