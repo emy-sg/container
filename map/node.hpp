@@ -25,9 +25,9 @@ class Node {
         Node() : value() { //: value()
         	_is_null = 0;  // 0 is null and 1 is !null
 			//value should be initialzed
-			//parent = nullptr;
-			//l_child = nullptr;
-			//r_child = nullptr;
+			parent = NULL;
+			l_child = NULL;
+			r_child = NULL;
 			color = Black;
 			//std::cout << "Default Node Constructor\n";
 		}

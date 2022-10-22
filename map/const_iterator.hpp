@@ -9,7 +9,7 @@
 namespace ft {
 
 template <class T> // value_type is std::pair
-class Iterator : std::iterator<std::bidirectional_iterator_tag, T> {
+class Iterator {
     public:
         // typedef ::Node<T> Node;
 
@@ -29,8 +29,8 @@ class Iterator : std::iterator<std::bidirectional_iterator_tag, T> {
         // Constructor
         Iterator() {
             //std::cout << "Default iterator\n";
-            //_Tree = NULL;
-            //_Node = NULL;
+            _end_node = NULL;
+            _Node = NULL;
         }
         Iterator(Node* end_node, Node* curr) { //Initalization constructor
             //std::cout << "Parameterized Iterator Constructor\n";
@@ -43,18 +43,18 @@ class Iterator : std::iterator<std::bidirectional_iterator_tag, T> {
             // }
             // std::cout << "Normalement 5asou yaffichi node 9banma ya5roj\n";
         }
-        //template< class IT>
-        Iterator(const Iterator& iter) {
+        template< class IT>
+        Iterator(const Iterator<IT>& iter) {
             //std::cout << "Copy Constructor iterator\n";
-            //*this = iter;
-            _end_node = (Node*) iter._end_node;
-            _Node = (Node*) iter._Node;
+            *this = iter;
+            // _end_node = iter._end_node;
+            // _Node = iter._Node;
         }
-        //template< class IT>
-        Iterator& operator=(const Iterator& iter) {
+        template< class IT>
+        Iterator& operator=(const Iterator<IT>& iter) {
             //std::cout << "Assignement Copy Constructor iterator\n";
-            this->_end_node = iter._end_node;
-            this->_Node = iter._Node;
+            this->_end_node = (Node*) iter.base().first;
+            this->_Node = (Node*) iter.base().second;
             //std::cout << _Node << " " << iter._Node << "\n";
             // if (_Node != _Tree->get_end())
             //     _Node->printNode();
@@ -70,6 +70,10 @@ class Iterator : std::iterator<std::bidirectional_iterator_tag, T> {
     // operator Iterator<const Tree, const T>() {
     //     return _Node;
     // }
+
+    std::pair<Node*, Node*> base() const {
+        return std::make_pair(_end_node, _Node);
+    }
 
     // 1- operator->() return pointer to value_type aka pointer to std::pair
     pointer operator->() {

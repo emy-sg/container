@@ -7,9 +7,8 @@
 *
 *  This array may need to be reallocated in order to grow in size when new elements are inserted, which implies allocating a new array and moving all elements to it.
 */
-// #include "iterator.hpp"
 #include "reverse_iterator.hpp"
-#include "my_Iterator.hpp"
+#include "iterator.hpp"
 #include <cstddef>
 #include <iostream>
 #include <memory.h>
@@ -55,7 +54,7 @@ namespace ft {
 
         // The second implementation of iterator that does not work
         typedef my_Iterator<pointer> iterator;
-        typedef my_Iterator<const_pointer>  const_iterator;
+        typedef my_Iterator<const_pointer>  const_iterator;     
 
         // iterator begin();  
         iterator begin() {
@@ -79,26 +78,26 @@ namespace ft {
 
 // 2- Reverse_iterator:
 
-        // typedef typename ft::my_reverseIterator<iterator> reverse_iterator;
-        // typedef typename ft::my_reverseIterator<const_iterator> const_reverse_iterator;
+        typedef my_ReverseIterator<iterator> reverse_iterator;
+        typedef my_ReverseIterator<const_iterator>  const_reverse_iterator; 
 
-        // //reverse_iterator rbegin();
-        // reverse_iterator rbegin() {
-        //     return _array + size();
-        // }
-        // //const_reverse_iterator rbegin() const;
-        // const_reverse_iterator rbegin() const {
-        //     return const_reverse_iterator(_array + size());
-        // }
+        //reverse_iterator rbegin();
+        reverse_iterator rbegin() {
+            return reverse_iterator(end());
+        }
+        //const_reverse_iterator rbegin() const;
+        const_reverse_iterator rbegin() const {
+            return const_reverse_iterator(end());
+        }
 
-        // //reverse_iterator rbegin();
-        // reverse_iterator rend() {
-        //     return _array;
-        // }
-        // //const_reverse_iterator rbegin() const;
-        // const_reverse_iterator rend() const {
-        //     return const_reverse_iterator(_array);
-        // }
+        //reverse_iterator rbegin();
+        reverse_iterator rend() {
+            return reverse_iterator(begin());
+        }
+        //const_reverse_iterator rbegin() const;
+        const_reverse_iterator rend() const {
+            return const_reverse_iterator(begin());
+        }
 
 // 3- get_allocator(): returns a copy of the allocator object associated with the vector
         allocator_type get_allocator() const

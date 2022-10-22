@@ -134,9 +134,12 @@ int main() {
 
     ////////////////// assign() and insert() -------------------------
 
-        ft::Map<char, int> m;
+        // ft::Map<char, int> m;
 
-        m.clear();
+        // m.clear();
 
+    ///////////////////  iterator --------------------
+    const ft::Map<int, int> my_map;
+ft::Map<int, int>::const_iterator it = my_map.begin();
 
 }

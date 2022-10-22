@@ -16,30 +16,23 @@
 	https://www.youtube.com/watch?v=w5cvkTXY0vQ&t=474s&ab_channel=Jenny%27slecturesCS%2FITNET%26JRF
 */
 
-template <class key_type, class value_type, class allocator_type>
+template <class key_type, class value_type, class alloc>
 class RBTree {
     private:
 		typedef ::Node<value_type> Node;
+		typedef typename alloc:: template rebind<Node> nodeAllocatorType;
 		size_t _size;
-		Node _end_node;
+		Node _end_node; 		// We suppose that: Root = end_node->left_child
 		Node* _begin_node;
-		Node _NIL;
-
-	private:    
-		// We suppose that: root = end_node->left_child
-		Node* _root;
+		Node _NIL;   
     
 	public:
     // Constructor
-    RBTree() : _root() {
+    RBTree() {
 		//std::cout << "Default Tree constructor\n";
 		_size = 0;
 		_begin_node = &_end_node;
 	}
-
-	// RBTree(int i) {
-	// 	std::cout << "Parameterized Tree constructor\n";
-	// }
 
 	virtual ~RBTree() {
 		//std::cout << "Tree Destructor\n";
@@ -47,8 +40,12 @@ class RBTree {
 		// 	//delete all
 	}
 
-	void setSize(size_t n) {
-		_size = n;
+	Node* get_root() {
+		return get_end()->l_child;
+	}
+
+	Node* get_root() const {
+		return get_end()->l_child;
 	}
 	
 	size_t getSize() const {
@@ -59,10 +56,18 @@ class RBTree {
 		return _begin_node;
 	}
 
+	Node* get_begin() const { // don't use const, bcuz iterator in case of iterator
+		return _begin_node;
+	}
+
+
 	Node* get_end() { // don't use const, bcuz iterator in case of iterator
 		return &_end_node;
 	}
 
+	Node* get_end() const { // don't use const, bcuz iterator in case of iterator
+		return &_end_node;
+	}
 	void printHelper(Node *root, std::string indent, bool last) {
     if (root != &_NIL) {
       std::cout << indent;
@@ -81,23 +86,23 @@ class RBTree {
     }
   }
   void printTree() {
-    if (_root) {
-      printHelper(this->_root, "", true);
+    if (get_root()) {
+      printHelper(get_root(), "", true);
     }
   }
 
     // Methods
 
     bool isRoot(Node* node) {
-	    if (node == _root)
+	    if (node == get_root())
 		    return true;
 	    return false;
     }
 
     Node*	searchByKey(const key_type& key) {
-	    Node* tmp = _root;
+	    Node* tmp = get_root();
 	
-		if (!_root)  // if (_size == 0)
+		if (tmp == NULL)  // if (_size == 0)
 		{
 			//std::cout << " 		SearchByKey() in Empty Tree  \n";
 			return NULL;//return &_end_node; // return NULL;
@@ -142,7 +147,7 @@ class RBTree {
 				return curr->parent;
 			else {
 				Node* p = curr->parent;
-				while (this->isRoot(p) == false && p->isRight())
+				while (isRoot(p) == false && p->isRight())
 					p = p->parent;
 				return p->parent; // return end_node OR another node
 			}
@@ -161,7 +166,7 @@ class RBTree {
 				return curr->parent;
 			else {
 				Node* p = curr->parent;
-				while (this->isRoot(p) == false && p->isLeft())
+				while (isRoot(p) == false && p->isLeft())
 					p = p->parent;
 				return p->parent; // return end_node OR another node
 			}
@@ -218,20 +223,20 @@ Node* insertion_RBTree(const value_type& val) {
 		// 2- increment the size of the container
 		_size++;
 		// 3- Insert in the Tree
-		if (_root == NULL) 		// case 1: Empty Tree
+		if (get_root() == NULL) 		// case 1: Empty Tree
 		{
 			//std::cout << "Empty Tree\n";
 
-			_root = new_node;
-			_root->parent = &_end_node;
-			_end_node.l_child = _root;
+			_end_node.l_child = new_node;
+			get_root()->parent = &_end_node;
+			_end_node.l_child = get_root();
 
 			// 4- Update begin of Tree
 			_begin_node = new_node;
 		}
 		else 				// case 2: Recursive
 		{
-			insertion_BST(_root, _root, new_node);
+			insertion_BST(get_root(), get_root(), new_node);
 			// 4- Update begin of Tree
 			if (val < _begin_node->value)
 				_begin_node = new_node;
@@ -282,7 +287,7 @@ void	balancing_insertion(Node* new_node) {
 			else if (parent->isRight() && new_node->isLeft()) {
 				parent->right_Rotation();
 				// 1- After Rotation, Update the _root
-				_root = _end_node.l_child;
+				//get_root() = _end_node.l_child;
 				// new_node become the parent of Parent
 				// 2- call case 3.2.1
 				case_1Insertion(grandParent);
@@ -294,7 +299,7 @@ void	balancing_insertion(Node* new_node) {
 				// So with rotation parent will go down and new_node will go up 
 				parent->left_Rotation();
 				// 1- After Rotation, Update the _root
-				_root = _end_node.l_child;
+				//get_root() = _end_node.l_child;
 				// new_node become the parent of Parent
 				// 2- call case 3.2.2
 				case_2Insertion(grandParent);
@@ -307,7 +312,7 @@ void	balancing_insertion(Node* new_node) {
 void case_1Insertion(Node* grandParent) {
 	grandParent->left_Rotation();
 	// 1- After Rotation, Update the _root
-	_root = _end_node.l_child;
+	//_root = _end_node.l_child;
 	// grandParent is sibling now
 	// 2- Recoloring
 	grandParent->color = Red;
@@ -318,7 +323,7 @@ void case_1Insertion(Node* grandParent) {
 void	case_2Insertion(Node* grandParent) {
 	grandParent->right_Rotation();
 	// 1- After Rotation, Update the _root
-	_root = _end_node.l_child;
+	//_root = _end_node.l_child;
 	// grandparent is sibling now
 	// 2- Recoloring
 	grandParent->color = Red;
@@ -343,14 +348,14 @@ void	delete_leaf(Node* node) {
 		_begin_node = next_node(node);
 	}
 	
-	if (isRoot(node))    // 3ad zatha, and it works and fix the problem
-	{
+	// if (isRoot(node))    // 3ad zatha, and it works and fix the problem
+	// {
 
-		//std::cout << "delete leaf which is Root\n";
-		//printTree();
-		_root = NULL;
+	// 	//std::cout << "delete leaf which is Root\n";
+	// 	//printTree();
+	// 	_root = NULL;
 
-	}
+	// }
 	if (node->isLeft())
 		parent->l_child = node->l_child;
 	else
@@ -383,6 +388,7 @@ void deletion_RBTree(Node* node_to_delete)
 	{
 	//	std::cout << "I think this is the case, the case of deleting a root node\n";
 		delete_leaf(node_to_delete);
+		_end_node.l_child = NULL;
 	}
 	// Case 2:
 	else if (node_to_delete->is_leaf() && node_to_delete->color == Red)
@@ -460,7 +466,7 @@ void deletion_RBTree(Node* node_to_delete)
 			//std::cout << "Node to delete \n";
 			//node_to_delete->printNode();
 			node_to_delete->swap(node_replace);
-			_root = _end_node.l_child;
+			//_root = _end_node.l_child;
 			//std::cout << "Replacement node \n";
 			//node_replace->printNode();
 			//std::cout << "Parent of node to delete \n";
@@ -562,7 +568,7 @@ void deletion_RBTree(Node* node_to_delete)
 		node_replace->color = node_to_delete->color;
 		node_to_delete->color = color;
 		// ==> After Rotation, Update the _root
-		_root = _end_node.l_child;
+		//_root = _end_node.l_child;
 		deletion_RBTree(node_to_delete); // is leaf or one child those are the only cases
 	}
 }
@@ -675,13 +681,13 @@ void case_2Deletion(Node* DB_node) {
 	{
 		parent->left_Rotation();
 		// ==> After Rotation, Update the _root
-		_root = _end_node.l_child;
+		//_root = _end_node.l_child;
 	}
 	else
 	{
 		parent->right_Rotation();
 		// ==> After Rotation, Update the _root
-		_root = _end_node.l_child;
+		//_root = _end_node.l_child;
 	}
 	fix_DB(DB_node);
 }
@@ -701,13 +707,13 @@ void	case_3Deletion(Node* DB_node)
 	{
 		sibling->right_Rotation();
 		// ==> After Rotation, Update the _root
-		_root = _end_node.l_child;
+		//_root = _end_node.l_child;
 	}
 	else
 	{
 		sibling->left_Rotation();
 		// ==> After Rotation, Update the _root
-		_root = _end_node.l_child;
+		//_root = _end_node.l_child;
 	}
 	// Step 3: Call the case 4
 	case_4Deletion(DB_node);
@@ -729,13 +735,13 @@ void case_4Deletion(Node* DB_node)
 	{
 		parent->left_Rotation();
 		// ==> After Rotation, Update the _root
-		_root = _end_node.l_child;
+		//_root = _end_node.l_child;
 	}
 	else
 	{
 		parent->right_Rotation();
 		// ==> After Rotation, Update the _root
-		_root = _end_node.l_child;
+		//_root = _end_node.l_child;
 	}
 	// Step 3: Remove DB sign
 	DB_node->color = Black;

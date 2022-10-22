@@ -33,7 +33,6 @@ class Map {
         typedef typename allocator_type::pointer pointer;
         typedef typename allocator_type::const_pointer const_pointer;
 
-        // typedef typename Alloc:: template rebind<Node> nodeAllocatorType;
 
 // --------------------------- 2- Private attributes ------------------------------------
 
@@ -88,28 +87,25 @@ class Map {
 	Map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
 	{
 		while (first != last)
-		{
-			insert(*first);
-			++first;
-		}
+			insert(*(first++));
 	}
 
-	// Map(const Map& inst) : Map(inst.begin(), inst.end()) {
-	// 	std::cout << "Copy constructor of map\n";
+	Map(const Map& inst) {
+		//std::cout << "Copy constructor of map\n";
 
-	// 	// Problem deep copy and shallow copy
-	// 	//insert(inst.begin(), inst.end());
-	// }
+		// Problem deep copy and shallow copy
+		insert(inst.begin(), inst.end());
+	}
 
-	// Map& operator=(const Map& inst) {
-	// 	std::cout << "Assignemenet copy constructor of map\n";
-	// 	// Problem deep copy and shallow copy
-	// 	//This path is very wrong[Za3ma calling the _Tree assignement operator] *_Tree = *(inst._Tree);
-	// 	// Which is in this case useless, we can call insert for use
-	// 	clear();
-	// 	insert(inst.begin(), inst.end());
-	// 	return *this;
-	// }
+	Map& operator=(const Map& inst) {
+		//std::cout << "Assignemenet copy constructor of map\n";
+		// Problem deep copy and shallow copy
+		//This path is very wrong[Za3ma calling the _Tree assignement operator] *_Tree = *(inst._Tree);
+		// Which is in this case useless, we can call insert for use
+		clear();
+		insert(inst.begin(), inst.end());
+		return *this;
+	}
 
 // --------------------------- 6- size() and max_size() ---------------------------------
 
@@ -132,8 +128,8 @@ class Map {
 		// typedef typename ft::Iterator<RBTree<key_type, value_type, allocator_type>, value_type > iterator;
 		// typedef typename ft::Iterator<RBTree<key_type, value_type, allocator_type>, const value_type > const_iterator;
 
-		typedef typename ft::Iterator<value_type > iterator;
-		typedef typename ft::Iterator<const value_type > const_iterator;
+		typedef typename ft::Iterator<value_type> iterator;
+		typedef typename ft::Iterator<const value_type> const_iterator;
 
 //	-------------------------- 8- begin() and end() -------------------------------------
 	iterator begin() {
@@ -366,7 +362,7 @@ class Map {
 		while (first != end)
 		{
 			//std::cout << first->first << " | " << first->second << "\n";
-			erase(++first);
+			erase(first++); // use of preincrementation and not postincrementation, thank U
 		}
 		// std::cout << _Tree._end_node << "\n";
 		// _Tree._begin_node = &_Tree._end_node;
@@ -388,11 +384,11 @@ class Map {
  // 7- clear
 	void clear()
 	{
-		if (empty())
-		{
-			//std::cout << "Can't clear anything the tree is empty\n";
-		}
-		else
+		// if (empty())
+		// {
+		// 	//std::cout << "Can't clear anything the tree is empty\n";
+		// }
+		// else
 			erase(begin(), end());
 	}
 

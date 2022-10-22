@@ -31,11 +31,11 @@
 #define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
 #define TIME_FAC 4 // the ft::Map methods can be slower up to std::map methods * TIME_FAC (MAX 20)
 
-typedef std::pair<std::map<int, std::string>::iterator, std::map<int, std::string>::iterator> iter_def;
+//typedef std::pair<std::map<int, std::string>::iterator, std::map<int, std::string>::iterator> iter_def;
 //typedef ft::pair<ft::Map<int, std::string>::iterator, ft::Map<int, std::string>::iterator> ft_iter_def;
 //typedef std::pair<ft::Map<int, std::string>::iterator, ft::Map<int, std::string>::iterator> ft_iter_def; // EMMMMMMMMYYYYYY implemet iterator
 
-typedef std::pair<std::map<int, std::string>::const_iterator, std::map<int, std::string>::const_iterator> const_iter_def;
+//typedef std::pair<std::map<int, std::string>::const_iterator, std::map<int, std::string>::const_iterator> const_iter_def;
 //typedef ft::pair<ft::Map<int, std::string>::const_iterator, ft::Map<int, std::string>::const_iterator> ft_const_iter_def;
 //typedef std::pair<ft::Map<int, std::string>::const_iterator, ft::Map<int, std::string>::const_iterator> ft_const_iter_def; // EMMMMMMMMMMYYYY implent const iterator
 
@@ -79,50 +79,50 @@ struct classcomp
     }
 };
 
-// bool testMapConstructors()
-// {
-//     bool cond;
-//     std::map<char, int> first;
-//     ft::Map<char, int> m_first;
+bool testMapConstructors()
+{
+    bool cond;
+    std::map<char, int> first;
+    ft::Map<char, int> m_first;
 
-//     for (size_t i = 97; i < 110; i++)
-//     {
-//         first[i - 97] = i;
-//         m_first[i - 97] = i;
-//     }
+    for (size_t i = 97; i < 110; i++)
+    {
+        first[i - 97] = i;
+        m_first[i - 97] = i;
+    }
 
-//     std::map<char, int> copy(first);
-//     ft::Map<char, int> m_copy(m_first);
+    std::map<char, int> copy(first);
+    ft::Map<char, int> m_copy(m_first);
 
-//     cond = first.size() == m_first.size() && compareMaps(first.begin(), first.end(), m_first.begin(), m_first.end());
+    // cond = first.size() == m_first.size() && compareMaps(first.begin(), first.end(), m_first.begin(), m_first.end());
 
-//     std::map<char, int> second(first.begin(), first.end());
-//     ft::Map<char, int> m_second(m_first.begin(), m_first.end());
+    // std::map<char, int> second(first.begin(), first.end());
+    // ft::Map<char, int> m_second(m_first.begin(), m_first.end());
 
-//     cond = cond && second.size() == m_second.size() && compareMaps(second.begin(), second.end(), m_second.begin(), m_second.end());
-//     std::map<char, int> third(second);
-//     ft::Map<char, int> m_third(m_second);
+    // cond = cond && second.size() == m_second.size() && compareMaps(second.begin(), second.end(), m_second.begin(), m_second.end());
+    // std::map<char, int> third(second);
+    // ft::Map<char, int> m_third(m_second);
 
-//     cond = cond && third.size() == m_third.size() && compareMaps(third.begin(), third.end(), m_third.begin(), m_third.end());
+    // cond = cond && third.size() == m_third.size() && compareMaps(third.begin(), third.end(), m_third.begin(), m_third.end());
 
-//     std::map<char, int, classcomp> fourth;  // class as Compare
-//     ft::Map<char, int, classcomp> m_fourth; // class as Compare
+    // std::map<char, int, classcomp> fourth;  // class as Compare
+    // ft::Map<char, int, classcomp> m_fourth; // class as Compare
 
-//     cond = fourth.size() == m_fourth.size() && cond && compareMaps(fourth.begin(), fourth.end(), m_fourth.begin(), m_fourth.end());
+    // cond = fourth.size() == m_fourth.size() && cond && compareMaps(fourth.begin(), fourth.end(), m_fourth.begin(), m_fourth.end());
 
-//     bool (*fn_pt)(char, char) = fncomp;
-//     std::map<char, int, bool (*)(char, char)> fifth(fn_pt);  // function pointer as Compare
-//     ft::Map<char, int, bool (*)(char, char)> m_fifth(fn_pt); // function pointer as Compare
+    // bool (*fn_pt)(char, char) = fncomp;
+    // std::map<char, int, bool (*)(char, char)> fifth(fn_pt);  // function pointer as Compare
+    // ft::Map<char, int, bool (*)(char, char)> m_fifth(fn_pt); // function pointer as Compare
 
-//     cond = fifth.size() == m_fifth.size() && cond && compareMaps(fifth.begin(), fifth.end(), m_fifth.begin(), m_fifth.end());
+    // cond = fifth.size() == m_fifth.size() && cond && compareMaps(fifth.begin(), fifth.end(), m_fifth.begin(), m_fifth.end());
 
-//     first = std::map<char, int>();
-//     m_first = ft::Map<char, int>();
+    // first = std::map<char, int>();
+    // m_first = ft::Map<char, int>();
 
-//     cond = copy.size() == m_copy.size() && cond && compareMaps(copy.begin(), copy.end(), m_copy.begin(), m_copy.end());
+    // cond = copy.size() == m_copy.size() && cond && compareMaps(copy.begin(), copy.end(), m_copy.begin(), m_copy.end());
 
-//     return cond;
-// }
+    return cond;
+}
 
 void iterator_tests(void)
 {
@@ -443,8 +443,8 @@ void const_iterator_tests(void)
 //     }
 // }
 
-// void testConstructors()
-// {
+void testConstructors()
+{
 //     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " empty constructor "
 //               << "] --------------------]\t\t\033[0m";
 //     {
@@ -927,7 +927,7 @@ void const_iterator_tests(void)
 
 //         EQUAL(res == ft_res);
 //     }
-// }
+}
 
 // void testIterators()
 // {
@@ -1734,8 +1734,10 @@ void testModifiers()
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
             /*-----------------------------------------------------*/
             /*------------------ ft::Maps ---------------------*/
-            ualarm(diff * 1e3, 0);
+            ualarm(diff * 1e4, 0);
             ft_m1.clear();
+            if (ft_m1.empty() == false)
+                std::cout << "\n FT_M1 not empty\n";
             ualarm(0, 0);
             /*----------------------------------------------------*/
         }
@@ -2374,14 +2376,14 @@ int main()
     signal(SIGALRM, alarm_handler);
 
     std::cout << YELLOW << "Testing Iterators;" << RESET << std::endl;
-    // TEST_CASE(iterator_tests);
+    TEST_CASE(iterator_tests);
     TEST_CASE(const_iterator_tests);
     // TEST_CASE(reverse_iterator_tests);
     std::cout << std::endl;
 
-    // std::cout << YELLOW << "Testing Constructors;" << RESET << std::endl;
-    // TEST_CASE(testConstructors);
-    // std::cout << std::endl;
+    std::cout << YELLOW << "Testing Constructors;" << RESET << std::endl;
+    TEST_CASE(testConstructors);
+    std::cout << std::endl;
 
     // std::cout << YELLOW << "Testing Iterator Methods;" << RESET << std::endl;
     // TEST_CASE(testIterators);
