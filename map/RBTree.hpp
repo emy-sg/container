@@ -24,20 +24,21 @@ class RBTree {
 		typedef typename ::Node<const typename ft::iterator_traits<value_type*>::value_type> constNode;
 		typedef typename alloc:: template rebind<Node> nodeAllocatorType;
 		size_t _size;
-		Node _end_node; 		// We suppose that: Root = end_node->left_child
-		Node* _begin_node;
-		Node* _NIL;
+		Node* _end_node; 		// We suppose that: Root = end_node->left_child
+		Node* _begin_node; // swap
     
 	public:
     // Constructor
     RBTree() {
 		//std::cout << "Default Tree constructor\n";
 		_size = 0;
-		_begin_node = &_end_node;
-		_NIL = &_end_node;
+		_end_node = new Node();
+		_begin_node = _end_node;
+
 	}
 
 	virtual ~RBTree() {
+		delete _end_node;
 		//std::cout << "Tree Destructor\n";
 		// if (_size > 0)
 		// 	//delete all
@@ -54,20 +55,7 @@ class RBTree {
 
 	void set_root(Node* root) {
 		get_end()->l_child = root;
-		root->parent = &_end_node;
-	}
-	
-////////////////////////////////////
-	Node* get_NIL() {
-		return _NIL;
-	}
-
-	constNode* get_NIL() const {
-		return _NIL;
-	}
-
-	void set_NIL(Node* node) {
-		_NIL = node;
+		root->parent = _end_node;
 	}
 
  ///////////////////////////////////
@@ -96,15 +84,20 @@ class RBTree {
 ///////////////////////////////////
 
 	Node* get_end() { // don't use const, bcuz iterator in case of iterator
-		return &_end_node;
+		return _end_node;
 	}
 
 	constNode* get_end() const { // don't use const, bcuz iterator in case of iterator
-		return (constNode*)&_end_node;
+		return (constNode*)_end_node;
 	}
 
+	void set_end(Node* end) {
+		_end_node = end;
+	}
+
+
 	void printHelper(Node *root, std::string indent, bool last) {
-    if (root != _NIL) {
+    if (root != _end_node) {
       std::cout << indent;
       if (last) {
         std::cout << "R----";
@@ -170,7 +163,7 @@ class RBTree {
 		// 	//std::cout << "==> Ana Tree 5awya and nta fl end_node and you are looking for my next node, ali makaynch aslan\n";
 		// 	return curr;
 		// }
-		if (curr == &_end_node)
+		if (curr == _end_node)
 		{
 			std::cout << "==> Ana Tree 3aaamra and nta fl end_node and you are looking for my next node, which is the max element before end??\n";
 			return previous_node(curr);			
@@ -250,8 +243,8 @@ Node* insertion_RBTree(const value_type& val) {
 		//new_node = create_node(val);
 		new_node = new Node(val);
 		new_node->color = Red;
-		new_node->l_child = _NIL;
-		new_node->r_child = _NIL;
+		new_node->l_child = _end_node;
+		new_node->r_child = _end_node;
 		new_node->_is_null = 1;
 
 		//new_node->printNode();
@@ -262,9 +255,9 @@ Node* insertion_RBTree(const value_type& val) {
 		{
 			//std::cout << "Empty Tree\n";
 
-			_end_node.l_child = new_node;
-			get_root()->parent = &_end_node;
-			_end_node.l_child = get_root();
+			_end_node->l_child = new_node;
+			get_root()->parent = _end_node;
+			_end_node->l_child = get_root();
 
 			// 4- Update begin of Tree
 			_begin_node = new_node;
@@ -423,7 +416,7 @@ void deletion_RBTree(Node* node_to_delete)
 	{
 	//	std::cout << "I think this is the case, the case of deleting a root node\n";
 		delete_leaf(node_to_delete);
-		_end_node.l_child = NULL;
+		_end_node->l_child = NULL;
 	}
 	// Case 2:
 	else if (node_to_delete->is_leaf() && node_to_delete->color == Red)

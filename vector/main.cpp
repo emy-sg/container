@@ -150,18 +150,53 @@ int main() {
     ///////////////////////// erase  --------------------------
 
     // ft::Vector<int> v;
-    std::vector<int> v;
+    // std::vector<int> v;
 
-    v.push_back(5);
-    v.push_back(10);
-    std::cout << v.size() << " | " << v.capacity() << "\n";
+    // v.push_back(5);
+    // v.push_back(10);
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
 
-    std::cout << *(v.erase(v.begin())) << "\n";
-    std::cout << v.size() << " | " << v.capacity() << "\n";
+    // std::cout << *(v.erase(v.begin())) << "\n";
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
 
+    // v.clear();
+    // std::cout << v.size() << " | " << v.capacity() << "\n";
+
+    //////////////////////// reserve ----------------------------
+
+    std::cout << "Reserve\n";
+    ft::Vector<int> v;
+    std::vector<int> v1;
+    std::cout << v.size() << " | " <<  v.capacity() << "\n";
+    std::cout << v1.size() << " | " <<  v1.capacity() << "\n";
+     std::cout << "--------------------------\n";
+    v.reserve(5);
+    v1.reserve(5);
+    std::cout << v.size() << " | " <<  v.capacity() << "\n";
+    std::cout << v1.size() << " | " <<  v1.capacity() << "\n";
+    std::cout << "--------------------------\n";
     v.clear();
-    std::cout << v.size() << " | " << v.capacity() << "\n";
+    v1.clear();
+    std::cout << v.size() << " | " <<  v.capacity() << "\n";
+    std::cout << v1.size() << " | " <<  v1.capacity() << "\n";
 
-    //////////////////////// clear ----------------------------
+    /////////////////////// resize --------------------------
+
+    std::cout << "\nResize\n";
+    ft::Vector<int> f;
+    std::vector<int> f1;
+    
+    std::cout << f.size() << " | " <<  f.capacity() << "\n";
+    std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
+     std::cout << "--------------------------\n";
+    f.resize(5, 1);
+    f1.resize(5, 1);
+    std::cout << f.size() << " | " <<  f.capacity() << "\n";
+    std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
+    std::cout << "--------------------------\n";
+    f.clear();
+    f1.clear();
+    std::cout << f.size() << " | " <<  f.capacity() << "\n";
+    std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
 
 }

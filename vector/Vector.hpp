@@ -7,7 +7,7 @@
 *
 *  This array may need to be reallocated in order to grow in size when new elements are inserted, which implies allocating a new array and moving all elements to it.
 */
-#include "reverse_iterator.hpp"
+#include "../reverse_iterator.hpp"
 #include "iterator.hpp"
 #include <cstddef>
 #include <iostream>
@@ -78,8 +78,8 @@ namespace ft {
 
 // 2- Reverse_iterator:
 
-        typedef my_ReverseIterator<iterator> reverse_iterator;
-        typedef my_ReverseIterator<const_iterator>  const_reverse_iterator; 
+        typedef ft::reverse_iterator<iterator> reverse_iterator;
+        typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator; 
 
         //reverse_iterator rbegin();
         reverse_iterator rbegin() {

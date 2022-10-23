@@ -1,12 +1,12 @@
 # ifndef REVERSE_ITERATOR_HPP
 #define REVERSE_ITERATOR_HPP
 
-#include "iterator.hpp"
+#include "iterator_traits.hpp"
 
 namespace ft {
 
     template <class Iter>
-    class my_ReverseIterator {
+    class reverse_iterator {
 
     public:
         typedef typename ft::iterator_traits<Iter>::difference_type difference_type; // we need that in a-b
@@ -21,24 +21,28 @@ namespace ft {
 
     public:
         // Step 1: Constructors
-        my_ReverseIterator() : _iterator() { // Default constructor
+        reverse_iterator() : _iterator() { // Default constructor
             //std::cout << "Default Iterator Constructor\n";
         }
-        my_ReverseIterator(Iter iter) : _iterator(iter) { //Initalization constructor
+        reverse_iterator(Iter iter) : _iterator(iter) { //Initalization constructor
             //std::cout << "Parameterized Iterator Constructor\n";
         }
 
-        my_ReverseIterator(const my_ReverseIterator& inst) { // Copy constructor
+        template< class IT>
+        reverse_iterator(const reverse_iterator<IT>& inst) {
+        //reverse_iterator(const reverse_iterator& inst) { // Copy constructor
             //std::cout << "Copy Constructor of Iterator\n";
             *this = inst;
         }
 
-        my_ReverseIterator& operator=(const my_ReverseIterator& inst) { // Assignement operator
+        template< class IT>
+        reverse_iterator& operator=(const reverse_iterator<IT>& inst) {
+        //reverse_iterator& operator=(const reverse_iterator& inst) { // Assignement operator
             //std::cout << "Assignement Constructor of Iterator\n";
             this->_iterator = inst.base();
             return *this;
         }
-        ~my_ReverseIterator() { // Destructor
+        ~reverse_iterator() { // Destructor
             //std::cout << "Destructor of Iterator\n";
         }
 
@@ -47,16 +51,21 @@ namespace ft {
 
 //  ------------------ Accessors operator =, * and -> --------------------------- 
 
+    // https://en.cppreference.com/w/cpp/language/cast_operator (No need to conversion I already use base() in iterator as conversion)
+    // operator reverse_iterator<const Iter>() {
+    //     return _m_ptr;
+    // }
+
     Iter base() const {
         return _iterator;
     }
 
     reference operator=(pointer ptr) {_iterator = ptr; return (*this); }
 
-    reference operator*() const {return *(_iterator - 1); }
+    reference operator*() const {return *(_iterator--); }
     reference operator[] (difference_type n) const { return *(_iterator + n -1);}
 
-    pointer operator->() {return (_iterator - 1).operator->(); }
+    pointer operator->() {return (_iterator--).operator->(); }
 
 //  --------------------  [iter + n] [iter - n]  ---------------------------------
 
@@ -64,8 +73,8 @@ namespace ft {
         /* std::my_ReverseIterator::operator+
             my_ReverseIterator operator+(difference_type n) const;
         */
-    my_ReverseIterator operator+(difference_type n) const {
-        my_ReverseIterator  iter_addition(*this);
+    reverse_iterator operator+(difference_type n) const {
+        reverse_iterator  iter_addition(*this);
         iter_addition._iterator -= n;
         return iter_addition;
     }
@@ -73,8 +82,8 @@ namespace ft {
         /* std::my_ReverseIterator::operator-
             my_ReverseIterator operator-(difference_type n) const;
         */
-    my_ReverseIterator operator-(difference_type n) const {
-        my_ReverseIterator iter_soustraction(*this);
+    reverse_iterator operator-(difference_type n) const {
+        reverse_iterator iter_soustraction(*this);
         iter_soustraction._iterator += n;
         return iter_soustraction;
     }
@@ -82,7 +91,7 @@ namespace ft {
         /* std::my_ReverseIterator::operator+=
             my_ReverseIterator operator+=(difference_type n) const;
         */
-    my_ReverseIterator operator+=(difference_type n) {
+    reverse_iterator operator+=(difference_type n) {
         _iterator += n;
         return *this;
     }
@@ -90,7 +99,7 @@ namespace ft {
         /* std::my_ReverseIterator::operator-=
             my_ReverseIterator operator-=(difference_type n) const;
         */
-    my_ReverseIterator operator-=(difference_type n) {
+    reverse_iterator operator-=(difference_type n) {
         _iterator -= n;
         return *this;
     }
@@ -107,25 +116,25 @@ namespace ft {
     */
 
     // 1- Prefix increment:
-    my_ReverseIterator& operator++() {
+    reverse_iterator& operator++() {
         _iterator--;
         return *this;
     }
     // 2- Prefix decrement:
-    my_ReverseIterator& operator--() {
+    reverse_iterator& operator--() {
         _iterator++;
         return *this;
     }
     // 3- Postfix increment
-    my_ReverseIterator operator++(int) {
+    reverse_iterator operator++(int) {
         //std::cout << "\n ------------ Post increment ----------------- \n";
-        my_ReverseIterator tmp = *this; // create a copy
+        reverse_iterator tmp = *this; // create a copy
         _iterator--; // ==> ++(*this)
         return tmp;
     }
     // 4- Postfix decrement
-    my_ReverseIterator operator--(int) {
-        my_ReverseIterator tmp(*this); // create a copy
+    reverse_iterator operator--(int) {
+        reverse_iterator tmp(*this); // create a copy
         _iterator++; // ==>   --(*this); 
         return tmp;
     }
@@ -137,17 +146,17 @@ namespace ft {
         template <value_type>
         friend my_ReverseIterator<value_type> operator+(difference_type n, const my_ReverseIterator<value_type>& iter);
     */
-    friend my_ReverseIterator operator+(difference_type n, const my_ReverseIterator& iter) {
+    friend reverse_iterator operator+(difference_type n, const reverse_iterator& iter) {
         return (iter - n);
     }
     // -------------------------------------------
 
     // Step 5: Member friends : The operators [== != ]  > < >= <= ]
-    friend bool operator==(const my_ReverseIterator& a, const my_ReverseIterator& b) {
+    friend bool operator==(const reverse_iterator& a, const reverse_iterator& b) {
         return a._iterator == b._iterator;
     }
 
-    friend bool operator!=(const my_ReverseIterator& a, const my_ReverseIterator& b) {
+    friend bool operator!=(const reverse_iterator& a, const reverse_iterator& b) {
         return a._iterator != b._iterator;
     }
 
@@ -157,34 +166,34 @@ namespace ft {
         template <value_type>
         friend difference_type operator-(const my_ReverseIterator<value_type>& lhs, const my_ReverseIterator<value_type>& rhs);
     */
-    friend difference_type operator-(const my_ReverseIterator& lhs, const my_ReverseIterator& rhs) {
+    friend difference_type operator-(const reverse_iterator& lhs, const reverse_iterator& rhs) {
         //std::cout << "operator - \n";
         return std::distance(rhs._iterator, lhs._iterator);  // distance(first, last) = last - first; ==> (rhs, lhs) = lhs - rhs;
     }
     // ---------------------------------------------
 
     // Step 7: Member friends : The operators [ > < >= <= ]
-    friend bool operator>(const my_ReverseIterator& a, const my_ReverseIterator& b) {
+    friend bool operator>(const reverse_iterator& a, const reverse_iterator& b) {
         if ((a - b) > 0)
             return true;
         return false;
     }
         
-    friend bool operator>=(const my_ReverseIterator& a, const my_ReverseIterator& b) {
+    friend bool operator>=(const reverse_iterator& a, const reverse_iterator& b) {
         //return !(a < b);
         if (a == b || a > b)
             return true;
         return false;
     }
 
-    friend bool operator<(const my_ReverseIterator& a, const my_ReverseIterator& b) {
+    friend bool operator<(const reverse_iterator& a, const reverse_iterator& b) {
         //return !(a >= b);
         if (a >= b)
             return false;
         return true;
     }
 
-    friend bool operator<=(const my_ReverseIterator& a, const my_ReverseIterator& b) {
+    friend bool operator<=(const reverse_iterator& a, const reverse_iterator& b) {
         //return !(a < b);
         if (a > b)
             return false;

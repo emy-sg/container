@@ -67,9 +67,9 @@ class Iterator {
 
     // --------------------------------------------
 
-    // operator Iterator<const Tree, const T>() {
-    //     return _Node;
-    // }
+    operator Iterator() {
+        return Iterator((Node*) base().first, (Node*) base().second);
+    }
 
     std::pair<Node*, Node*> base() const {
         return std::make_pair(_end_node, _Node);

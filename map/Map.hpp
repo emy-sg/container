@@ -4,7 +4,7 @@
 #include "RBTree.hpp"
 #include "iterator.hpp"
 #include "node.hpp"
-#include "reverse_iterator.hpp"
+#include "../reverse_iterator.hpp"
 #include <cstddef>
 #include <stdexcept>
 #include <utility>
@@ -158,9 +158,8 @@ class Map {
 	}
 
 // 2- Reverse_iterator:
-
-	typedef typename ft::my_ReverseIterator<iterator> reverse_iterator;
-	typedef typename ft::my_ReverseIterator<const_iterator>  const_reverse_iterator; 
+	typedef ft::reverse_iterator<iterator> reverse_iterator;
+	typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator;
 
 	//reverse_iterator rbegin();
 	reverse_iterator rbegin() {
@@ -444,24 +443,38 @@ Exchanges the contents of the container with those of other. Does not invoke any
 		_Tree.setSize(size);
 		//std::cout << "Size ==> this " << this->size() << " | inst " << inst.size() << "\n";
 		
-		// _NIL ==> 
-		Node<value_type>  *nil;
-		nil = inst._Tree.get_end();
-		inst._Tree.set_NIL(_Tree.get_end());
-		_Tree.set_NIL(nil);
+		// swap _NIL ==> 
+		// Node<value_type>  *end_node;
+		// //pointer node* NIL = &_end_node(TREE);
+		// nil = inst._Tree.get_NIL();
+		// inst._Tree.set_NIL(&_Tree.get_end());
+		// _Tree.set_NIL(nil);
+
+		// inst._Tree.set_nil(inst._Tree.get_end());
+		// _Tree.set_nil(_Tree.get_end());
+		
+		//std::swap(_Tree.get_NIL(), inst._Tree.get_NIL());
+
+
+
 		// std::swap(inst._Tree.get_NIL(), _Tree.get_NIL());
 
 		// root ==> 
-		Node<value_type> * root;
-		root = inst._Tree.get_root();	
-		inst._Tree.set_root(_Tree.get_root());
-		_Tree.set_root(root);
+		// Node<value_type> * root;
+		// root = inst._Tree.get_root();	
+		// inst._Tree.set_root(_Tree.get_root());
+		// _Tree.set_root(root);
 
 		// begin ==> 
 		Node<value_type> * begin;
 		begin = inst._Tree.get_begin();	
 		inst._Tree.set_begin(_Tree.get_begin());
 		_Tree.set_begin(begin);
+
+		Node<value_type> * end;
+		end = inst._Tree.get_end();	
+		inst._Tree.set_end(_Tree.get_end());
+		_Tree.set_end(end);
 
 		// this->_Tree = inst._Tree;
 
