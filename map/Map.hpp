@@ -436,32 +436,32 @@ Exchanges the contents of the container with those of other. Does not invoke any
 	*/
 	void swap(Map& inst) {
 
-		// size_type size;
-		// size = inst._Tree.getSize();
-		// inst._Tree.setSize(_Tree.getSize());
-		// _Tree.setSize(size);
+		// _Tree.swap(inst._Tree);
+		// size ==> done
+		size_type size;
+		size = inst._Tree.getSize();
+		inst._Tree.setSize(_Tree.getSize());
+		_Tree.setSize(size);
+		//std::cout << "Size ==> this " << this->size() << " | inst " << inst.size() << "\n";
+		
+		// _NIL ==> 
+		Node<value_type>  *nil;
+		nil = inst._Tree.get_end();
+		inst._Tree.set_NIL(_Tree.get_end());
+		_Tree.set_NIL(nil);
+		// std::swap(inst._Tree.get_NIL(), _Tree.get_NIL());
 
-		_Tree.setSize(inst.size());
-		std::cout << size() << "\n";
-		// Node<value_type> * tmp;
-		// tmp = inst._Tree.get_root();	
-		// inst._Tree.set_root(_Tree.get_root());
-		// _Tree.set_root(tmp);
+		// root ==> 
+		Node<value_type> * root;
+		root = inst._Tree.get_root();	
+		inst._Tree.set_root(_Tree.get_root());
+		_Tree.set_root(root);
 
-		Node<value_type> * tmp = inst._Tree.get_end();
-		inst._Tree.set_NIL(_Tree.get_NIL());
-
-		//exit(1);
-		Node<value_type> * tmp2 = inst._Tree.get_root();
-		tmp->parent = _Tree.get_end();
-		_Tree.set_root(tmp2);
-		_Tree.printTree();
-		exit(1);
-
-
-
-		// inst._Tree.set_NIL(inst._Tree.get_end());
-		// _Tree.set_NIL(_Tree.get_end());
+		// begin ==> 
+		Node<value_type> * begin;
+		begin = inst._Tree.get_begin();	
+		inst._Tree.set_begin(_Tree.get_begin());
+		_Tree.set_begin(begin);
 
 		// this->_Tree = inst._Tree;
 

@@ -54,6 +54,7 @@ class RBTree {
 
 	void set_root(Node* root) {
 		get_end()->l_child = root;
+		root->parent = &_end_node;
 	}
 	
 ////////////////////////////////////
@@ -68,6 +69,7 @@ class RBTree {
 	void set_NIL(Node* node) {
 		_NIL = node;
 	}
+
  ///////////////////////////////////
 	size_t getSize() const {
 		return _size;
@@ -87,6 +89,11 @@ class RBTree {
 		return (constNode*)_begin_node;
 	}
 
+	void set_begin(Node* begin) {
+		_begin_node = begin;
+	}
+
+///////////////////////////////////
 
 	Node* get_end() { // don't use const, bcuz iterator in case of iterator
 		return &_end_node;
