@@ -51,7 +51,7 @@ namespace ft {
 
 //  ------------------ Accessors operator =, * and -> --------------------------- 
 
-    // https://en.cppreference.com/w/cpp/language/cast_operator (No need to conversion I already use base() in iterator as conversion)
+    // https://en.cppreference.com/w/cpp/language/cast_operator (No need to conversion I already use base() in iterator o)
     // operator reverse_iterator<const Iter>() {
     //     return _m_ptr;
     // }
@@ -60,12 +60,27 @@ namespace ft {
         return _iterator;
     }
 
+    // reference operator=(pointer ptr) {_iterator = ptr; return (*this); }
+
+    // reference operator*() const {return *(_iterator - 1); }
+    // reference operator[] (difference_type n) const { return *(_iterator + n -1);}
+
+    // pointer operator->() {return (_iterator - 1).operator->(); }
+
     reference operator=(pointer ptr) {_iterator = ptr; return (*this); }
 
-    reference operator*() const {return *(_iterator--); }
+    reference operator*() const {
+        Iter tmp = _iterator;
+        tmp--;
+        return *(tmp);
+    }
     reference operator[] (difference_type n) const { return *(_iterator + n -1);}
 
-    pointer operator->() {return (_iterator--).operator->(); }
+    pointer operator->() {
+        Iter tmp = _iterator;
+        tmp--;
+        return tmp.operator->();
+    }
 
 //  --------------------  [iter + n] [iter - n]  ---------------------------------
 

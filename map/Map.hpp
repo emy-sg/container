@@ -35,17 +35,17 @@ class Map {
         typedef typename allocator_type::pointer pointer;
         typedef typename allocator_type::const_pointer const_pointer;
 
-	void call_print() {
-		_Tree.printTree();
-	}
+	// void call_print() {
+	// 	_Tree.printTree();
+	// }
 
 // --------------------------- 2- Private attributes ------------------------------------
 
 	private:
     // Idk why: when I use pointer to _Tree* ==> I get segmentation dump
         RBTree<key_type, value_type, allocator_type> _Tree;
-		//allocator_type _alloc;
-		//key_compare _compare; 
+		allocator_type _alloc;
+		key_compare _compare; 
 
 //	------------------------- 3- Public Member Functions of Map -------------------------
 
@@ -82,6 +82,8 @@ class Map {
 
     explicit Map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {
         //std::cout << "Default constructor of map\n";
+		_compare = comp;
+		_alloc = alloc;
     }
     ~Map() {
         //std::cout << "Map destructor\n";
@@ -435,37 +437,14 @@ Exchanges the contents of the container with those of other. Does not invoke any
 	*/
 	void swap(Map& inst) {
 
-		// _Tree.swap(inst._Tree);
-		// size ==> done
+		std::swap(_alloc, inst._alloc);
+		std::swap(_compare, inst._compare);
+
 		size_type size;
 		size = inst._Tree.getSize();
 		inst._Tree.setSize(_Tree.getSize());
 		_Tree.setSize(size);
-		//std::cout << "Size ==> this " << this->size() << " | inst " << inst.size() << "\n";
-		
-		// swap _NIL ==> 
-		// Node<value_type>  *end_node;
-		// //pointer node* NIL = &_end_node(TREE);
-		// nil = inst._Tree.get_NIL();
-		// inst._Tree.set_NIL(&_Tree.get_end());
-		// _Tree.set_NIL(nil);
 
-		// inst._Tree.set_nil(inst._Tree.get_end());
-		// _Tree.set_nil(_Tree.get_end());
-		
-		//std::swap(_Tree.get_NIL(), inst._Tree.get_NIL());
-
-
-
-		// std::swap(inst._Tree.get_NIL(), _Tree.get_NIL());
-
-		// root ==> 
-		// Node<value_type> * root;
-		// root = inst._Tree.get_root();	
-		// inst._Tree.set_root(_Tree.get_root());
-		// _Tree.set_root(root);
-
-		// begin ==> 
 		Node<value_type> * begin;
 		begin = inst._Tree.get_begin();	
 		inst._Tree.set_begin(_Tree.get_begin());
@@ -475,41 +454,6 @@ Exchanges the contents of the container with those of other. Does not invoke any
 		end = inst._Tree.get_end();	
 		inst._Tree.set_end(_Tree.get_end());
 		_Tree.set_end(end);
-
-		// this->_Tree = inst._Tree;
-
-		//key_compare = inst.key_compare;
-
-        //allocator_type = 
-		
-		// iterator it1;
-		// iterator end_it1;
-		// iterator it2;
-		// iterator end_it2;
-
-		// it1 = this->begin();
-		// end_it1 = this->end();
-		// it2 = inst.begin();
-		// end_it2 = inst.end();
-
-		// if (size() >= inst.size())
-		// {
-		// 	while (it2 != end_it2)
-		// 		++it1 = ++it2;
-		// 	while (it1 != end_it1)
-		// 		++it2 = ++it1;
-		// 	it1 = end_it2;
-		// 	it2 = end_it1;
-
-		// 	size_t _size = size();
-		// 	_Tree->_size = inst.size();
-		// 	inst->_Tree._size = _size;
-
-		// }
-		// else
-		// {
-		
-		// }
 
 	}
 };

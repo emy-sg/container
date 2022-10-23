@@ -77,8 +77,7 @@ class Iterator {
 
     // 1- operator->() return pointer to value_type aka pointer to std::pair
     pointer operator->() {
-        //std::cout << "KIfach not found\n";
-        return &_Node->value;  /// T5arbi9a zatha
+        return &((Node*)_Node)->value;
             // bcuz I don't know if value or *value in NOde class
     }
 
