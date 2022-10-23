@@ -1517,29 +1517,16 @@ void testModifiers()
         ft_bar['b'] = 22;
         ft_bar['c'] = 33;
 
-        if (cond == true)
-            std::cout << "True 1";
-        else
-            std::cout << "False 1";
         cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && compareMaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && compareMaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
 
 
-        if (cond == true)
-            std::cout << "True 2";
-        else
-            std::cout << "False 2";
+
 
         foo.swap(bar);
         ft_foo.swap(ft_bar);
 
 
         cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && compareMaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && compareMaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
-
-
-        if (cond == true)
-            std::cout << "True 3";
-        else
-            std::cout << "False 3";
 
         std::map<std::string, std::string, std::greater<std::string> > m1, m2;
         ft::Map<std::string, std::string, std::greater<std::string> > ft_m1, ft_m2;
@@ -1572,28 +1559,20 @@ void testModifiers()
         //           << "\niter: " << *iter << '\n';
 
 
-        if (cond == true)
-            std::cout << "True 4";
-        else
-            std::cout << "False 4";
+
         cond = cond && ref.first == ft_ref.first && ref.second == ft_ref.second && iter->second == ft_iter->second && iter->first == ft_iter->first && m1.size() == ft_m1.size() && m2.size() && ft_m2.size();
+
+
 
         m1.swap(m2);
         ft_m1.swap(ft_m2);
 
 
-        if (cond == true)
-            std::cout << "True 5";
-        else
-            std::cout << "False 5";
         // _---------------_ << ──────── after swap ──────── >> _---------------_
 
         cond = cond && ref.first == ft_ref.first && ref.second == ft_ref.second && iter->second == ft_iter->second && iter->first == ft_iter->first && m1.size() == ft_m1.size() && m2.size() && ft_m2.size();
 
-        if (cond == true)
-            std::cout << "True 6";
-        else
-            std::cout << "False 6";
+
         EQUAL(cond);
     }
     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " clear method "
