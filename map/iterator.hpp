@@ -76,12 +76,16 @@ class Iterator {
     }
 
     // 1- operator->() return pointer to value_type aka pointer to std::pair
-    pointer operator->() {
+
+    //pointer operator->() const;
+    pointer operator->() const {
         return &((Node*)_Node)->value;
             // bcuz I don't know if value or *value in NOde class
     }
 
     // 2- operator*() return reference to value_type aka reference to std::pair
+    
+    // reference operator*() const;
     reference operator*() const {
         return _Node->value;
     }

@@ -35,9 +35,9 @@ class Map {
         typedef typename allocator_type::pointer pointer;
         typedef typename allocator_type::const_pointer const_pointer;
 
-	// void call_print() {
-	// 	_Tree.printTree();
-	// }
+	void call_print() {
+		_Tree.printTree();
+	}
 
 // --------------------------- 2- Private attributes ------------------------------------
 
@@ -50,6 +50,16 @@ class Map {
 //	------------------------- 3- Public Member Functions of Map -------------------------
 
 	public:
+
+	//key_compare key_comp() const ==> Returns a copy of the comparison object used by the container to compare keys.
+	// key_compare key_comp() const {
+	// 	return _compare();
+	// }
+
+	// value_compare value_comp() const; ==> Returns a comparison object that can be used to compare two elements to get whether the key of the first one goes before the second.	
+	// value_compare value_comp() const {
+	// 	return key_type();
+	// }
 
  // Returns a copy of the allocator object associated with the map.
 	allocator_type get_allocator() const { return allocator_type(); }
@@ -437,8 +447,8 @@ Exchanges the contents of the container with those of other. Does not invoke any
 	*/
 	void swap(Map& inst) {
 
-		std::swap(_alloc, inst._alloc);
-		std::swap(_compare, inst._compare);
+		//std::swap(_alloc, inst._alloc);
+		//std::swap(_compare, inst._compare);
 
 		size_type size;
 		size = inst._Tree.getSize();

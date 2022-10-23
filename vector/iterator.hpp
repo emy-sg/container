@@ -81,12 +81,16 @@ namespace ft {
         return _m_ptr;
     }
 
-    reference operator=(pointer ptr) {_m_ptr = ptr; return (*this); }
+    //reference operator=(pointer ptr) {_m_ptr = ptr; return (*this); }
 
+    // reference operator*() const;
     reference operator*() const {return *_m_ptr; }
-    reference operator[] (difference_type n) const { return *(_m_ptr + n);}
 
-    pointer operator->() {return _m_ptr; }
+    // reference operator[] (difference_type n) const;
+    reference operator[] (difference_type n) const { return *(_m_ptr + n);}
+    
+    //pointer operator->() const;
+    pointer operator->() const {return _m_ptr; }
 
 //  --------------------  [iter + n] [iter - n]  ---------------------------------
 
