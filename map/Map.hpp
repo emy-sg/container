@@ -3,6 +3,7 @@
 
 #include "RBTree.hpp"
 #include "iterator.hpp"
+#include "node.hpp"
 #include "reverse_iterator.hpp"
 #include <cstddef>
 #include <stdexcept>
@@ -34,6 +35,9 @@ class Map {
         typedef typename allocator_type::pointer pointer;
         typedef typename allocator_type::const_pointer const_pointer;
 
+	void call_print() {
+		_Tree.printTree();
+	}
 
 // --------------------------- 2- Private attributes ------------------------------------
 
@@ -431,6 +435,35 @@ Exchanges the contents of the container with those of other. Does not invoke any
 
 	*/
 	void swap(Map& inst) {
+
+		// size_type size;
+		// size = inst._Tree.getSize();
+		// inst._Tree.setSize(_Tree.getSize());
+		// _Tree.setSize(size);
+
+		_Tree.setSize(inst.size());
+		std::cout << size() << "\n";
+		// Node<value_type> * tmp;
+		// tmp = inst._Tree.get_root();	
+		// inst._Tree.set_root(_Tree.get_root());
+		// _Tree.set_root(tmp);
+
+		Node<value_type> * tmp = inst._Tree.get_end();
+		inst._Tree.set_NIL(_Tree.get_NIL());
+
+		//exit(1);
+		Node<value_type> * tmp2 = inst._Tree.get_root();
+		tmp->parent = _Tree.get_end();
+		_Tree.set_root(tmp2);
+		_Tree.printTree();
+		exit(1);
+
+
+
+		// inst._Tree.set_NIL(inst._Tree.get_end());
+		// _Tree.set_NIL(_Tree.get_end());
+
+		// this->_Tree = inst._Tree;
 
 		//key_compare = inst.key_compare;
 

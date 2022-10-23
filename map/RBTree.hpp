@@ -26,7 +26,7 @@ class RBTree {
 		size_t _size;
 		Node _end_node; 		// We suppose that: Root = end_node->left_child
 		Node* _begin_node;
-		Node _NIL;   
+		Node* _NIL;
     
 	public:
     // Constructor
@@ -34,6 +34,7 @@ class RBTree {
 		//std::cout << "Default Tree constructor\n";
 		_size = 0;
 		_begin_node = &_end_node;
+		_NIL = &_end_node;
 	}
 
 	virtual ~RBTree() {
@@ -42,6 +43,7 @@ class RBTree {
 		// 	//delete all
 	}
 
+ ////////////////////////////////////
 	Node* get_root() {
 		return get_end()->l_child;
 	}
@@ -49,10 +51,33 @@ class RBTree {
 	constNode* get_root() const {
 		return get_end()->l_child;
 	}
+
+	void set_root(Node* root) {
+		get_end()->l_child = root;
+	}
 	
+////////////////////////////////////
+	Node* get_NIL() {
+		return _NIL;
+	}
+
+	constNode* get_NIL() const {
+		return _NIL;
+	}
+
+	void set_NIL(Node* node) {
+		_NIL = node;
+	}
+ ///////////////////////////////////
 	size_t getSize() const {
 		return _size;
 	}
+
+	void setSize(size_t size) {
+		_size = size;
+	}
+	
+ ////////////////////////////////////
 
 	Node* get_begin() { // don't use const, bcuz iterator in case of iterator
 		return _begin_node;
@@ -72,7 +97,7 @@ class RBTree {
 	}
 
 	void printHelper(Node *root, std::string indent, bool last) {
-    if (root != &_NIL) {
+    if (root != _NIL) {
       std::cout << indent;
       if (last) {
         std::cout << "R----";
@@ -218,8 +243,8 @@ Node* insertion_RBTree(const value_type& val) {
 		//new_node = create_node(val);
 		new_node = new Node(val);
 		new_node->color = Red;
-		new_node->l_child = &_NIL;
-		new_node->r_child = &_NIL;
+		new_node->l_child = _NIL;
+		new_node->r_child = _NIL;
 		new_node->_is_null = 1;
 
 		//new_node->printNode();
