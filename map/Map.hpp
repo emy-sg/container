@@ -3,7 +3,7 @@
 
 #include "RBTree.hpp"
 #include "iterator.hpp"
-#include "const_iterator.hpp"
+#include "reverse_iterator.hpp"
 #include <cstddef>
 #include <stdexcept>
 #include <utility>
@@ -153,6 +153,29 @@ class Map {
     	return const_iterator((Node<const value_type>*)_Tree.get_end(), (Node<const value_type>*)_Tree.get_end());
 	}
 
+// 2- Reverse_iterator:
+
+	typedef typename ft::my_ReverseIterator<iterator> reverse_iterator;
+	typedef typename ft::my_ReverseIterator<const_iterator>  const_reverse_iterator; 
+
+	//reverse_iterator rbegin();
+	reverse_iterator rbegin() {
+	    return reverse_iterator(end());
+	}
+	//const_reverse_iterator rbegin() const;
+	const_reverse_iterator rbegin() const {
+	    return const_reverse_iterator(end());
+	}
+
+	//reverse_iterator rbegin();
+	reverse_iterator rend() {
+	    return reverse_iterator(begin());
+	}
+	//const_reverse_iterator rbegin() const;
+	const_reverse_iterator rend() const {
+	    return const_reverse_iterator(begin());
+	}
+
 //	-------------------------- 9- Accessors at() && operator[] --------------------------
 
  // 1- std::map::at
@@ -161,7 +184,7 @@ class Map {
 	/*
     	Returns a reference to the mapped value of the element identified with key.
     	if(key) does not match the key of any element the function throws an
-        	"out_of_range" exception.
+		"out_of_range" exception.
   	*/
 
     mapped_type& at(const key_type& key) {
@@ -408,6 +431,10 @@ Exchanges the contents of the container with those of other. Does not invoke any
 
 	*/
 	void swap(Map& inst) {
+
+		//key_compare = inst.key_compare;
+
+        //allocator_type = 
 		
 		// iterator it1;
 		// iterator end_it1;

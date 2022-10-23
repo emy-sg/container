@@ -234,130 +234,130 @@ void const_iterator_tests(void)
     std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
 }
 
-// void reverse_iterator_tests(void)
-// {
-//     std::cout << "\033[1;36m<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< reverse_iterator tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-//     /*------------ std::reverse_iterator ---------*/
-//     std::vector<int> v(3, 4);
-//     std::reverse_iterator<std::vector<int>::iterator> rit(v.end()), rit_1(v.end() - 1);
-//     /*----------------------------------*/
-//     /*------------ ft::reverse_iterator ---------*/
-//     ft::reverse_iterator<std::vector<int>::iterator> my_rit(v.end()), my_rit1(v.end() - 1);
-//     /*----------------------------------*/
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         ft::reverse_iterator<std::vector<int>::iterator> ob(my_rit);
-//         EQUAL(&(*my_rit) == &(*ob));
-//     }
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " riterator to const_riterator "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         ft::Vector<int> v(4, 5);
-//         ft::Vector<int>::reverse_iterator my_rit2(v.end());
-//         ft::Vector<int>::const_reverse_iterator c_it, c_ob(v.end());
-//         c_it = my_rit2;
-//         EQUAL(&(*my_rit2) == &(*c_it) && (&(*my_rit2) == &(*c_ob)));
-//     }
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " base function "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((&(*rit) == &(*rit_1.base())) && (&(*my_rit) == &(*my_rit1.base())));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((rit == rit_1) == (my_rit == my_rit1));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " != operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((rit != rit_1) == (my_rit != my_rit1));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " > operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((rit > rit_1) == (my_rit > my_rit1));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " >= operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((rit >= rit_1) == (my_rit >= my_rit1));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " < operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((rit < rit_1) == (my_rit < my_rit1));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " <= operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((rit <= rit_1) == (my_rit <= my_rit1));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " * operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL(((*my_rit == *(v.end() - 1)) && (&(*my_rit) == &(*(v.end() - 1)))) && ((*rit == *(v.end() - 1)) && (&(*rit) == &(*(v.end() - 1)))));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -> operator "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         std::vector<std::string> v(3, "hello");
-//         std::reverse_iterator<std::vector<std::string>::iterator> rit(v.end());
-//         ft::reverse_iterator<std::vector<std::string>::iterator> my_rit(v.end());
-//         EQUAL(rit->length() == my_rit->length());
-//     }
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " - operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((&(*my_rit) == &(*(my_rit1 - 1))) && (&(*rit) == &(*(rit_1 - 1))));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " + operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((&(*(my_rit + 1)) == &(*my_rit1)) && (&(*(rit + 1)) == &(*rit_1)));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " += operator "
-//               << "] --------------------]\t\t\033[0m";
-//     my_rit += 1;
-//     rit += 1;
-//     EQUAL((&(*my_rit) == &(*my_rit1)) && (&(*rit) == &(*rit_1)));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -= operator "
-//               << "] --------------------]\t\t\033[0m";
-//     my_rit -= 1;
-//     rit -= 1;
-//     EQUAL((&(*my_rit) == &(*(my_rit1 - 1))) && (&(*rit) == &(*(rit_1 - 1))));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " [] operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL(((my_rit[0] = 5) == 5) && (rit[0] == 5));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " ++rit operator "
-//               << "] --------------------]\t\t\033[0m";
-//     ++my_rit; // I incremented here to make sure that the object changes
-//     ++rit;
-//     EQUAL(&(*my_rit) == &(*my_rit1)) && (&(*rit) == &(*rit_1));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " --rit operator "
-//               << "] --------------------]\t\t\033[0m";
-//     --my_rit; // I incremented here to make sure that the object changes
-//     --rit;
-//     EQUAL((&(*my_rit) == &(*(my_rit1 - 1))) && (&(*rit) == &(*(rit_1 - 1))));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " + operator (n + rit) "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((&(*(2 + my_rit)) == &(*(1 + my_rit1))) && (&(*(2 + rit)) == &(*(1 + rit_1))));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " - operator (rit1 - rit) "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL(((my_rit - my_rit1) == (rit - rit_1)) && ((my_rit1 - my_rit) == (rit_1 - rit)));
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rit++ operator "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         std::reverse_iterator<std::vector<int>::iterator> tmp(rit++);
-//         ft::reverse_iterator<std::vector<int>::iterator> my_tmp(my_rit++);
-//         EQUAL((&(*tmp) == &(*(--rit))) && (&(*my_tmp) == &(*(--my_rit))));
-//     }
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rit-- operator "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         std::reverse_iterator<std::vector<int>::iterator> tmp(rit--);
-//         ft::reverse_iterator<std::vector<int>::iterator> my_tmp(my_rit--);
-//         EQUAL((&(*tmp) == &(*(++rit))) && (&(*my_tmp) == &(*(++my_rit))));
-//     }
-//     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " *rit++ test "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         std::vector<char> v(10);
-//         std::string res, my_res;
-//         std::reverse_iterator<std::vector<char>::iterator> start(v.end()), end(v.begin());
-//         ft::reverse_iterator<std::vector<char>::iterator> my_start(v.end()), my_end(v.begin());
+void reverse_iterator_tests(void)
+{
+    std::cout << "\033[1;36m<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< reverse_iterator tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
+    /*------------ std::reverse_iterator ---------*/
+    std::vector<int> v(3, 4);
+    std::reverse_iterator<std::vector<int>::iterator> rit(v.end()), rit_1(v.end() - 1);
+    /*----------------------------------*/
+    /*------------ ft::reverse_iterator ---------*/
+    ft::reverse_iterator<std::vector<int>::iterator> my_rit(v.end()), my_rit1(v.end() - 1);
+    /*----------------------------------*/
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
+              << "] --------------------]\t\t\033[0m";
+    {
+        ft::reverse_iterator<std::vector<int>::iterator> ob(my_rit);
+        EQUAL(&(*my_rit) == &(*ob));
+    }
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " riterator to const_riterator "
+              << "] --------------------]\t\t\033[0m";
+    {
+        ft::Vector<int> v(4, 5);
+        ft::Vector<int>::reverse_iterator my_rit2(v.end());
+        ft::Vector<int>::const_reverse_iterator c_it, c_ob(v.end());
+        c_it = my_rit2;
+        EQUAL(&(*my_rit2) == &(*c_it) && (&(*my_rit2) == &(*c_ob)));
+    }
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " base function "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((&(*rit) == &(*rit_1.base())) && (&(*my_rit) == &(*my_rit1.base())));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((rit == rit_1) == (my_rit == my_rit1));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " != operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((rit != rit_1) == (my_rit != my_rit1));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " > operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((rit > rit_1) == (my_rit > my_rit1));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " >= operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((rit >= rit_1) == (my_rit >= my_rit1));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " < operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((rit < rit_1) == (my_rit < my_rit1));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " <= operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((rit <= rit_1) == (my_rit <= my_rit1));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " * operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL(((*my_rit == *(v.end() - 1)) && (&(*my_rit) == &(*(v.end() - 1)))) && ((*rit == *(v.end() - 1)) && (&(*rit) == &(*(v.end() - 1)))));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -> operator "
+              << "] --------------------]\t\t\033[0m";
+    {
+        std::vector<std::string> v(3, "hello");
+        std::reverse_iterator<std::vector<std::string>::iterator> rit(v.end());
+        ft::reverse_iterator<std::vector<std::string>::iterator> my_rit(v.end());
+        EQUAL(rit->length() == my_rit->length());
+    }
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " - operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((&(*my_rit) == &(*(my_rit1 - 1))) && (&(*rit) == &(*(rit_1 - 1))));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " + operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((&(*(my_rit + 1)) == &(*my_rit1)) && (&(*(rit + 1)) == &(*rit_1)));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " += operator "
+              << "] --------------------]\t\t\033[0m";
+    my_rit += 1;
+    rit += 1;
+    EQUAL((&(*my_rit) == &(*my_rit1)) && (&(*rit) == &(*rit_1)));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -= operator "
+              << "] --------------------]\t\t\033[0m";
+    my_rit -= 1;
+    rit -= 1;
+    EQUAL((&(*my_rit) == &(*(my_rit1 - 1))) && (&(*rit) == &(*(rit_1 - 1))));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " [] operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL(((my_rit[0] = 5) == 5) && (rit[0] == 5));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " ++rit operator "
+              << "] --------------------]\t\t\033[0m";
+    ++my_rit; // I incremented here to make sure that the object changes
+    ++rit;
+    EQUAL(&(*my_rit) == &(*my_rit1)) && (&(*rit) == &(*rit_1));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " --rit operator "
+              << "] --------------------]\t\t\033[0m";
+    --my_rit; // I incremented here to make sure that the object changes
+    --rit;
+    EQUAL((&(*my_rit) == &(*(my_rit1 - 1))) && (&(*rit) == &(*(rit_1 - 1))));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " + operator (n + rit) "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((&(*(2 + my_rit)) == &(*(1 + my_rit1))) && (&(*(2 + rit)) == &(*(1 + rit_1))));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " - operator (rit1 - rit) "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL(((my_rit - my_rit1) == (rit - rit_1)) && ((my_rit1 - my_rit) == (rit_1 - rit)));
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rit++ operator "
+              << "] --------------------]\t\t\033[0m";
+    {
+        std::reverse_iterator<std::vector<int>::iterator> tmp(rit++);
+        ft::reverse_iterator<std::vector<int>::iterator> my_tmp(my_rit++);
+        EQUAL((&(*tmp) == &(*(--rit))) && (&(*my_tmp) == &(*(--my_rit))));
+    }
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rit-- operator "
+              << "] --------------------]\t\t\033[0m";
+    {
+        std::reverse_iterator<std::vector<int>::iterator> tmp(rit--);
+        ft::reverse_iterator<std::vector<int>::iterator> my_tmp(my_rit--);
+        EQUAL((&(*tmp) == &(*(++rit))) && (&(*my_tmp) == &(*(++my_rit))));
+    }
+    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " *rit++ test "
+              << "] --------------------]\t\t\033[0m";
+    {
+        std::vector<char> v(10);
+        std::string res, my_res;
+        std::reverse_iterator<std::vector<char>::iterator> start(v.end()), end(v.begin());
+        ft::reverse_iterator<std::vector<char>::iterator> my_start(v.end()), my_end(v.begin());
 
-//         for (size_t i = 0; i < 10; ++i)
-//             v[i] = '0' + i;
-//         while (start != end)
-//             res.push_back(*start++);
-//         while (my_start != my_end)
-//             my_res.push_back(*my_start++);
-//         EQUAL(res == my_res);
-//     }
-//     std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-// }
+        for (size_t i = 0; i < 10; ++i)
+            v[i] = '0' + i;
+        while (start != end)
+            res.push_back(*start++);
+        while (my_start != my_end)
+            my_res.push_back(*my_start++);
+        EQUAL(res == my_res);
+    }
+    std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
+}
 
 // void reverse_iterator_with_ft_vector(void)
 // {
@@ -483,62 +483,62 @@ void const_iterator_tests(void)
 
 void vector_tests(void)
 {
-    std::cout << "\033[1;36m<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< vector tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " fill constructor "
-              << "] --------------------]\t\t\033[0m";
-    {
-        /*--------------- fill tow vectors with a 10 strings ------*/
-        ft::Vector<std::string> my_v(10, "fill constructor test");
-        std::vector<std::string> v(10, "fill constructor test");
-        /*---------------------------------------------------------*/
-        /*--------------- declare tow strings to store the results ------*/
-        std::string res, my_res;
-        /*---------------------------------------------------------*/
-        for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); ++it) // fill res from std::vector
-            res += *it;
+    // std::cout << "\033[1;36m<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< vector tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
+    // std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " fill constructor "
+    //           << "] --------------------]\t\t\033[0m";
+    // {
+    //     /*--------------- fill tow vectors with a 10 strings ------*/
+    //     ft::Vector<std::string> my_v(10, "fill constructor test");
+    //     std::vector<std::string> v(10, "fill constructor test");
+    //     /*---------------------------------------------------------*/
+    //     /*--------------- declare tow strings to store the results ------*/
+    //     std::string res, my_res;
+    //     /*---------------------------------------------------------*/
+    //     for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); ++it) // fill res from std::vector
+    //         res += *it;
 
-        for (ft::Vector<std::string>::iterator it = my_v.begin(); it != my_v.end(); ++it) // fill my_res from ft::vector
-            my_res += *it;
-        EQUAL(res == my_res);
-    }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " range constructor "
-              << "] --------------------]\t\t\033[0m";
-    {
-        /*--------------- fill std::vector with 10 strings and ft::vector with range of iterators ------*/
-        std::vector<std::string> v(10, "range constructor test");
-        ft::Vector<std::string> my_v(10, "range constructor test");
-        ft::Vector<std::string> my_v1(my_v.begin(), my_v.end()); // this one is to check if the range works with ft::vector
-        /*----------------------------------------------------------------------------------------------*/
-        /*--------------- declare tow strings to store the results ------*/
-        std::string res, my_res, my_res1;
-        /*--------------------------------------------------------*/
-        for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); ++it) // fill res from std::vector
-            res += *it;
+    //     for (ft::Vector<std::string>::iterator it = my_v.begin(); it != my_v.end(); ++it) // fill my_res from ft::vector
+    //         my_res += *it;
+    //     EQUAL(res == my_res);
+    // }
+    // std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " range constructor "
+    //           << "] --------------------]\t\t\033[0m";
+    // {
+    //     /*--------------- fill std::vector with 10 strings and ft::vector with range of iterators ------*/
+    //     std::vector<std::string> v(10, "range constructor test");
+    //     ft::Vector<std::string> my_v(10, "range constructor test");
+    //     ft::Vector<std::string> my_v1(my_v.begin(), my_v.end()); // this one is to check if the range works with ft::vector
+    //     /*----------------------------------------------------------------------------------------------*/
+    //     /*--------------- declare tow strings to store the results ------*/
+    //     std::string res, my_res, my_res1;
+    //     /*--------------------------------------------------------*/
+    //     for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); ++it) // fill res from std::vector
+    //         res += *it;
 
-        for (ft::Vector<std::string>::iterator it = my_v.begin(); it != my_v.end(); ++it) // fill my_res from ft::vector
-            my_res += *it;
+    //     for (ft::Vector<std::string>::iterator it = my_v.begin(); it != my_v.end(); ++it) // fill my_res from ft::vector
+    //         my_res += *it;
 
-        for (ft::Vector<std::string>::iterator it = my_v1.begin(); it != my_v1.end(); ++it) // fill my_res1 from ft::vector
-            my_res1 += *it;
-        EQUAL(res == my_res && my_res == my_res1);
-    }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
-              << "] --------------------]\t\t\033[0m";
-    {
-        /*---------------------------- declare a vector and fill with 'a', and create a copy of it ------------------*/
-        ft::Vector<char> v1(10, 'a');
-        ft::Vector<char> copy_v(v1);
-        /*-----------------------------------------------------------------------------------------------------------*/
-        /*--------------- declare tow strings to store the results ------*/
-        std::string res, res1;
-        /*--------------------------------------------------------*/
-        for (ft::Vector<char>::iterator it = v1.begin(); it != v1.end(); ++it) // fill res from v1
-            res += *it;
+    //     for (ft::Vector<std::string>::iterator it = my_v1.begin(); it != my_v1.end(); ++it) // fill my_res1 from ft::vector
+    //         my_res1 += *it;
+    //     EQUAL(res == my_res && my_res == my_res1);
+    // }
+    // std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
+    //           << "] --------------------]\t\t\033[0m";
+    // {
+    //     /*---------------------------- declare a vector and fill with 'a', and create a copy of it ------------------*/
+    //     ft::Vector<char> v1(10, 'a');
+    //     ft::Vector<char> copy_v(v1);
+    //     /*-----------------------------------------------------------------------------------------------------------*/
+    //     /*--------------- declare tow strings to store the results ------*/
+    //     std::string res, res1;
+    //     /*--------------------------------------------------------*/
+    //     for (ft::Vector<char>::iterator it = v1.begin(); it != v1.end(); ++it) // fill res from v1
+    //         res += *it;
 
-        for (ft::Vector<char>::iterator it = copy_v.begin(); it != copy_v.end(); ++it) // fill res from copy_v
-            res1 += *it;
-        EQUAL(res == res1);
-    }
+    //     for (ft::Vector<char>::iterator it = copy_v.begin(); it != copy_v.end(); ++it) // fill res from copy_v
+    //         res1 += *it;
+    //     EQUAL(res == res1);
+    // }
 //     /*------------------------------------------ = operator tests --------------------------------------------------------------------------------------------*/
 //     /*------------------------------------------ test 1 : test with equale size vecotrs ----------------------------------------------------------------------*/
 //     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " = operator (lhs.size = rhs.size) "

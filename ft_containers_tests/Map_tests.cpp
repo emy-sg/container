@@ -357,79 +357,79 @@ void const_iterator_tests(void)
     EQUAL(*my_it != *tmp && *my_it == *(my_m.begin()));
 }
 
-// void reverse_iterator_tests(void)
-// {
-//     /*------------ std::reverse_iterator ---------*/
-//     std::map<int, char> m;
-//     for (int i = 0; i < 1e2; i++)
-//         m.insert(std::make_pair(i, 'A'));
+void reverse_iterator_tests(void)
+{
+    /*------------ std::reverse_iterator ---------*/
+    std::map<int, char> m;
+    for (int i = 0; i < 1e2; i++)
+        m.insert(std::make_pair(i, 'A'));
 
-//     std::reverse_iterator<std::map<int, char>::iterator> rit(m.end()), rit_1(--m.end());
+    std::reverse_iterator<std::map<int, char>::iterator> rit(m.end()), rit_1(--m.end());
 
-//     ft::reverse_iterator<std::map<int, char>::iterator> my_rit(m.end()), my_rit1(--m.end());
-//     /*----------------------------------*/
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         ft::reverse_iterator<std::map<int, char>::iterator> ob(my_rit);
-//         EQUAL(*my_rit == *ob);
-//     }
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " riterator to const_riterator "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         ft::Map<int, char> my_m;
-//         for (int i = 0; i < 1e2; i++)
-//             my_m.insert(ft::make_pair(i, 'A'));
+    ft::reverse_iterator<std::map<int, char>::iterator> my_rit(m.end()), my_rit1(--m.end());
+    /*----------------------------------*/
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
+              << "] --------------------]\t\t\033[0m";
+    {
+        ft::reverse_iterator<std::map<int, char>::iterator> ob(my_rit);
+        EQUAL(*my_rit == *ob);
+    }
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " riterator to const_riterator "
+              << "] --------------------]\t\t\033[0m";
+    {
+        ft::Map<int, char> my_m;
+        for (int i = 0; i < 1e2; i++)
+            my_m.insert(ft::make_pair(i, 'A'));
 
-//         ft::Map<int, char>::reverse_iterator my_rit2(my_m.end());
-//         ft::Map<int, char>::const_reverse_iterator c_it, c_ob(my_m.end());
-//         c_it = my_rit2;
-//         EQUAL(my_rit2->first == c_it->first && my_rit2->first == c_ob->first);
-//     }
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " base function "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((rit->first == (rit_1.base()->first)) && (my_rit->first == my_rit1.base()->first));
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((rit == rit_1) == (my_rit == my_rit1));
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " != operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((rit != rit_1) == (my_rit != my_rit1));
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -> operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL(((my_rit->first == (--m.end())->first) && ((my_rit->first) == ((--m.end())->first))) && ((rit->first == (--m.end())->first) && ((rit->first) == ((--m.end())->first))));
+        ft::Map<int, char>::reverse_iterator my_rit2(my_m.end());
+        ft::Map<int, char>::const_reverse_iterator c_it, c_ob(my_m.end());
+        c_it = my_rit2;
+        EQUAL(my_rit2->first == c_it->first && my_rit2->first == c_ob->first);
+    }
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " base function "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((rit->first == (rit_1.base()->first)) && (my_rit->first == my_rit1.base()->first));
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((rit == rit_1) == (my_rit == my_rit1));
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " != operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((rit != rit_1) == (my_rit != my_rit1));
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -> operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL(((my_rit->first == (--m.end())->first) && ((my_rit->first) == ((--m.end())->first))) && ((rit->first == (--m.end())->first) && ((rit->first) == ((--m.end())->first))));
 
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " * operator "
-//               << "] --------------------]\t\t\033[0m";
-//     EQUAL((((*my_rit).first == (*(--m.end())).first) && (((*my_rit).first) == ((*(--m.end())).first))) && (((*rit).first == (*(--m.end())).first) && ((*(rit)).first) == ((*(--m.end())).first)));
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " * operator "
+              << "] --------------------]\t\t\033[0m";
+    EQUAL((((*my_rit).first == (*(--m.end())).first) && (((*my_rit).first) == ((*(--m.end())).first))) && (((*rit).first == (*(--m.end())).first) && ((*(rit)).first) == ((*(--m.end())).first)));
 
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " ++rit operator "
-//               << "] --------------------]\t\t\033[0m";
-//     ++my_rit; // I incremented here to make sure that the object changes
-//     ++rit;
-//     EQUAL(&(*my_rit) == &(*my_rit1)) && (&(*rit) == &(*rit_1));
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " --rit operator "
-//               << "] --------------------]\t\t\033[0m";
-//     --my_rit; // I incremented here to make sure that the object changes
-//     --rit;
-//     EQUAL((my_rit->first == (--my_rit1)->first) && (rit->first == (--rit_1)->first));
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rit++ operator "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         std::reverse_iterator<std::map<int, char>::iterator> tmp(rit++);
-//         ft::reverse_iterator<std::map<int, char>::iterator> my_tmp(my_rit++);
-//         EQUAL(tmp->first == (--rit)->first && my_tmp->first == (--my_rit)->first);
-//     }
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rit-- operator "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         rit++;
-//         my_rit++;
-//         std::reverse_iterator<std::map<int, char>::iterator> tmp(rit--);
-//         ft::reverse_iterator<std::map<int, char>::iterator> my_tmp(my_rit--);
-//         EQUAL(tmp->first == (++rit)->first && my_tmp->first == (++my_rit)->first);
-//     }
-// }
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " ++rit operator "
+              << "] --------------------]\t\t\033[0m";
+    ++my_rit; // I incremented here to make sure that the object changes
+    ++rit;
+    EQUAL(&(*my_rit) == &(*my_rit1)) && (&(*rit) == &(*rit_1));
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " --rit operator "
+              << "] --------------------]\t\t\033[0m";
+    --my_rit; // I incremented here to make sure that the object changes
+    --rit;
+    EQUAL((my_rit->first == (--my_rit1)->first) && (rit->first == (--rit_1)->first));
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rit++ operator "
+              << "] --------------------]\t\t\033[0m";
+    {
+        std::reverse_iterator<std::map<int, char>::iterator> tmp(rit++);
+        ft::reverse_iterator<std::map<int, char>::iterator> my_tmp(my_rit++);
+        EQUAL(tmp->first == (--rit)->first && my_tmp->first == (--my_rit)->first);
+    }
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rit-- operator "
+              << "] --------------------]\t\t\033[0m";
+    {
+        rit++;
+        my_rit++;
+        std::reverse_iterator<std::map<int, char>::iterator> tmp(rit--);
+        ft::reverse_iterator<std::map<int, char>::iterator> my_tmp(my_rit--);
+        EQUAL(tmp->first == (++rit)->first && my_tmp->first == (++my_rit)->first);
+    }
+}
 
 void testConstructors()
 {
@@ -1054,140 +1054,140 @@ void testConstructors()
 //     }
 // }
 
-// void testCapacityMethods()
-// {
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " size method "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         /*-------------------------------------- time limit test -----------------------------------*/
-//         {
-//             time_t start, end, diff;
-//             /*------------------ std::maps ---------------------*/
-//             std::map<int, std::string> m1;
-//             ft::Map<int, std::string> ft_m1;
-//             for (size_t i = 0; i < 1e6; i++)
-//             {
-//                 m1.insert(std::make_pair(i, "string2"));
-//                 ft_m1.insert(ft::make_pair(i, "string2"));
-//             }
+void testCapacityMethods()
+{
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " size method "
+              << "] --------------------]\t\t\033[0m";
+    {
+        /*-------------------------------------- time limit test -----------------------------------*/
+        {
+            time_t start, end, diff;
+            /*------------------ std::maps ---------------------*/
+            std::map<int, std::string> m1;
+            ft::Map<int, std::string> ft_m1;
+            for (size_t i = 0; i < 1e6; i++)
+            {
+                m1.insert(std::make_pair(i, "string2"));
+                ft_m1.insert(ft::make_pair(i, "string2"));
+            }
 
-//             start = get_time();
-//             m1.size();
-//             end = get_time();
-//             diff = end - start;
-//             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
-//             /*-----------------------------------------------------*/
-//             /*------------------ ft::Maps ---------------------*/
-//             ualarm(diff * 1e3, 0);
-//             ft_m1.size();
-//             ualarm(0, 0);
-//             /*----------------------------------------------------*/
-//         }
-//         /*------------------------------------------------------------------------------------------*/
-//         /*------------------ std::maps ---------------------*/
-//         std::map<int, std::string> m1; // fill constructor
-//         ft::Map<int, std::string> ft_m1;
-//         for (size_t i = 0; i < 10; i++)
-//         {
-//             m1.insert(std::make_pair(i, "string2"));
-//             ft_m1.insert(ft::make_pair(i, "string2"));
-//         }
+            start = get_time();
+            m1.size();
+            end = get_time();
+            diff = end - start;
+            diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
+            /*-----------------------------------------------------*/
+            /*------------------ ft::Maps ---------------------*/
+            ualarm(diff * 1e3, 0);
+            ft_m1.size();
+            ualarm(0, 0);
+            /*----------------------------------------------------*/
+        }
+        /*------------------------------------------------------------------------------------------*/
+        /*------------------ std::maps ---------------------*/
+        std::map<int, std::string> m1; // fill constructor
+        ft::Map<int, std::string> ft_m1;
+        for (size_t i = 0; i < 10; i++)
+        {
+            m1.insert(std::make_pair(i, "string2"));
+            ft_m1.insert(ft::make_pair(i, "string2"));
+        }
 
-//         std::map<int, std::string> m2;                         // empty constructor
-//         std::map<int, std::string> m3(m1.begin(), m1.end());   // range constructor with normal iterators
-//         std::map<int, std::string> m4(m3);                     // copy constructor
-//         std::map<int, std::string> m5(m1.rbegin(), m1.rend()); // range constructor with reverse iterators
-//         /*-----------------------------------------------------*/
-//         /*------------------ ft::Maps ---------------------*/
-//         ft::Map<int, std::string> ft_m2;
-//         ft::Map<int, std::string> ft_m3(ft_m1.begin(), ft_m1.end());
-//         ft::Map<int, std::string> ft_m4(ft_m1);
-//         ft::Map<int, std::string> ft_m5(ft_m1.rbegin(), ft_m1.rend());
-//         /*----------------------------------------------------*/
-//         EQUAL(m1.size() == ft_m1.size() && m2.size() == ft_m2.size() && m3.size() == ft_m3.size() && m5.size() == ft_m5.size() && m4.size() == ft_m4.size());
-//     }
+        std::map<int, std::string> m2;                         // empty constructor
+        std::map<int, std::string> m3(m1.begin(), m1.end());   // range constructor with normal iterators
+        std::map<int, std::string> m4(m3);                     // copy constructor
+        std::map<int, std::string> m5(m1.rbegin(), m1.rend()); // range constructor with reverse iterators
+        /*-----------------------------------------------------*/
+        /*------------------ ft::Maps ---------------------*/
+        ft::Map<int, std::string> ft_m2;
+        ft::Map<int, std::string> ft_m3(ft_m1.begin(), ft_m1.end());
+        ft::Map<int, std::string> ft_m4(ft_m1);
+        ft::Map<int, std::string> ft_m5(ft_m1.rbegin(), ft_m1.rend());
+        /*----------------------------------------------------*/
+        EQUAL(m1.size() == ft_m1.size() && m2.size() == ft_m2.size() && m3.size() == ft_m3.size() && m5.size() == ft_m5.size() && m4.size() == ft_m4.size());
+    }
 
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " empty method "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         std::map<int, std::string> m1;
-//         std::map<int, std::string> m2;
-//         ft::Map<int, std::string> ft_m1;
-//         ft::Map<int, std::string> ft_m2;
-//         m1[0] = "stringsrtring";
-//         ft_m1[0] = "stringsrtring";
-//         EQUAL(m1.empty() == ft_m1.empty() && m2.empty() == ft_m2.empty());
-//     }
-// }
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " empty method "
+              << "] --------------------]\t\t\033[0m";
+    {
+        std::map<int, std::string> m1;
+        std::map<int, std::string> m2;
+        ft::Map<int, std::string> ft_m1;
+        ft::Map<int, std::string> ft_m2;
+        m1[0] = "stringsrtring";
+        ft_m1[0] = "stringsrtring";
+        EQUAL(m1.empty() == ft_m1.empty() && m2.empty() == ft_m2.empty());
+    }
+}
 
-// void testElementAccess()
-// {
-//     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator [] "
-//               << "] --------------------]\t\t\033[0m";
-//     {
-//         {
-//             time_t start, end, diff;
-//             /*------------------ std::maps ---------------------*/
-//             std::map<int, std::string> m1;
-//             ft::Map<int, std::string> ft_m1;
+void testElementAccess()
+{
+    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator [] "
+              << "] --------------------]\t\t\033[0m";
+    {
+        {
+            time_t start, end, diff;
+            /*------------------ std::maps ---------------------*/
+            std::map<int, std::string> m1;
+            ft::Map<int, std::string> ft_m1;
 
-//             for (size_t i = 0; i < 1e6; i++)
-//             {
-//                 m1.insert(std::make_pair(i, "string2"));
-//                 ft_m1.insert(ft::make_pair(i, "string2"));
-//             }
-//             start = get_time();
-//             m1[1e6] = "string";
-//             end = get_time();
-//             diff = end - start;
-//             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
-//             /*-----------------------------------------------------*/
-//             /*------------------ ft::Maps ---------------------*/
-//             ualarm(diff * 1e3, 0);
-//             ft_m1[1e6] = "string";
-//             ualarm(0, 0);
-//             /*----------------------------------------------------*/
-//             /*------------------ std::maps ---------------------*/
-//             start = get_time();
-//             m1[1e6 - 100] = "string";
-//             end = get_time();
-//             diff = end - start;
-//             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
-//             /*-----------------------------------------------------*/
-//             /*------------------ ft::Maps ---------------------*/
-//             ualarm(diff * 1e3, 0);
-//             ft_m1[1e6 - 100] = "string";
-//             ualarm(0, 0);
-//             /*----------------------------------------------------*/
-//             /*------------------ std::maps ---------------------*/
-//             start = get_time();
-//             m1[1e6 - 100] = m1[1e5];
-//             end = get_time();
-//             diff = end - start;
-//             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
-//             /*-----------------------------------------------------*/
-//             /*------------------ ft::Maps ---------------------*/
-//             ualarm(diff * 1e3, 0);
-//             ft_m1[1e6 - 100] = ft_m1[1e5];
-//             ualarm(0, 0);
-//             /*----------------------------------------------------*/
-//         }
-//         std::map<char, std::string> m;
-//         ft::Map<char, std::string> ft_m;
+            for (size_t i = 0; i < 1e6; i++)
+            {
+                m1.insert(std::make_pair(i, "string2"));
+                ft_m1.insert(ft::make_pair(i, "string2"));
+            }
+            start = get_time();
+            m1[1e6] = "string";
+            end = get_time();
+            diff = end - start;
+            diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
+            /*-----------------------------------------------------*/
+            /*------------------ ft::Maps ---------------------*/
+            ualarm(diff * 1e3, 0);
+            ft_m1[1e6] = "string";
+            ualarm(0, 0);
+            /*----------------------------------------------------*/
+            /*------------------ std::maps ---------------------*/
+            start = get_time();
+            m1[1e6 - 100] = "string";
+            end = get_time();
+            diff = end - start;
+            diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
+            /*-----------------------------------------------------*/
+            /*------------------ ft::Maps ---------------------*/
+            ualarm(diff * 1e3, 0);
+            ft_m1[1e6 - 100] = "string";
+            ualarm(0, 0);
+            /*----------------------------------------------------*/
+            /*------------------ std::maps ---------------------*/
+            start = get_time();
+            m1[1e6 - 100] = m1[1e5];
+            end = get_time();
+            diff = end - start;
+            diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
+            /*-----------------------------------------------------*/
+            /*------------------ ft::Maps ---------------------*/
+            ualarm(diff * 1e3, 0);
+            ft_m1[1e6 - 100] = ft_m1[1e5];
+            ualarm(0, 0);
+            /*----------------------------------------------------*/
+        }
+        std::map<char, std::string> m;
+        ft::Map<char, std::string> ft_m;
 
-//         m['a'] = "an element";
-//         m['b'] = "another element";
-//         m['c'] = m['b'];
-//         m['a'] = "test";
+        m['a'] = "an element";
+        m['b'] = "another element";
+        m['c'] = m['b'];
+        m['a'] = "test";
 
-//         ft_m['a'] = "an element";
-//         ft_m['b'] = "another element";
-//         ft_m['c'] = ft_m['b'];
-//         ft_m['a'] = "test";
+        ft_m['a'] = "an element";
+        ft_m['b'] = "another element";
+        ft_m['c'] = ft_m['b'];
+        ft_m['a'] = "test";
 
-//         EQUAL(m['a'] == ft_m['a'] && m['b'] == ft_m['b'] && m['c'] == ft_m['c'] && m.size() == ft_m.size());
-//     }
-// }
+        EQUAL(m['a'] == ft_m['a'] && m['b'] == ft_m['b'] && m['c'] == ft_m['c'] && m.size() == ft_m.size());
+    }
+}
 
 void testModifiers()
 {
@@ -2226,21 +2226,21 @@ int main()
     //TEST_CASE(reverse_iterator_tests);
     std::cout << std::endl;
 
-    // std::cout << YELLOW << "Testing Constructors;" << RESET << std::endl;
-    // TEST_CASE(testConstructors);
-    // std::cout << std::endl;
+    std::cout << YELLOW << "Testing Constructors;" << RESET << std::endl;
+    TEST_CASE(testConstructors);
+    std::cout << std::endl;
 
     // std::cout << YELLOW << "Testing Iterator Methods;" << RESET << std::endl;
     // TEST_CASE(testIterators);
     // std::cout << std::endl;
 
-    // std::cout << YELLOW << "Testing Capacity Methods;" << RESET << std::endl;
-    // TEST_CASE(testCapacityMethods)
-    // std::cout << std::endl;
+    std::cout << YELLOW << "Testing Capacity Methods;" << RESET << std::endl;
+    TEST_CASE(testCapacityMethods)
+    std::cout << std::endl;
 
-    // std::cout << YELLOW << "Testing Access Element Methods; " << RESET << std::endl;
-    // TEST_CASE(testElementAccess);
-    // std::cout << std::endl;
+    std::cout << YELLOW << "Testing Access Element Methods; " << RESET << std::endl;
+    TEST_CASE(testElementAccess);
+    std::cout << std::endl;
 
     std::cout << YELLOW << "Testing Modifiers Methods;" << RESET << std::endl;
     TEST_CASE(testModifiers)
