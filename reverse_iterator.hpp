@@ -107,7 +107,7 @@ namespace ft {
             my_ReverseIterator operator+=(difference_type n) const;
         */
     reverse_iterator operator+=(difference_type n) {
-        _iterator += n;
+        _iterator -= n;
         return *this;
     }
     // 4- operator-=(difference_type n) : 
@@ -115,7 +115,7 @@ namespace ft {
             my_ReverseIterator operator-=(difference_type n) const;
         */
     reverse_iterator operator-=(difference_type n) {
-        _iterator -= n;
+        _iterator += n;
         return *this;
     }
 
@@ -162,7 +162,7 @@ namespace ft {
         friend my_ReverseIterator<value_type> operator+(difference_type n, const my_ReverseIterator<value_type>& iter);
     */
     friend reverse_iterator operator+(difference_type n, const reverse_iterator& iter) {
-        return (iter - n);
+        return (iter + n -1);
     }
     // -------------------------------------------
 
@@ -183,7 +183,7 @@ namespace ft {
     */
     friend difference_type operator-(const reverse_iterator& lhs, const reverse_iterator& rhs) {
         //std::cout << "operator - \n";
-        return std::distance(rhs._iterator, lhs._iterator);  // distance(first, last) = last - first; ==> (rhs, lhs) = lhs - rhs;
+        return std::distance(lhs._iterator, rhs._iterator);  // distance(first, last) = last - first; ==> (rhs, lhs) = lhs - rhs;
     }
     // ---------------------------------------------
 

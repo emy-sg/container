@@ -1,20 +1,23 @@
 # ifndef MAP_HPP
 #define MAP_HPP
 
+#include "../pair.hpp"
 #include "RBTree.hpp"
 #include "iterator.hpp"
-#include "node.hpp"
 #include "../reverse_iterator.hpp"
-#include <cstddef>
-#include <stdexcept>
-#include <utility>
-#include "../pair.hpp"
-#include <cstddef>
-#include <memory.h>
+// #include <cstddef>
+// #include <stdexcept>
+// #include <utility>
+// #include <cstddef>
+// #include <memory.h>
 
 namespace ft {
 
-template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator< std::pair<const Key, T> > >
+template <
+	class Key,
+	class T,
+	class Compare = std::less<Key>,
+	class Alloc = std::allocator< std::pair<const Key, T> > >
 class Map {
 
 // --------------------------- 1- Members Types are public ------------------------------
@@ -24,84 +27,70 @@ class Map {
         typedef Key key_type;
         typedef T   mapped_type;
         typedef ft::pair<const key_type, mapped_type>  value_type;
-        typedef std::size_t size_type;
-        typedef std::ptrdiff_t difference_type;
-        typedef Compare key_compare;
 
+		typedef std::size_t size_type;
+        typedef std::ptrdiff_t difference_type;
+
+        typedef Compare key_compare;
         typedef Alloc allocator_type;
 
         typedef value_type& reference;
         typedef const value_type& const_reference;
+
         typedef typename allocator_type::pointer pointer;
         typedef typename allocator_type::const_pointer const_pointer;
 
-	void call_print() {
-		_Tree.printTree();
-	}
+		/*
+	  		template <class Key, class T, class Compare, class Alloc>
+		  class map<Key,T,Compare,Alloc>::value_compare
+		*/
+
+		class value_compare
+    	{   
+        	friend class Map;
+      		
+			protected:
+        		Compare comp;
+        		value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+      		
+			public:
+
+        	typedef bool result_type;
+        	typedef value_type first_argument_type;
+        	typedef value_type second_argument_type;
+        	bool operator() (const value_type& x, const value_type& y) const
+        	{
+          	return comp(x.first, y.first);
+        	}
+    };
 
 // --------------------------- 2- Private attributes ------------------------------------
 
 	private:
-    // Idk why: when I use pointer to _Tree* ==> I get segmentation dump
-        RBTree<key_type, value_type, allocator_type> _Tree;
-		allocator_type _alloc;
-		key_compare _compare; 
+	
+		RBTree<key_type, value_type, allocator_type> _Tree; // Idk why: when I use pointer to _Tree* ==> I get segmentation dump
+		allocator_type _alloc;  // type of allocator used in this map
+		key_compare _compare;	// type of comparetor used in this map
 
-//	------------------------- 3- Public Member Functions of Map -------------------------
 
-	public:
 
-	//key_compare key_comp() const ==> Returns a copy of the comparison object used by the container to compare keys.
-	// key_compare key_comp() const {
-	// 	return _compare();
-	// }
+public: // ===> 3- Public Member Methods of Map 
 
-	// value_compare value_comp() const; ==> Returns a comparison object that can be used to compare two elements to get whether the key of the first one goes before the second.	
-	// value_compare value_comp() const {
-	// 	return key_type();
-	// }
+//	-------------------------- 3.1- Canonical Form of map ---------------------------------
 
- // Returns a copy of the allocator object associated with the map.
-	allocator_type get_allocator() const { return allocator_type(); }
-
-// -------------------------- 4- Member Class [implement value_compare] -----------------
-
-    //   template <class Key, class T, class Compare, class Alloc>
-    //   class map<Key,T,Compare,Alloc>::value_compare
-
-	class value_compare
-    {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
-        friend class map;
-      		
-		protected:
-        	Compare comp;
-        	value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
-      		
-		public:
-
-        typedef bool result_type;
-        typedef value_type first_argument_type;
-        typedef value_type second_argument_type;
-        bool operator() (const value_type& x, const value_type& y) const
-        {
-          return comp(x.first, y.first);
-        }
-    };
-
-//	-------------------------- 5- Canonical Form of map ---------------------------------
-
-    explicit Map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {
-        //std::cout << "Default constructor of map\n";
-		_compare = comp;
-		_alloc = alloc;
-    }
-    ~Map() {
-        //std::cout << "Map destructor\n";
+	explicit Map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _compare(comp)
+	{
+		//std::cout << "Default constructor of map\n";
+	}
+	
+	~Map()
+	{
+		//std::cout << "Map destructor\n";
 		clear();
-    }
+	}
 
 	template <class InputIterator>
-	Map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+	Map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _compare(comp)
 	{
 		while (first != last)
 			insert(*(first++));
@@ -124,7 +113,39 @@ class Map {
 		return *this;
 	}
 
-// --------------------------- 6- size() and max_size() ---------------------------------
+// --------------------------- 3.2- get_allocator(), key_comp(), value_comp() -------------
+
+	// -------------------- get_allocator() --------------
+	/*
+		Returns a copy of the allocator object associated with the map.
+	*/
+
+	allocator_type get_allocator() const {
+		return _alloc;
+	}
+
+	// -------------------- key_comp() --------------
+	/*
+		key_comp() : return "key comparison" object.
+	*/
+	//key_compare key_comp() const ==> Returns a copy of the comparison object used by the container to compare keys.
+
+	key_compare key_comp() const {
+		return _compare;
+	}
+
+	// ------------------- value_comp() --------------
+	/*
+		value_comp(): return value_comp() object.
+		==> An object of the class that we had just declared inside the class
+	*/
+	// value_compare value_comp() const;
+
+	value_compare value_comp() const {
+		return value_compare(_compare);
+	}
+
+// --------------------------- 3.3- size() and max_size() ---------------------------------
 
     // 1- std::map::empty() ==> [bool empty() const;]
     bool empty() const {
@@ -138,17 +159,21 @@ class Map {
     }
     // 3- std::map::max_size() 
 
-//  -------------------------- 7- Public Typedef of Iterator ----------------------------
+//  -------------------- 3.4- Typedef of Iterator [begin(), end()] ------------------------
 
-	public:
-		// typedef typename ft::Iterator_map<RBTree<key_type, value_type, allocator_type>, value_type > iterator;
-		// typedef typename ft::Iterator<RBTree<key_type, value_type, allocator_type>, value_type > iterator;
-		// typedef typename ft::Iterator<RBTree<key_type, value_type, allocator_type>, const value_type > const_iterator;
+	/*
+		typedef typename ft::Iterator_map<RBTree<key_type, value_type, allocator_type>, value_type > iterator;
+		typedef typename ft::Iterator<RBTree<key_type, value_type, allocator_type>, value_type > iterator;
+		typedef typename ft::Iterator<RBTree<key_type, value_type, allocator_type>, const value_type > const_iterator;
+	*/
+	
+	typedef typename ft::Iterator<value_type> iterator;
+	typedef typename ft::Iterator<const value_type> const_iterator;
 
-		typedef typename ft::Iterator<value_type> iterator;
-		typedef typename ft::Iterator<const value_type> const_iterator;
-
-//	-------------------------- 8- begin() and end() -------------------------------------
+	/*
+		Returns an iterator referring to the first element in the map container.
+	*/
+	// iterator begin();
 	iterator begin() {
 		//return _Tree.get_begin();
     	return iterator(_Tree.get_end(), _Tree.get_begin());
@@ -159,6 +184,10 @@ class Map {
 		return const_iterator((Node<const value_type>*)_Tree.get_end(), (Node<const value_type>*)_Tree.get_begin());
 	}
 
+	/*
+		Returns an iterator referring to the past-the-end element in the map container
+	*/
+	// iterator end();
 	iterator end() {
 		//return _Tree.get_end();
     	return iterator(_Tree.get_end(), _Tree.get_end());
@@ -169,10 +198,14 @@ class Map {
     	return const_iterator((Node<const value_type>*)_Tree.get_end(), (Node<const value_type>*)_Tree.get_end());
 	}
 
-// 2- Reverse_iterator:
+//  ------------------ 3.5- Typedef of reverse_iterator [rbegin(), rend()]--------------------
+	
 	typedef ft::reverse_iterator<iterator> reverse_iterator;
 	typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator;
 
+	/*
+		Returns a reverse iterator pointing to the last element in the container (reverse beginning).
+	*/
 	//reverse_iterator rbegin();
 	reverse_iterator rbegin() {
 	    return reverse_iterator(end());
@@ -182,6 +215,9 @@ class Map {
 	    return const_reverse_iterator(end());
 	}
 
+	/*
+		Returns a reverse iterator pointing to the theoretical element before the first element in the map container (reverse end).
+	*/
 	//reverse_iterator rbegin();
 	reverse_iterator rend() {
 	    return reverse_iterator(begin());
@@ -191,27 +227,18 @@ class Map {
 	    return const_reverse_iterator(begin());
 	}
 
-//	-------------------------- 9- Accessors at() && operator[] --------------------------
+//	-------------------------- 3.6- Accessors at() && operator[] --------------------------
 
  // 1- std::map::at
 
-	// 1.1- mapped_type& at(const key_type& key);	
 	/*
     	Returns a reference to the mapped value of the element identified with key.
     	if(key) does not match the key of any element the function throws an
 		"out_of_range" exception.
   	*/
-
+	// mapped_type& at(const key_type& key);	
     mapped_type& at(const key_type& key) {
 		iterator iter;
-		
-		/*
-		    std::map<int, int> m;
-    		m.at(9);
-				//	-------- VS -----------------
-			ft::Map<int, int> m;
-    		m.at(9);
-		*/
 
 		iter = find(key);
 		if (iter == end())
@@ -219,10 +246,18 @@ class Map {
 		return (*iter).second;
 	}	
     
-	// 1.2- const mapped_type& at(const key_type& key) const;
-	//const mapped_type& at(const key_type& key) const {}
+	// const mapped_type& at(const key_type& key) const;
+	const mapped_type& at(const key_type& key) const {
+		iterator iter;
 
- // 2- std::map::[] aka [ mapped_type& operator[](const key_type& key); ]
+		iter = find(key);
+		if (iter == end())
+			throw std::out_of_range("map::at");
+		return (*iter).second;
+	}
+
+ // 2- std::map::[]
+
   	/*
      	if (key) matches the key of an element in the container, the function returns
         	a reference to its mapped value.
@@ -230,6 +265,7 @@ class Map {
 	   		The function insert a new element with that key, with no default initializer of value_type 
 			and returns a reference to its mapped_value.
   	*/
+	// mapped_type& operator[](const key_type& key);
     mapped_type& operator[](const key_type& key) {
     	iterator iter;
 		
@@ -247,11 +283,11 @@ class Map {
 		}
     }
 
-//	------------------------ 10- find(), count(), lower/uperbound(), equal_range() ------
+//	------------------------ 3.7- find(), count(), lower/uperbound(), equal_range() -------
  
  // 4- std::map::find() 
 
-    // 4.1- iterator find(const key_type& k);
+    // iterator find(const key_type& k);
     iterator find(const key_type& k) {
         Node<value_type>* node;
         iterator it;
@@ -271,15 +307,37 @@ class Map {
 		//std::cout << "\n The content of the iterator in find() method " << it->first << " | " << it->second << "\n";
         return it;
     }
-    // 4.2- const_iterator find(const key_type& k) const;
+
+    // const_iterator find(const key_type& k) const;
+	const_iterator find(const key_type& k) const {
+		Node<value_type>* node;
+        const_iterator it;
+
+
+		//std::cout <<  "--------------------------- Lets search for this Key ==> " << k << " --------------------------------------\n";
+        node = _Tree.searchByKey(k);
+		//std::cout << " --------------------------- search done -------------------------------------------------- \n";
+        if (!node)
+		{
+			//std::cout << "=====> NOOO node find() WITH THAT KEY ==> " << k << "\n\n";
+            return (this->end()); // return _end_node
+		}
+		//std::cout << "=====> Node find() WITH THAT KEY ==> " << k << " " << node << "\n\n";
+		//node->printNode();
+        it = const_iterator(_Tree.get_end(), node);//it = node; // Is this construct from node to Iterator and How ????????????
+		//std::cout << "\n The content of the iterator in find() method " << it->first << " | " << it->second << "\n";
+        return it;
+	}
 
  // 5- std::map::count()
+
 	/*
 		Searches in the container for the elements with a key equivalent to K.
 
 		And because all elements in a map container have unique key, the fct can only
 			return 1 (if the element is found) or zero (otherwise);
 	*/
+	
 	// size_type count (const key_type& k) const;
 	size_type count (const key_type& k) const {
 		if (_Tree.searchByKey(k) == NULL)
@@ -288,10 +346,12 @@ class Map {
 	}
 
  // 6- std::map::upper_bound
+
 	/*
 		Returns an iterator pointing to the first element that is greater than key.
 		==> If no such element is found, past-the-end (end() iterator) is returned.
 	*/
+
 	// iterator upper_bound( const Key& key );
 	iterator upper_bound( const Key& key ) {
 		Node<value_type>* node;
@@ -301,14 +361,25 @@ class Map {
 			return iterator(_Tree.get_end(), _Tree.next_node(node));
 		return end();
 	}
+
 	// const_iterator upper_bound( const Key& key ) const;
+	const_iterator upper_bound( const Key& key ) const {
+		Node<value_type>* node;
+
+		node = _Tree.searchByKey(key);
+		if (node)
+			return iterator(_Tree.get_end(), _Tree.next_node(node));
+		return end();
+	}
 
  // 7- std::map::lower_bound
+
 	/*
 		Returns an iterator pointing to the first element that is not less than key
 				aka greater or equal to key
 		==> If no such element is found, past-the-end (end() iterator) is returned.
 	*/
+
 	//iterator lower_bound( const Key& key );
 	iterator lower_bound( const Key& key ) {
 		Node<value_type>* node;
@@ -318,11 +389,23 @@ class Map {
 		{
 			return iterator(_Tree.get_end(), node);
 		}
-		return end();;
+		return end();
 	}
+
 	//const_iterator lower_bound( const Key& key ) const;
+	const_iterator lower_bound( const Key& key ) const {
+		Node<value_type>* node;
+
+		node = _Tree.searchByKey(key);
+		if (node)
+		{
+			return iterator(_Tree.get_end(), node);
+		}
+		return end();
+	}
 
  // 8- std::map::equal_range
+
 	/*
 		Returns the bounds of a range includes the elements in the container.
 			aka [lower_bound, upper_bound]
@@ -330,13 +413,19 @@ class Map {
 		==> If no matches are found, the range returned has a length of zero,
 			with both iterators pointing to the first element thas has a key
 	*/
+
 	//pair<iterator,iterator> equal_range (const key_type& k);
 	ft::pair<iterator,iterator> equal_range (const key_type& k) {
 		return ft::make_pair(lower_bound(), upper_bound());
 	}
-	//pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 
-//	-------------------------- 11- Methods insert(), erase() ----------------------------
+	//pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
+	ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+		return ft::make_pair(lower_bound(), upper_bound());
+	}
+
+//	-------------------------- 3.8- Methods insert(), erase() -----------------------------
+ 
  // 11- std::map::insert
     
 	// 11.1- std::pair<iterator, bool> insert(const value_type& val);
@@ -405,19 +494,6 @@ class Map {
 		}
 		// std::cout << _Tree._end_node << "\n";
 		// _Tree._begin_node = &_Tree._end_node;
-		//  --------------------- OR ------------------------------
-		
-			// iterator iter;
-			// iter = first;
-			// int i = 0;
-			// while (iter != end)
-			// {
-			// 	std::cout << ++i << "\n";
-			// 	erase(iter);
-			// 	iter++;
-			// }
-			// std::cout << "AFTER deletion from begin to end\n";
-			// _Tree.printTree();
 	}
 
  // 7- clear
@@ -431,20 +507,19 @@ class Map {
 			erase(begin(), end());
 	}
 
-// 	--------------------------------- 12- swap() ----------------------------------------
-   	// void swap (vector& x);
+// 	----------------------------- 3.9- swap() ---------------------------------------------
+
 	/*
-		Exchanges the content of the container by the content of inst.
-			which is another map of the same type.
+		Exchanges the content of the container by the content of inst[which is another map of the same type]/
 
-		==> Notice that a non-member function exists with the same name,
-		==> Exchanges the contents of the container with those of other. Does not invoke any move, copy, or swap operations on individual elements.
-	
+		==> Notice that a non-member function exists with the same name.
+
 		P.S:
-			void swap( map& other );
-Exchanges the contents of the container with those of other. Does not invoke any move, copy, or swap operations on individual elements.
-
+			- Exchanges the contents of the container with those of "other".
+			==> Does not invoke any "move", "copy", or "swap operations on individual elements".
 	*/
+
+	// void swap (map& inst);
 	void swap(Map& inst) {
 
 		//std::swap(_alloc, inst._alloc);
@@ -466,6 +541,11 @@ Exchanges the contents of the container with those of other. Does not invoke any
 		_Tree.set_end(end);
 
 	}
+
+public:	// ===>  4- Friend Methods of Map
+
+
+
 };
 
 }

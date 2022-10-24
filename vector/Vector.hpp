@@ -20,41 +20,47 @@
 
 
 namespace ft {
-    template < class T, class Alloc = std::allocator<T> >
-    class Vector {
+    template <
+        class T,
+        class Alloc = std::allocator<T> >
+
+class Vector {
+    
     public:
-    // Member types
+
         typedef T value_type;
         typedef Alloc allocator_type;
         typedef typename allocator_type::reference reference;
         typedef typename allocator_type::const_reference const_reference;
         typedef typename allocator_type::pointer pointer;
         typedef typename allocator_type::const_pointer const_pointer;
-        // Iterator
-        //typedef my_RandomAccessIterator<value_type> iterator;
-        //typedef my_RandomAccessIterator<const value_type> const_iterator;
-        //typedef my_ReverseRandomAccessIterator<value_type> reverse_iterator;
-        //typedef my_ReverseRandomAccessIterator<const value_type> const_reverse_iterator;
-        // difference_type and size_type
         typedef std::ptrdiff_t difference_type;
         typedef size_t size_type;
 
     private:
+
         pointer _array; // value_type *_array;
         size_t _size;
         size_t _capacity;
+        allocator_type _alloc;
 
-    public:
+    public:   // Member Methods of Vector
 
-// 1- Iterator
+// ---------------------- 1- Iterator -------------------------------------------
 
         // The first implementation of iterator that works fine, ma5adamch m3a const iterator
         // typedef my_Iterator<value_type> iterator;
         // typedef my_Iterator<const value_type>  const_iterator;
 
-        // The second implementation of iterator that does not work
+        // The second implementation of iterator that didn't work in the first time, but now all it's good
         typedef my_Iterator<pointer> iterator;
         typedef my_Iterator<const_pointer>  const_iterator;     
+
+    //  -------------------------- [begin(), end()] ---------------------------------
+
+        /*
+            Returns an iterator pointing to the first element in the vector.
+        */
 
         // iterator begin();  
         iterator begin() {
@@ -65,8 +71,10 @@ namespace ft {
             return const_iterator(_array);
         }
 
-    // The past-the-end element is the theoretical element that would follow the last element in the vector. It does not point to any element, and thus shall not be dereferenced.
-
+        /*
+            Return:
+                The past-the-end element is the theoretical element that would follow the last element in the vector. It does not point to any element, and thus shall not be dereferenced.
+        */
         // iterator end();
         iterator end() {
             return _array + size(); // WHY NOT? return iterator(_array + size());
@@ -76,10 +84,12 @@ namespace ft {
             return const_iterator(_array + size());
         }
 
-// 2- Reverse_iterator:
+// --------------------- 2- Reverse_iterator ------------------------------------
 
         typedef ft::reverse_iterator<iterator> reverse_iterator;
         typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator; 
+
+        //  -------------------------- [rbegin(), rend()] ---------------------------------
 
         //reverse_iterator rbegin();
         reverse_iterator rbegin() {
@@ -99,13 +109,18 @@ namespace ft {
             return const_reverse_iterator(begin());
         }
 
-// 3- get_allocator(): returns a copy of the allocator object associated with the vector
-        allocator_type get_allocator() const
-        {
-            return allocator_type();
-        }
+// --------------------- 3- get_allocator() -------------------------------------
+
+    /*
+        Returns a copy of the allocator object associated with the vector
+    */
+ 
+    allocator_type get_allocator() const
+    {
+        return allocator_type();
+    }
         
-// 4- default constructor
+// --------------------- 4- default constructor ---------------------------------
         Vector() {
             //std::cout << "Default vector constructor\n";
             _size = 0;
@@ -188,7 +203,7 @@ namespace ft {
     
         }
 
-// 5- empty(), size(),capacity(), max_size()
+// ------- 5- empty(), size(),capacity(), max_size() ----------------------------
         bool empty() const {
             if (_size == 0)
                 return true;
@@ -207,7 +222,7 @@ namespace ft {
             return (9223372036854775807 / sizeof(value_type)); // suppose (2^64 -1) / sizeof()        }
         }
 
-// 6- Accessors: at, operator[], front(), back(), data()
+// ----- 6- Accessors: at, operator[], front(), back(), data() ------------------
 
  // 5.1- std::vector::operator[]
     /*
@@ -276,11 +291,11 @@ namespace ft {
     */
     // reference back();
     reference back() {
-        return _array[_size]; //
+        return _array[_size - 1]; //
     }
     // const_reference back() const;
     const_reference back() const {
-        return _array[_size]; // 
+        return _array[_size - 1]; // 
     }
 
  // 5.5- std::vector::data()
@@ -297,7 +312,7 @@ namespace ft {
         return _array;
     }
 
-// 7- reserve(), resize(), push_back, and pop_back
+// -------- 7- reserve(), resize(), push_back, and pop_back ---------------------
  
  // 6.1- void reserve(size_type n);
     /*
@@ -311,6 +326,7 @@ namespace ft {
 
         if (n > capacity())
         {
+            //std::cout << "reserve()\n";
             // if (n > max_size())
             //     throw std::length_error("");
             //else
@@ -320,7 +336,7 @@ namespace ft {
                 // 2- Construct:
                 for (size_type i = 0; i < size(); i++)
                     get_allocator().construct(arr+ i, _array[i]);
-                
+
                 // // 3- Destroy the other _array;
                 for (size_type i = 0; i < size(); i++)
                     get_allocator().destroy(_array + i);
@@ -332,6 +348,8 @@ namespace ft {
                 _capacity = n;
                 // 6- assign the new array to the _array
                 _array = arr;
+                
+                //std::cout << "After reserve ==> size: " << size() <<  " | capacity " << capacity() << "\n";
             }
         }
     }
@@ -340,10 +358,10 @@ namespace ft {
 
     /*
         Resizes the container so that it contains n elements.
-        if (n < size())
-            reduce the container to its n first element (using pop_back)
-        else
-            expend the container to n size by adding new element (using push_back)
+        if (n < size()) // n is smaller than the current size
+            reduce the container to its n first element (using pop_back aka destroy elemnents)
+        else // n is greater than the current size, 
+            expend the container to n size by adding new element at the end (using push_back)
     */
     void resize(size_type n, value_type val = value_type()) {
         // std::cout << "resize()\n";
@@ -351,11 +369,13 @@ namespace ft {
         //     return ;
         if (size() > n) // size > n value ==> pop_back()
         {
+            //std::cout << "case 1\n";
             while (size() > n)
                 pop_back();
         }
         else if (capacity() >= n) // capacity >= n value ==> construct new element
         {
+            //std::cout << "case 2\n";
             while (size() > n)
             {
                 get_allocator().construct(_array + _size, val);
@@ -369,8 +389,13 @@ namespace ft {
         }
         // if capacity < n ==> reserve(upgrade capacity) then construct
         else {
-            reserve(n);
-            while (size() > n)
+            //std::cout << "case 3\n";
+            if (capacity() % 2 == 0)
+                reserve(capacity() * 2);
+            else
+                reserve(n);
+            //std::cout << "size: " << size() << "\n";
+            while (size() < n)
             {
                 get_allocator().construct(_array, val);
                 _size++;
@@ -421,7 +446,7 @@ namespace ft {
         _size--;
     }
 
-// 8- erase (), clear()
+// --------------------- 8- erase (), clear() -----------------------------------
     /*
         Return an iterator pointing to the element that followed the element erased by the function.
         P.S:
@@ -460,7 +485,7 @@ namespace ft {
         erase(begin(), end());
     }
 
-// 9- Diff btw Assign() VS Insert()
+// --------------------- 9- Diff btw Assign() VS Insert() -----------------------
 
     /*
         With assign vector content, 
@@ -514,7 +539,7 @@ namespace ft {
 
     }
 
-// 10- swap
+// ---------------------- 10- swap ----------------------------------------------
 
     /*
     */

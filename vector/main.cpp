@@ -164,27 +164,77 @@ int main() {
 
     //////////////////////// reserve ----------------------------
 
-    std::cout << "Reserve\n";
-    ft::Vector<int> v;
-    std::vector<int> v1;
-    std::cout << v.size() << " | " <<  v.capacity() << "\n";
-    std::cout << v1.size() << " | " <<  v1.capacity() << "\n";
-     std::cout << "--------------------------\n";
-    v.reserve(5);
-    v1.reserve(5);
-    std::cout << v.size() << " | " <<  v.capacity() << "\n";
-    std::cout << v1.size() << " | " <<  v1.capacity() << "\n";
-    std::cout << "--------------------------\n";
-    v.clear();
-    v1.clear();
-    std::cout << v.size() << " | " <<  v.capacity() << "\n";
-    std::cout << v1.size() << " | " <<  v1.capacity() << "\n";
+    // std::cout << "Reserve\n";
+    // ft::Vector<int> v;
+    // std::vector<int> v1;
+
+    // v.push_back(1);
+    // v.push_back(2);
+    // v.push_back(3);
+    // v.push_back(4);
+
+    // v1.push_back(1);
+    // v1.push_back(2);
+    // v1.push_back(3);
+    // v1.push_back(4);
+
+    // std::cout << v.size() << " | " <<  v.capacity() << "\n";
+    // std::cout << v1.size() << " | " <<  v1.capacity() << "\n";
+    //  std::cout << "--------------------------\n";
+    // v.reserve(5);
+    // v1.reserve(5);
+    // std::cout << v.size() << " | " <<  v.capacity() << "\n";
+    // std::cout << v1.size() << " | " <<  v1.capacity() << "\n";
+    // std::cout << "--------------------------\n";
+    // v.clear();
+    // v1.clear();
+    // std::cout << v.size() << " | " <<  v.capacity() << "\n";
+    // std::cout << v1.size() << " | " <<  v1.capacity() << "\n";
 
     /////////////////////// resize --------------------------
 
-    std::cout << "\nResize\n";
+    // std::cout << "\nResize\n";
+    // ft::Vector<int> f;
+    // std::vector<int> f1;
+
+    // f.push_back(1);
+    // f.push_back(2);
+    // f.push_back(3);
+    // f.push_back(4);
+
+    // f1.push_back(1);
+    // f1.push_back(2);
+    // f1.push_back(3);
+    // f1.push_back(4);
+    
+    // std::cout << f.size() << " | " <<  f.capacity() << "\n";
+    // std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
+    //  std::cout << "--------------------------\n";
+    // f.resize(5, 1);
+    // f1.resize(5, 1);
+    // std::cout << f.size() << " | " <<  f.capacity() << "\n";
+    // std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
+    // std::cout << "--------------------------\n";
+    // f.clear();
+    // f1.clear();
+    // std::cout << f.size() << " | " <<  f.capacity() << "\n";
+    // std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
+
+    /////////////////// assign ------------------------------
+
+    std::cout << "\nAssign\n";
     ft::Vector<int> f;
     std::vector<int> f1;
+
+    f.push_back(1);
+    f.push_back(2);
+    f.push_back(3);
+    f.push_back(4);
+
+    f1.push_back(1);
+    f1.push_back(2);
+    f1.push_back(3);
+    f1.push_back(4);
     
     std::cout << f.size() << " | " <<  f.capacity() << "\n";
     std::cout << f1.size() << " | " <<  f1.capacity() << "\n";

@@ -22,7 +22,8 @@ class RBTree {
     private:
 		typedef ::Node<value_type> Node;
 		typedef typename ::Node<const typename ft::iterator_traits<value_type*>::value_type> constNode;
-		typedef typename alloc:: template rebind<Node> nodeAllocatorType;
+		// typedef typename alloc:: template rebind<Node> node_alloc;
+		// alloc _alloc;
 		size_t _size;
 		Node* _end_node; 		// We suppose that: Root = end_node->left_child
 		Node* _begin_node; // swap
