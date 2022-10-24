@@ -158,6 +158,12 @@ public: // ===> 3- Public Member Methods of Map
 	    return _Tree.getSize();
     }
     // 3- std::map::max_size() 
+	size_type max_size() const {
+        if (sizeof(value_type) == 1)
+            return (9223372036854775807);
+        else
+            return (_alloc.max_size());
+    }
 
 //  -------------------- 3.4- Typedef of Iterator [begin(), end()] ------------------------
 

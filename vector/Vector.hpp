@@ -9,7 +9,9 @@
 */
 #include "../reverse_iterator.hpp"
 #include "iterator.hpp"
+#include "../enable_if.hpp"
 #include <cstddef>
+#include <exception>
 #include <iostream>
 #include <memory.h>
 #include <stdexcept>
@@ -64,7 +66,7 @@ class Vector {
 
         // iterator begin();  
         iterator begin() {
-            return _array; // why not ? return iterator(_array);
+            return iterator(_array); // _array; // why not ? return iterator(_array);
         }
         // const_iterator begin()
         const_iterator begin() const {
@@ -77,7 +79,7 @@ class Vector {
         */
         // iterator end();
         iterator end() {
-            return _array + size(); // WHY NOT? return iterator(_array + size());
+            return iterator(_array + size()); // WHY NOT? return iterator(_array + size());
         }
         //const_iterator end() const;
         const_iterator end() const {
@@ -109,7 +111,7 @@ class Vector {
             return const_reverse_iterator(begin());
         }
 
-// --------------------- 3- get_allocator() -------------------------------------
+// --------------------- 3- _alloc -------------------------------------
 
     /*
         Returns a copy of the allocator object associated with the vector
@@ -117,21 +119,28 @@ class Vector {
  
     allocator_type get_allocator() const
     {
-        return allocator_type();
+        //return allocator_type();
+        return _alloc;
     }
         
 // --------------------- 4- default constructor ---------------------------------
-        Vector() {
+        //Vector() {
+        explicit Vector (const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
             //std::cout << "Default vector constructor\n";
             _size = 0;
             _capacity = 0;
+            _array = NULL;
+
             //std::cout << _array << "\n";
             //std::cout << "size " << i.size() << std::endl;  // size = 0
 	        //std::cout << "max_size " << i.max_size() << std::endl; // max_size = 4611686018427387903
 	        //std::cout << "capacity " << i.capacity() << std::endl; // capacity = 0
         }
+
         // 2- fill vector size n, with the same value
-        explicit Vector (size_type n, value_type var) {
+        //explicit Vector (size_type n, value_type var) {
+        explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc)
+        {   
             //std::cout << "Constructor fill vector size :" << n << "\n";
             _size = n;
             _capacity = n;
@@ -139,71 +148,81 @@ class Vector {
             // Step 1: Allocate for n value:
             // P.S: Calls to "Allocator::allocate" may throw (bad_allocator)
             // ==> throw an exception of type std::bad_alloc or a class derived from std::bad_alloc
-            _array = get_allocator().allocate(n);
+            _array = _alloc.allocate(n);
             // Step 2: Construct for value_type var
             for (size_type i=0; i<n; i++)
-                get_allocator().construct(_array + i, var);
+                _alloc.construct(_array + i, val);
         }
+
         // 3- range Constructor
-        // template < class InputIterator >
-        // explicit Vector (InputIterator first, InputIterator last) {
-        //     std::cout << "Range Constructor of vector\n";
+        // ===> https://eli.thegreenplace.net/2014/sfinae-and-enable_if/
+        template < class InputIterator >
+        Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if <!ft::is_integral<InputIterator>::value, int>::type b = int()) : _alloc(alloc)
+        {
+            //std::cout << "Range Constructor of vector\n";
                 
-        //     // Step 1: create an array of value_type;
-        //     value_type* array;
-                
-        //     size_type i = 0;
-        //     /*for(iterator it = first; it != last; ++it)
-        //     {
-        //         array[i] = *it;
-        //         ++i;
-        //     }*/
-        //     while (first != last)
-        //     {
-        //         array[i] = *(++first);
-        //         i++;
-        //     }
-        //     // Step 2: Allocate for i element in the vector
-        //     _array = get_allocator().allocate(i);
-        //     // Step 3: Construct for value_type var
-        //     /*
-        //       Not this(won't work like that):
-        //         for (size_type j=0; j<i; j++)
-        //             _array[j] = array[i];
-        //     */
-        //     for (size_type j=0; j<i; j++)
-        //         get_allocator().construct(_array + j, array[j]);
-        // }
+            // Step 1: Create an array of value_type;
+            _size = 0;
+            _capacity = 0;
+            _array = NULL;
+            
+            // Step 2: Add new element in the vector[ Allocate && Construct ]
+            while (first != last)
+                push_back(*(first++));
+        }
+
         // 4- Copy Constructor
         Vector(const Vector& inst) {
             //std::cout << "Copy Constructor of vector\n";
+            _size = 0;
+            _capacity = 0;
+            _array = NULL;
             *this = inst;
         }
 
         Vector& operator=(const Vector& inst) {
             //std::cout << "Assignement copy Constructor of vector\n";
 
+            //1- deallocate the _size element of _array
+            for (size_type i = 0; i < _size; i++)
+                _alloc.destroy(_array + i);
+
+            // 2- deallocate space for _capacity of _array
+            if (_capacity > 0)
+                _alloc.deallocate(_array, _capacity);
+
+            // 3- Initialize capacity and size to default
             _capacity = inst._capacity;
             _size = inst._size;
-            _array = get_allocator().allocate(inst._capacity);
-            for (size_type j=0; j < inst._size; j++)
-                get_allocator().construct(_array + j, _array[j]);
+            _alloc = inst._alloc;
+
+            // 4- fill the array
+            if (_capacity != 0)
+            {
+                _array = _alloc.allocate(_capacity);
+                for (size_type j=0; j < inst._size; j++)
+                    _alloc.construct(_array + j, inst._array[j]);
+            }
+            else
+                _array = NULL;
             return *this;
         }
+
         // 5- Destructor
         ~Vector() {
             //std::cout << "Destructor of vector\n";
             
             //3- deallocate the _size element of _array
             for (size_type i = 0; i < _size; i++)
-                get_allocator().destroy(_array + i);
+                _alloc.destroy(_array + i);
             // 4- deallocate space for _capacity of _array
             if (_capacity > 0)
-                get_allocator().deallocate(_array, _capacity);
+                _alloc.deallocate(_array, _capacity);
     
         }
 
 // ------- 5- empty(), size(),capacity(), max_size() ----------------------------
+
         bool empty() const {
             if (_size == 0)
                 return true;
@@ -219,7 +238,10 @@ class Vector {
         // ==> It's the theoretical maximum number of items that could be put in your vector.
         //          (2^64 / 1024) / (size_of_datatype in bytes)
         size_type max_size() const {
-            return (9223372036854775807 / sizeof(value_type)); // suppose (2^64 -1) / sizeof()        }
+            if (sizeof(value_type) == 1)
+                return (9223372036854775807); // suppose (2^64 -1) / sizeof()        }
+            else
+                return (_alloc.max_size());
         }
 
 // ----- 6- Accessors: at, operator[], front(), back(), data() ------------------
@@ -324,7 +346,7 @@ class Vector {
         // std::cout << "reserve fct \n";
         value_type* arr;
 
-        if (n > capacity())
+        if (n > capacity()) // reserve
         {
             //std::cout << "reserve()\n";
             // if (n > max_size())
@@ -332,17 +354,17 @@ class Vector {
             //else
             {
                 // 1- Allocate space:
-                arr = get_allocator().allocate(n);
+                arr = _alloc.allocate(n);
                 // 2- Construct:
                 for (size_type i = 0; i < size(); i++)
-                    get_allocator().construct(arr+ i, _array[i]);
+                    _alloc.construct(arr+ i, _array[i]);
 
                 // // 3- Destroy the other _array;
                 for (size_type i = 0; i < size(); i++)
-                    get_allocator().destroy(_array + i);
+                    _alloc.destroy(_array + i);
                 // 4- Deallocate the other _array;
                 if (_capacity > 0)
-                    get_allocator().deallocate(_array, capacity());
+                    _alloc.deallocate(_array, capacity());
 
                 // 5- upgrade the capacity()
                 _capacity = n;
@@ -364,40 +386,41 @@ class Vector {
             expend the container to n size by adding new element at the end (using push_back)
     */
     void resize(size_type n, value_type val = value_type()) {
-        // std::cout << "resize()\n";
+        // std::cout << "resize() " << capacity() << " | " << size()  << "\n";
+
         // if (size() == n)
         //     return ;
         if (size() > n) // size > n value ==> pop_back()
         {
-            //std::cout << "case 1\n";
+            // std::cout << "case 1\n";
             while (size() > n)
                 pop_back();
         }
         else if (capacity() >= n) // capacity >= n value ==> construct new element
         {
-            //std::cout << "case 2\n";
-            while (size() > n)
+            // std::cout << "case 2 " <<  size() << "\n";
+            while (size() < n)
             {
-                get_allocator().construct(_array + _size, val);
+                _alloc.construct(_array + size(), val);
                 _size++;
             }
-
             // -------------- OR -----------------
+
             // while (size() > n)
             //     push_back(val);
 
         }
-        // if capacity < n ==> reserve(upgrade capacity) then construct
-        else {
+        else  // if capacity < n ==> reserve(upgrade capacity) then construct
+        {
             //std::cout << "case 3\n";
-            if (capacity() % 2 == 0)
-                reserve(capacity() * 2);
-            else
+            // if (capacity() % 2 == 0)
+            //     reserve(capacity() * 2);
+            // else
                 reserve(n);
             //std::cout << "size: " << size() << "\n";
             while (size() < n)
             {
-                get_allocator().construct(_array, val);
+                _alloc.construct(_array + size(), val);
                 _size++;
             }
         }
@@ -416,7 +439,7 @@ class Vector {
         // 1- check if there is enough space to add new element
         if (size() == capacity())
         {
-            if (capacity() == 0 || capacity() % 2 != 0) // odd
+            if (capacity() == 0)
                 reserve(capacity() + 1);
             else
                 reserve(capacity() * 2);
@@ -426,7 +449,7 @@ class Vector {
         //  SHOULD test if resize duplicate the capacity in case it's even number case
 
         // 2- construct for the new element
-        get_allocator().construct(_array + _size, val);
+        _alloc.construct(_array + _size, val);
 
         // 3- upgrade the size of the container
         _size++;
@@ -440,7 +463,7 @@ class Vector {
     void pop_back() {
         //std::cout << "pop_back\n";
         // 1- Destroy the last element
-        get_allocator().destroy(_array + (_size - 1));
+        _alloc.destroy(_array + (_size - 1));
 
         // 2- increase the size of the container by one
         _size--;
@@ -454,26 +477,36 @@ class Vector {
             ...
             ...
     */
-    iterator erase (iterator position) {
-        // std::cout << "erase()\n";
-        iterator it;
+    iterator erase (iterator position) try {
+        iterator iter;
+        
+        iter = position + 1;
 
-        // 1- store the next element in the container
-        it = position++;
-        // 2- destroy the element in the curr position
-        get_allocator().destroy(_array + (it - begin() + 1));
-        // 3- decrease the size of the container
-        _size--;
-
-        // 4- return the next position
+        while (iter != end())
+        {
+            _alloc.destroy((iter - 1).base());
+            _alloc.construct((iter - 1).base(), *iter);
+            ++iter;
+        }
+        _alloc.destroy((iter - 1).base());
+        --_size;
+        //iter = end(); 
         return position;
+    }
+    catch (std::exception)
+    {
+        std::cout << "this erase" << std::endl;
+        return iterator();
     }
 
     iterator erase (iterator first, iterator last) {
         // std::cout << "erase(range)\n";
 
-        while (first != last)
-            first = erase(first);
+        while (first != last--)
+        {
+            //std::cout << "erase" << std::endl;
+            erase(first);
+        }
         return first;
     }
 
@@ -487,53 +520,103 @@ class Vector {
 
 // --------------------- 9- Diff btw Assign() VS Insert() -----------------------
 
+ // 9.1- assign()
+
     /*
         With assign vector content, 
             The container destroy all the content, and construct n new values.
         ==> The capacity of the container will not change only the size.
 
     */
- //void assign (size_type n, const value_type& val);
+
+    //void assign (size_type n, const value_type& val);
     void assign (size_type n, const value_type& val)
     {       
         clear();
         resize(n, val);
     }
 
- //template <class InputIterator>  void assign (InputIterator first, InputIterator last);
+    //template <class InputIterator>  void assign (InputIterator first, InputIterator last);
     template <class InputIterator>
     void assign (InputIterator first, InputIterator last) {
        clear();
-       while (first++ != last)
-            push_back(*first);
+       while (first != last)
+            push_back(*(first++));
     }
+
+ // 9.2- insert()
 
     /*
         With insert, no clearing of the container.
         ==> Inserting elements in positions other than the "vector end",
              causes the container to relocate all the elements after position.
-             bcuz vectors use an array as their underlying storage.  
+             bcuz vectors use an array as their underlying storage.
+
+        Return:
+            An iterator that points to the first of the newly inserted elements.
     */
 
- //iterator insert (iterator position, const value_type& val);
+    //iterator insert (iterator position, const value_type& val);
     iterator insert (iterator position, const value_type& val) {
-        if (position == end())
-        {
-            push_back(val);
-            return iterator(_array + size());
-        }
-        int i;
 
-        i = 0;
+        if (position == end()) // case 1: position = end
+            push_back(val);
+        else if (capacity() >= (size() + 1)) // case 2: enough capacity
+        {
+            iterator iter;
         
+            // 1- iter = end()
+            iter = end();
+            // 2- update the size 
+            ++_size;
+            // 3- 
+            while (iter != position)
+            {
+                _alloc.construct(iter.base(), *(--iter));
+                _alloc.destroy(iter.base()); 
+            }
+            _alloc.construct(iter.base(), val);
+        }
+        else    // case 3: capacity not enough
+        {
+            pointer array;
+            array = _alloc.allocate(size() + 1); // capacity
+
+            iterator iter;
+            iter = (end() - 1); // iter = element before end
+
+            size_t new_size = _size;
+            while (new_size > 0)
+            {
+                if (iter == position)
+                {
+                    _alloc.construct(array + new_size, val);
+                    iter--;
+                }
+                else
+                    _alloc.construct(array + new_size, *(iter--));
+                new_size--;
+            }
+            //3- deallocate the _size element of _array
+            for (size_type i = 0; i < _size; i++)
+                _alloc.destroy(_array + i);
+            // 4- deallocate space for _capacity of _array
+            if (_capacity > 0)
+                _alloc.deallocate(_array, _capacity);
+            // 5- update container attributes
+            _array = array;
+            _size = new_size;
+            _capacity = new_size;
+        }
+        return position;
     }
 
- //void insert (iterator position, size_type n, const value_type& val);
+    //void insert (iterator position, size_type n, const value_type& val);
     void insert (iterator position, size_type n, const value_type& val) {
 
     }
 
- //template <class InputIterator>    void insert (iterator position, InputIterator first, InputIterator last);
+    //template <class InputIterator>    void insert (iterator position, InputIterator first, InputIterator last);
     template <class InputIterator>
     void insert (iterator position, InputIterator first, InputIterator last) {
 
@@ -543,6 +626,14 @@ class Vector {
 
     /*
     */
+
+    // void swap (vector& x);
+    void swap (Vector& x) {
+        std::swap(_alloc, x._alloc);
+        std::swap(_size, x._size);
+        std::swap(_capacity, x._capacity);
+        std::swap(_array, x._array);
+    }
 
 };
 }
