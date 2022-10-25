@@ -586,13 +586,16 @@ class vector {
         {
             if (_capacity < (size() + 1))
             {
-                reserve(_capacity * 2);
+                if (_capacity == 0)
+                    reserve(1);
+                else
+                    reserve(_capacity * 2); // cuz 0*2 = 0
                 position = _array + pos;
             }
             iterator iter;
             iter = end();
             _alloc.construct(iter.base(), value_type());
-            while (iter != position) // no need to change position
+            while (iter != position) // already position changed
             {
                 *iter = *(iter -1);
                 iter--;
@@ -621,7 +624,9 @@ class vector {
             // 1- reserve
             if (_capacity < (size() + n))
             {
-                if ((_size + n) <= (_capacity * 2))
+                if (_capacity == 0)
+                    reserve(n);
+                else if ((_size + n) <= (_capacity * 2))
                     reserve(_capacity * 2);
                 else
                     reserve(_size + n);
@@ -648,7 +653,7 @@ class vector {
             }
             
             // 4- fill the n position
-            int j = 0;
+            size_type j = 0;
             while (j++ < n)
             {
                 *iter = val;
@@ -662,7 +667,12 @@ class vector {
     //template <class InputIterator>    void insert (iterator position, InputIterator first, InputIterator last);
     template <class InputIterator>
     void insert (iterator position, InputIterator first, InputIterator last) {
-        
+        while (first != last)
+        {
+            position = insert(position, *(first)); // return new position
+            position++;
+            first++;
+        }
     }
 
 // ---------------------- 10- swap ----------------------------------------------

@@ -73,9 +73,9 @@ namespace ft {
 //  ------------------ Accessors operator =, * and -> ---------------------------   
 
     // https://en.cppreference.com/w/cpp/language/cast_operator
-    operator my_Iterator<const value_type *>() {
-        return my_Iterator<const value_type *>(_m_ptr);
-    }
+    // operator my_Iterator<const value_type *>() {
+    //     return my_Iterator<const value_type *>(_m_ptr);
+    // }
 
     pointer base() const {
         return _m_ptr;
@@ -145,6 +145,7 @@ namespace ft {
     }
     // 2- Prefix decrement:
     my_Iterator& operator--() { 
+        // std::cout << "predecrement\n";
         _m_ptr--;
         return *this;
     }
