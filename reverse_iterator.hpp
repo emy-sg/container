@@ -188,6 +188,7 @@ namespace ft {
     // ---------------------------------------------
 
     // Step 7: Member friends : The operators [ > < >= <= ]
+    
     friend bool operator>(const reverse_iterator& a, const reverse_iterator& b) {
         if ((a - b) > 0)
             return true;

@@ -193,32 +193,41 @@ int main() {
 
     /////////////////////// resize --------------------------
 
-    // std::cout << "\nResize\n";
-    // ft::Vector<int> f;
-    // std::vector<int> f1;
+//     std::cout << "\nResize\n";
+//     ft::Vector<int> f;
+//     std::vector<int> f1;
 
-    // f.push_back(1);
-    // f.push_back(2);
-    // f.push_back(3);
-    // f.push_back(4);
+//     f.push_back(1);
+//     f.push_back(2);
+//     f.push_back(3);
+//     f.push_back(4);
+//     f.push_back(5);
 
-    // f1.push_back(1);
-    // f1.push_back(2);
-    // f1.push_back(3);
-    // f1.push_back(4);
+//     f1.push_back(1);
+//     f1.push_back(2);
+//     f1.push_back(3);
+//     f1.push_back(4);
+//     f1.push_back(5);
     
-    // std::cout << f.size() << " | " <<  f.capacity() << "\n";
-    // std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
-    //  std::cout << "--------------------------\n";
-    // f.resize(4, 1);
-    // f1.resize(4, 1);
-    // std::cout << f.size() << " | " <<  f.capacity() << "\n";
-    // std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
-    // std::cout << "--------------------------\n";
-    // f.clear();
-    // f1.clear();
-    // std::cout << f.size() << " | " <<  f.capacity() << "\n";
-    // std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
+//     std::cout << f.size() << " | " <<  f.capacity() << "\n";
+//     std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
+    
+//     // f.resize(2, 5);
+//     // f1.resize(2, 5);
+//    // std::cout << "--------------------------\n";
+//     // f.resize(6, 5);
+//     // f1.resize(6, 5);
+//     //std::cout << "--------------------------\n";
+//     f.resize(100, 5);
+//     f1.resize(100, 5);
+
+//     std::cout << f.size() << " | " <<  f.capacity() << "\n";
+//     std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
+//     std::cout << "--------------------------\n";
+//     f.clear();
+//     f1.clear();
+//     std::cout << f.size() << " | " <<  f.capacity() << "\n";
+//     std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
 
     /////////////////// max_size -----------------------------
 
@@ -312,16 +321,65 @@ int main() {
     // std::cout << f1.size() << " | " <<  f1.capacity() << "\n";
 
     ////////////////////////// weird error ---------------------------
-    std::vector<std::string> v1(10, "hi ");
-    std::string s1;
-    std::string ft_s1;
-    ft::Vector<std::string> ft_v1(10, "hi ");
+    // std::vector<std::string> v1(10, "hi ");
+    // std::string s1;
+    // std::string ft_s1;
+    // ft::Vector<std::string> ft_v1(10, "hi ");
 
-    for (size_t i = 0; i < v1.size(); ++i)
-            s1 += v1[i];
+    // for (size_t i = 0; i < v1.size(); ++i)
+    //         s1 += v1[i];
 
-    for (ft::Vector<std::string>::iterator it = ft_v1.begin(); it != ft_v1.end(); ++it)
-            ft_s1 += *it;
+    // for (ft::Vector<std::string>::iterator it = ft_v1.begin(); it != ft_v1.end(); ++it)
+    //         ft_s1 += *it;    std::cout << vec.size() << " | " <<  vec.capacity() << "\n";
+    //std::cout << ft_vec.size() << " | " <<  ft_vec.capacity() << "\n";
 
-    std::cout << (s1==ft_s1) << "\n";
+    // std::cout << (s1==ft_s1) << "\n";
+
+    //////////////////////////// insert && assign ------------------------------------
+
+    std::vector<int> vec;
+    ft::Vector<int> ft_vec;
+
+    std::cout << "------------assign 5 elements--------------\n";
+
+    vec.assign(5, 5);
+    ft_vec.assign(5, 5);
+    std::cout << vec.size() << " | " ;
+    std::cout << ft_vec.size()  << "\n";
+
+    std::cout << "------------assign range of 5 elements--------------\n";
+
+    vec.assign(ft_vec.begin(), ft_vec.end());
+    ft_vec.assign(vec.begin(), vec.end());
+    std::cout << vec.size() << " | " ;
+    std::cout << ft_vec.size()  << "\n";
+
+    std::cout << "-------------insert one element-------------\n";
+
+    vec.insert(vec.begin(), 5);
+    ft_vec.insert(ft_vec.begin(), 5);
+    std::cout << vec.size() << " | " ;
+    std::cout << ft_vec.size() << "\n";
+
+    std::cout << "--------------insert another element------------\n";
+
+    vec.insert(vec.begin(), 5);
+    ft_vec.insert(ft_vec.begin(), 5);
+    std::cout << vec.size() << " | " ;
+    std::cout << ft_vec.size() << "\n";
+
+    std::cout << "-----------insert n elements---------------\n";
+    vec.clear();
+    ft_vec.clear();
+
+    // vec.insert(vec.begin(), 5, 6);
+    // ft_vec.insert(ft_vec.begin(), 5, 6);
+    // std::cout << vec.size() << " | " ;
+    // std::cout << ft_vec.size() << "\n";
+
+    // std::cout << "--------------------------\n";
+    // // vec.clear();
+    // // ft_vec.clear();
+    // std::cout << vec.size() << " | ";
+    // std::cout << ft_vec.size() << "\n";
 }
