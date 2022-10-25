@@ -1,7 +1,7 @@
-# ifndef VECTOR_HPP
-#define VECTOR_HPP
+# ifndef vector_HPP
+#define vector_HPP
 
-/* Vectors are just like arrays, 
+/* vectors are just like arrays, 
  * 	cuz vectors use contiguous storage locations for their elements
  * 	but unlike arrays, their size can change dynamically, their storage being handled automatically by the container.
 *
@@ -28,7 +28,7 @@ namespace ft {
         class T,
         class Alloc = std::allocator<T> >
 
-class Vector {
+class vector {
     
     public:
 
@@ -48,7 +48,7 @@ class Vector {
         size_t _capacity;
         allocator_type _alloc;
 
-    public:   // Member Methods of Vector
+    public:   // Member Methods of vector
 
 // ---------------------- 1- Iterator -------------------------------------------
 
@@ -126,8 +126,8 @@ class Vector {
     }
         
 // --------------------- 4- default constructor ---------------------------------
-        //Vector() {
-        explicit Vector (const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
+        //vector() {
+        explicit vector (const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
             //std::cout << "Default vector constructor\n";
             _size = 0;
             _capacity = 0;
@@ -140,9 +140,17 @@ class Vector {
         }
 
         // 2- fill vector size n, with the same value
-        //explicit Vector (size_type n, value_type var) {
-        explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc)
-        {   
+        //explicit vector (size_type n, value_type var) {
+        explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc)
+        {
+            if (n == 0)
+            {
+                _size = 0;
+                _capacity = 0;
+                _array = NULL;
+            }
+            else
+            {
             //std::cout << "Constructor fill vector size :" << n << "\n";
             _size = n;
             _capacity = n;
@@ -154,12 +162,13 @@ class Vector {
             // Step 2: Construct for value_type var
             for (size_type i=0; i<n; i++)
                 _alloc.construct(_array + i, val);
+            }
         }
 
         // 3- range Constructor
         // ===> https://eli.thegreenplace.net/2014/sfinae-and-enable_if/
         template < class InputIterator >
-        Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if <!ft::is_integral<InputIterator>::value, int>::type b = int()) : _alloc(alloc)
+        vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if <!ft::is_integral<InputIterator>::value, int>::type* = 0) : _alloc(alloc)
         {
             //std::cout << "Range Constructor of vector\n";
                 
@@ -174,7 +183,7 @@ class Vector {
         }
 
         // 4- Copy Constructor
-        Vector(const Vector& inst) {
+        vector(const vector& inst) {
             //std::cout << "Copy Constructor of vector\n";
             _size = 0;
             _capacity = 0;
@@ -182,7 +191,7 @@ class Vector {
             *this = inst;
         }
 
-        Vector& operator=(const Vector& inst) {
+        vector& operator=(const vector& inst) {
             //std::cout << "Assignement copy Constructor of vector\n";
 
             //1- deallocate the _size element of _array
@@ -211,7 +220,7 @@ class Vector {
         }
 
         // 5- Destructor
-        ~Vector() {
+        ~vector() {
             //std::cout << "Destructor of vector\n";
             
             //3- deallocate the _size element of _array
@@ -238,11 +247,10 @@ class Vector {
         }
         //  What is max_size() ?
         // ==> It's the theoretical maximum number of items that could be put in your vector.
-        //          (2^64 / 1024) / (size_of_datatype in bytes)
         size_type max_size() const {
-            if (sizeof(value_type) == 1)
-                return (9223372036854775807); // suppose (2^64 -1) / sizeof()        }
-            else
+            // if (sizeof(value_type) == 1)
+            //     return (9223372036854775807); // case of char
+            // else
                 return (_alloc.max_size());
         }
 
@@ -344,7 +352,8 @@ class Vector {
         if (n > capacity())
             reallocate for n elements
     */
-    void reserve(size_type n) try {
+    void reserve(size_type n)
+    {
         // std::cout << "reserve fct \n";
         value_type* arr;
 
@@ -377,10 +386,6 @@ class Vector {
             }
         }
     }
-    catch (std::bad_alloc e)
-    {
-        std::cout << e.what() << std::endl;
-    }
 
  // 6.2- void resize(size_type n, value_type val = value_type());
 
@@ -391,7 +396,8 @@ class Vector {
         else // n is greater than the current size, 
             expend the container to n size by adding new element at the end (using push_back)
     */
-    void resize(size_type n, value_type val = value_type()) try{
+    void resize(size_type n, value_type val = value_type())
+    {
         // std::cout << "resize() " << capacity() << " | " << size()  << "\n";
 
         // if (size() == n)
@@ -431,10 +437,6 @@ class Vector {
             }
         }
     }
-    catch (std::bad_alloc e)
-    {
-        std::cout << e.what() << std::endl;
-    }
 
  // 6.3- void push_back (const value_type& val);
     
@@ -444,11 +446,12 @@ class Vector {
             which causes an automatic reallocation if needed.
     */
     void push_back (const value_type& val) {
-        //std::cout << "push_back " << size() << " | " << capacity()<< "\n";
+        // std::cout << "push_back " << size() << " | " << capacity()<< "\n";
         
         // 1- check if there is enough space to add new element
         if (size() == capacity())
         {
+            // std::cout << "push_back double capacity\n";
             if (capacity() == 0)
                 reserve(capacity() + 1);
             else
@@ -457,10 +460,11 @@ class Vector {
 
         // ==> Still idk if I can replace those two beautiful lines by resize()
         //  SHOULD test if resize duplicate the capacity in case it's even number case
-
+        //std::cout << "push_back kayn capacity\n";
         // 2- construct for the new element
+        //std::cout << *(_array + _size - 1) << " " << (_array + _size) << std::endl;
         _alloc.construct(_array + _size, val);
-
+        // std::cout << "end push_back kayn capacity\n";
         // 3- upgrade the size of the container
         _size++;
     }
@@ -487,7 +491,8 @@ class Vector {
             ...
             ...
     */
-    iterator erase (iterator position) try {
+    iterator erase (iterator position)
+    {
         iterator iter;
         
         iter = position + 1;
@@ -503,13 +508,9 @@ class Vector {
         //iter = end(); 
         return position;
     }
-    catch (std::exception)
-    {
-        std::cout << "this erase" << std::endl;
-        return iterator();
-    }
 
-    iterator erase (iterator first, iterator last) {
+    iterator erase (iterator first, iterator last)
+    {
         //std::cout << "erase(range)\n";
 
         while (first != last--)
@@ -551,7 +552,7 @@ class Vector {
 
     //template <class InputIterator>  void assign (InputIterator first, InputIterator last);
     template <class InputIterator>
-    void assign (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if <!ft::is_integral<InputIterator>::value, int>::type b = int()) {
+    void assign (InputIterator first, InputIterator last, typename ft::enable_if <!ft::is_integral<InputIterator>::value, int>::type* = 0) {
        //std::cout << "assign of range\n";
        clear();
        while (first != last)
@@ -574,134 +575,95 @@ class Vector {
     iterator insert (iterator position, const value_type& val) {
         //std::cout << "insert one element\n";
 
+        size_type pos = position - begin();
         if (position == end()) // case 1: position = end
         {
             //std::cout << "case 1\n";
             push_back(val);
+            position = _array + pos;
         }
-        else if (capacity() >= (size() + 1)) // case 2: enough capacity
+        else
         {
-            //std::cout << "case 2\n";
+            if (_capacity < (size() + 1))
+            {
+                reserve(_capacity * 2);
+                position = _array + pos;
+            }
             iterator iter;
-        
-            // 1- iter = end()
             iter = end();
-            // 2- update the size 
+            _alloc.construct(iter.base(), value_type());
+            while (iter != position) // no need to change position
+            {
+                *iter = *(iter -1);
+                iter--;
+                //*iter = *(--iter);  // WHY ma5admatch 
+            }
+            *iter = val;  //_alloc.construct(iter.base(), val);
             ++_size;
-            // 3- 
-            while (iter != position)
-            {
-                _alloc.construct(iter.base(), *(--iter));
-                _alloc.destroy(iter.base()); 
-            }
-            _alloc.construct(iter.base(), val);
-        }
-        else    // case 3: capacity not enough
-        {
-            //std::cout << "case 3\n";
-            pointer array;
-            array = _alloc.allocate(size() + 1); // capacity
-
-            iterator iter;
-            iter = (end() - 1); // iter = element before end
-
-            size_t new_size = _size;
-            while (new_size > 0)
-            {
-                if (iter == position)
-                {
-                    _alloc.construct(array + new_size, val);
-                    iter--;
-                }
-                else
-                    _alloc.construct(array + new_size, *(iter--));
-                new_size--;
-            }
-            //3- deallocate the _size element of _array
-            for (size_type i = 0; i < _size; i++)
-                _alloc.destroy(_array + i);
-            // 4- deallocate space for _capacity of _array
-            if (_capacity > 0)
-                _alloc.deallocate(_array, _capacity);
-            // 5- update container attributes
-            _array = array;
-            _size = _size + 1;
-            _capacity = _size + 1;
+            // 2- update the size 
         }
         return position;
     }
 
     //void insert (iterator position, size_type n, const value_type& val);
     void insert (iterator position, size_type n, const value_type& val) {
-        //std::cout << "insert n elements\n";
+        
+        size_type pos = position - begin();
+  
         if (position == end()) // case 1: position = end
         {
-            std::cout << "case 1\n";
             while (n--)
                 push_back(val);
+            position = begin() + pos;
         }
-        else if (capacity() >= (size() + n)) // case 2: enough capacity
+        else
         {
-            std::cout << "case 2\n";
-            iterator iter;
-        
-            // 1- iter = end()
-            iter = end() + n;
-            // 2- update the size 
-            _size += n;
-            // 3- 
-            while (iter != position)
+            // 1- reserve
+            if (_capacity < (size() + n))
             {
-                _alloc.construct(iter.base(), *(--iter));
-                _alloc.destroy(iter.base()); 
-            }
-            while (n--)
-                _alloc.construct(iter.base(), val);
-        }
-        else    // case 3: capacity not enough
-        {
-            std::cout << "case 3\n";
-            pointer array;
-            array = _alloc.allocate(size() + n); // allocate for new capacity
-
-            iterator iter;
-            iter = (end() - 1); // iter = element before end
-
-            size_t new_size = _size + n;
-            while (new_size > 0)
-            {
-                if (iter == position)
-                {
-                    while (n--)
-                    {
-                        _alloc.construct(array + new_size, val);
-                        new_size--;
-                    }
-                }
+                if ((_size + n) <= (_capacity * 2))
+                    reserve(_capacity * 2);
                 else
-                {
-                    _alloc.construct(array + new_size, *(iter--));
-                    new_size--;
-                }
+                    reserve(_size + n);
+                position = _array + pos;
             }
-            //3- deallocate the _size element of _array
-            for (size_type i = 0; i < _size; i++)
-                _alloc.destroy(_array + i);
-            // 4- deallocate space for _capacity of _array
-            if (_capacity > 0)
-                _alloc.deallocate(_array, _capacity);
-            // 5- update container attributes
-            _array = array;
-            _size = _size + n;
-            _capacity = _size + n;
+
+            // 2- 
+            iterator iter;
+            iter = end();  // iter = end()
+
+            while (iter != (end() + n)) // iter = new_end
+            {
+                _alloc.construct(iter.base(), value_type());
+                iter++;
+            }
+
+            iter--;
+            // 3-
+            while (iter != (position + n - 1))
+            {
+                *iter = *(iter - n);
+                iter--;
+                // *iter = *(--iter);  // WHY ma5admatch  
+            }
+            
+            // 4- fill the n position
+            int j = 0;
+            while (j++ < n)
+            {
+                *iter = val;
+                iter--;
+            }   
+            // 5- update the size 
+            _size += n;
         }
     }
 
     //template <class InputIterator>    void insert (iterator position, InputIterator first, InputIterator last);
-    // template <class InputIterator>
-    // void insert (iterator position, InputIterator first, InputIterator last) {
-
-    // }
+    template <class InputIterator>
+    void insert (iterator position, InputIterator first, InputIterator last) {
+        
+    }
 
 // ---------------------- 10- swap ----------------------------------------------
 
@@ -709,7 +671,7 @@ class Vector {
     */
 
     // void swap (vector& x);
-    void swap (Vector& x) {
+    void swap (vector& x) {
         std::swap(_alloc, x._alloc);
         std::swap(_size, x._size);
         std::swap(_capacity, x._capacity);
@@ -718,7 +680,7 @@ class Vector {
 
 // ---------------------- 11- Non Members functions  -----------------------
 
-    friend void swap (Vector& x, Vector& y) {
+    friend void swap (vector& x, vector& y) {
         x.swap(y);
     }
 
@@ -730,13 +692,13 @@ class Vector {
             operator==, stopping at the first mismatch aka "equal"
     */
 
-    friend bool operator== (const Vector& lhs, const Vector& rhs) {
+    friend bool operator== (const vector& lhs, const vector& rhs) {
         if (lhs.size() != rhs.size())
             return false;
         return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
     }
 
-    friend bool operator!= (const Vector& lhs, const Vector& rhs) {
+    friend bool operator!= (const vector& lhs, const vector& rhs) {
         if (lhs.size() != rhs.size())
             return true;
         return !ft::equal(lhs.begin(), lhs.end(), rhs.begin());
@@ -747,19 +709,19 @@ class Vector {
             Returns "true" if the range [first, last1) compares "lexicographically less" than the range [first2, last2).
     */
 
-    friend bool operator<  (const Vector& lhs, const Vector& rhs) {
+    friend bool operator<  (const vector& lhs, const vector& rhs) {
         return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
     }
 
-    friend bool operator<= (const Vector& lhs, const Vector& rhs) {
+    friend bool operator<= (const vector& lhs, const vector& rhs) {
         return !(lhs > rhs);
     }
 
-    friend bool operator>  (const Vector& lhs, const Vector& rhs) {
+    friend bool operator>  (const vector& lhs, const vector& rhs) {
         return ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
     }
 
-    friend bool operator>= (const Vector& lhs, const Vector& rhs) {
+    friend bool operator>= (const vector& lhs, const vector& rhs) {
         return !(lhs < rhs);
     }
 };
@@ -767,7 +729,7 @@ class Vector {
 // // ------- 11- Non Members functions aka friend -----------------------
 
 //     template <class T, class Alloc>
-//     void swap (Vector<T,Alloc>& x, Vector<T,Alloc>& y) {
+//     void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) {
 //         x.swap(y);
 //     }
 
@@ -780,14 +742,14 @@ class Vector {
 //     */
 
 //     template <class T, class Alloc>
-//     bool operator== (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+//     bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 //         if (lhs.size() != rhs.size())
 //             return false;
 //         return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 //     }
 
 //     template <class T, class Alloc>
-//     bool operator!= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+//     bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 //         if (lhs.size() != rhs.size())
 //             return true;
 //         return !ft::equal(lhs.begin(), lhs.end(), rhs.begin());
@@ -799,22 +761,22 @@ class Vector {
 //     */
 
 //     template <class T, class Alloc>
-//     bool operator<  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+//     bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 //         return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 //     }
 
 //     template <class T, class Alloc>
-//     bool operator<= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+//     bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 //         return !(lhs > rhs);
 //     }
 
 //     template <class T, class Alloc>
-//     bool operator>  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+//     bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 //         return ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
 //     }
 
 //     template <class T, class Alloc>
-//     bool operator>= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+//     bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 //         return !(lhs < rhs);
 //     }
 

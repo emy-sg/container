@@ -9,7 +9,7 @@
     otherwise, there is no member typedef "type".
 
     Last think to mention is that "std::enable_if" can be used in many forms, but in our case we gonna need it with:
-        SFINAE (to choose the right constructor to the Vector)
+        SFINAE (to choose the right constructor to the vector)
         and The Cond (condition) would be "std::is_integral"
 
     https://en.cppreference.com/w/cpp/types/enable_if
