@@ -1,5 +1,5 @@
-# ifndef MAP_HPP
-#define MAP_HPP
+# ifndef map_HPP
+#define map_HPP
 
 #include "../pair.hpp"
 #include "RBTree.hpp"
@@ -17,8 +17,8 @@ template <
 	class Key,
 	class T,
 	class Compare = std::less<Key>,
-	class Alloc = std::allocator< std::pair<const Key, T> > >
-class Map {
+	class Alloc = std::allocator< ft::pair<const Key, T> > >
+class map {
 
 // --------------------------- 1- Members Types are public ------------------------------
 	
@@ -47,7 +47,7 @@ class Map {
 
 		class value_compare
     	{   
-        	friend class Map;
+        	friend class map;
       		
 			protected:
         		Compare comp;
@@ -74,36 +74,36 @@ class Map {
 
 
 
-public: // ===> 3- Public Member Methods of Map 
+public: // ===> 3- Public Member Methods of map 
 
 //	-------------------------- 3.1- Canonical Form of map ---------------------------------
 
-	explicit Map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _compare(comp)
+	explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _compare(comp)
 	{
 		//std::cout << "Default constructor of map\n";
 	}
 	
-	~Map()
+	~map()
 	{
-		//std::cout << "Map destructor\n";
+		//std::cout << "map destructor\n";
 		clear();
 	}
 
 	template <class InputIterator>
-	Map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _compare(comp)
+	map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _compare(comp)
 	{
 		while (first != last)
 			insert(*(first++));
 	}
 
-	Map(const Map& inst) {
+	map(const map& inst) {
 		//std::cout << "Copy constructor of map\n";
 
 		// Problem deep copy and shallow copy
 		insert(inst.begin(), inst.end());
 	}
 
-	Map& operator=(const Map& inst) {
+	map& operator=(const map& inst) {
 		//std::cout << "Assignemenet copy constructor of map\n";
 		// Problem deep copy and shallow copy
 		//This path is very wrong[Za3ma calling the _Tree assignement operator] *_Tree = *(inst._Tree);
@@ -440,7 +440,7 @@ public: // ===> 3- Public Member Methods of Map
 		iterator iter_exist;
 
         //if (empty())
-		//	std::cout << "--- Map is empty ----\n";
+		//	std::cout << "--- map is empty ----\n";
 
 		iter_exist = find(val.first);
 		if (iter_exist == this->end())
@@ -526,7 +526,7 @@ public: // ===> 3- Public Member Methods of Map
 	*/
 
 	// void swap (map& inst);
-	void swap(Map& inst) {
+	void swap(map& inst) {
 
 		//std::swap(_alloc, inst._alloc);
 		//std::swap(_compare, inst._compare);
@@ -548,7 +548,7 @@ public: // ===> 3- Public Member Methods of Map
 
 	}
 
-public:	// ===>  4- Friend Methods of Map
+public:	// ===>  4- Friend Methods of map
 
 
 

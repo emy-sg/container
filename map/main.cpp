@@ -1,13 +1,13 @@
-#include "Map.hpp"
+#include "map.hpp"
 #include <map>
 #include <type_traits>
 #include <strings.h>
 
 int main() {
-    // ft::Map<int, int> me;
+    // ft::map<int, int> me;
 
     // if (me.empty())
-    //     std::cout << "Map is empty\n";
+    //     std::cout << "map is empty\n";
     // else
     //     std::cout << "size of map is " << me.size() << "\n";
 
@@ -33,8 +33,8 @@ int main() {
 
     ////////////////////////////////////////////
 
-    // ft::Map<int, int> m;
-    // ft::Map<int, int>::iterator iter;
+    // ft::map<int, int> m;
+    // ft::map<int, int>::iterator iter;
 
     // std::map<int, int> m;
     // std::map<int, int>::iterator iter;
@@ -48,13 +48,13 @@ int main() {
     // std::cout << iter->second << "\n";
 
 //  -------------- at() and operator[] and erase ---------------
-    // ft::Map<int, int> my;
+    // ft::map<int, int> my;
     // my[1] =1;
     // my[2] = 2;
     // my[3] =3;
     // my[100] = 100;
 
-    // ft::Map<int, int>::iterator it = my.begin();
+    // ft::map<int, int>::iterator it = my.begin();
     // //while (it != my.end())
     // {
     //     std::cout << my.size() << "\n";
@@ -105,7 +105,7 @@ int main() {
 
     //////////////// erase and clear  -------------------
         // std::map<char, int> m;
-        // ft::Map<char, int> ft_m;
+        // ft::map<char, int> ft_m;
         // m['x'] = 100;
         // m['y'] = 200;
         // m['z'] = 300;
@@ -134,18 +134,18 @@ int main() {
 
     ////////////////// assign() and insert() -------------------------
 
-        // ft::Map<char, int> m;
+        // ft::map<char, int> m;
 
         // m.clear();
 
     ///////////////////  iterator --------------------
-//     const ft::Map<int, int> my_map;
-// ft::Map<int, int>::const_iterator it = my_map.begin();
+//     const ft::map<int, int> my_map;
+// ft::map<int, int>::const_iterator it = my_map.begin();
 
     /////////////// swap ----------------------
 
         std::map<char, int> foo, bar;
-        ft::Map<char, int> ft_foo, ft_bar;
+        ft::map<char, int> ft_foo, ft_bar;
 
         foo['x'] = 100;
         foo['y'] = 200;

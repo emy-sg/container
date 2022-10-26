@@ -21,7 +21,7 @@ FLAGS = --std=c++98 -Wall -Wextra -Werror
 # 	@$(COMPILER) $(FLAGS)	vector_tests.cpp -o vector.out 
 
 map:
-	@$(COMPILER) $(FLAGS)	Map_tests.cpp -o map.out 
+	@$(COMPILER) $(FLAGS)	map_tests.cpp -o map.out 
 
 # stack:
 # 	@$(COMPILER) $(FLAGS)	Stack_tests.cpp -o stack.out 

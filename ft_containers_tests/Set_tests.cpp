@@ -12,7 +12,7 @@
 
 // you should include your path to this files
 
-#include "../set/Set.hpp"       // your Map path.
+#include "../set/Set.hpp"       // your map path.
 #include "../vector/vector.hpp" // your vector path.
 #include "../utility/pair.hpp"  // path to ft::pair.
 // #include "map-test-helper.hpp"
@@ -60,7 +60,7 @@ time_t get_time(void)
 }
 
 template <typename Iter1, typename Iter2>
-bool compareMaps(Iter1 first1, Iter1 last1, Iter2 first2, Iter2 last2)
+bool comparemaps(Iter1 first1, Iter1 last1, Iter2 first2, Iter2 last2)
 {
     for (; (first1 != last1) && (first2 != last2); ++first1, ++first2)
         if (*first1 != *first2)
@@ -78,7 +78,7 @@ struct classcomp
     }
 };
 
-bool testMapConstructors()
+bool testmapConstructors()
 {
     bool cond;
     std::set<int> first;
@@ -93,33 +93,33 @@ bool testMapConstructors()
     std::set<int> copy(first);
     ft::Set<int> m_copy(m_first);
 
-    cond = first.size() == m_first.size() && compareMaps(first.begin(), first.end(), m_first.begin(), m_first.end());
+    cond = first.size() == m_first.size() && comparemaps(first.begin(), first.end(), m_first.begin(), m_first.end());
 
     std::set<int> second(first.begin(), first.end());
     ft::Set<int> m_second(m_first.begin(), m_first.end());
 
-    cond = cond && second.size() == m_second.size() && compareMaps(second.begin(), second.end(), m_second.begin(), m_second.end());
+    cond = cond && second.size() == m_second.size() && comparemaps(second.begin(), second.end(), m_second.begin(), m_second.end());
 
     std::set<int> third(second);
     ft::Set<int> m_third(m_second);
 
-    cond = cond && third.size() == m_third.size() && compareMaps(third.begin(), third.end(), m_third.begin(), m_third.end());
+    cond = cond && third.size() == m_third.size() && comparemaps(third.begin(), third.end(), m_third.begin(), m_third.end());
 
     std::set<int, classcomp> fourth;  // class as Compare
     ft::Set<int, classcomp> m_fourth; // class as Compare
 
-    cond = fourth.size() == m_fourth.size() && cond && compareMaps(fourth.begin(), fourth.end(), m_fourth.begin(), m_fourth.end());
+    cond = fourth.size() == m_fourth.size() && cond && comparemaps(fourth.begin(), fourth.end(), m_fourth.begin(), m_fourth.end());
 
     bool (*fn_pt)(char, char) = fncomp;
     std::set<int, bool (*)(char, char)> fifth(fn_pt);  // function pointer as Compare
     ft::Set<int, bool (*)(char, char)> m_fifth(fn_pt); // function pointer as Compare
 
-    cond = fifth.size() == m_fifth.size() && cond && compareMaps(fifth.begin(), fifth.end(), m_fifth.begin(), m_fifth.end());
+    cond = fifth.size() == m_fifth.size() && cond && comparemaps(fifth.begin(), fifth.end(), m_fifth.begin(), m_fifth.end());
 
     first = std::set<int>();
     m_first = ft::Set<int>();
 
-    cond = copy.size() == m_copy.size() && cond && compareMaps(copy.begin(), copy.end(), m_copy.begin(), m_copy.end());
+    cond = copy.size() == m_copy.size() && cond && comparemaps(copy.begin(), copy.end(), m_copy.begin(), m_copy.end());
 
     return cond;
 }
@@ -558,7 +558,7 @@ void testConstructors()
     }
     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " Constructors with costum compare "
               << "] --------------------]\t\t\033[0m";
-    EQUAL(testMapConstructors());
+    EQUAL(testmapConstructors());
     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator= (lhs.size = rhs.size) "
               << "] --------------------]\t\t\033[0m";
     {
@@ -1186,7 +1186,7 @@ void testModifiers()
         ft_anothermap.insert(ft_m.begin(), ft_m.find(300.8f));
         cond = cond && (anothermap.size() == ft_anothermap.size() && anothermap.empty() == ft_anothermap.empty());
 
-        cond = cond && compareMaps(ft_m.begin(), ft_m.end(), m.begin(), m.end()) && compareMaps(ft_anothermap.begin(), ft_anothermap.end(), anothermap.begin(), anothermap.end());
+        cond = cond && comparemaps(ft_m.begin(), ft_m.end(), m.begin(), m.end()) && comparemaps(ft_anothermap.begin(), ft_anothermap.end(), anothermap.begin(), anothermap.end());
         EQUAL(cond);
     }
 
@@ -1268,7 +1268,7 @@ void testModifiers()
         m.insert('e');
         m.insert('f');
 
-        cond = m.size() == ft_m.size() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+        cond = m.size() == ft_m.size() && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
 
         it = m.find('b');
         ft_it = ft_m.find('b');
@@ -1277,12 +1277,12 @@ void testModifiers()
         m.erase(it);       // erasing by iterator
         ft_m.erase(ft_it); // erasing by iterator
 
-        cond = cond && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+        cond = cond && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
 
         int ret = m.erase('c');       // erasing by key
         int ft_ret = ft_m.erase('c'); // erasing by key
 
-        cond = cond && ret == ft_ret && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+        cond = cond && ret == ft_ret && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
 
         it = m.find('e');
         ft_it = ft_m.find('e');
@@ -1292,7 +1292,7 @@ void testModifiers()
         m.erase(it, m.end());          // erasing by range
         ft_m.erase(ft_it, ft_m.end()); // erasing by range
 
-        cond = cond && m.empty() == ft_m.empty() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+        cond = cond && m.empty() == ft_m.empty() && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
 
         /* ---------- Testing some edge cases ---------- */
 
@@ -1311,12 +1311,12 @@ void testModifiers()
         m2.erase(m2.begin());
         ft_m2.erase(ft_m2.begin());
 
-        cond = cond && m2.size() == ft_m2.size() && compareMaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end());
+        cond = cond && m2.size() == ft_m2.size() && comparemaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end());
 
         m2.erase(*it2);
         ft_m2.erase(*ft_it2);
 
-        cond = cond && m2.size() == ft_m2.size() && compareMaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end());
+        cond = cond && m2.size() == ft_m2.size() && comparemaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end());
 
         std::set<int> m3;
         ft::Set<int> ft_m3;
@@ -1356,7 +1356,7 @@ void testModifiers()
             ft_m3.erase(ft_m3.begin(), ft_m3.end());
         }
 
-        cond = cond && (m3.size() == ft_m3.size() && compareMaps(m3.begin(), m3.end(), ft_m3.begin(), ft_m3.end()));
+        cond = cond && (m3.size() == ft_m3.size() && comparemaps(m3.begin(), m3.end(), ft_m3.begin(), ft_m3.end()));
 
         EQUAL(cond);
     }
@@ -1441,12 +1441,12 @@ void testModifiers()
         ft_bar.insert('b');
         ft_bar.insert('c');
 
-        cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && compareMaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && compareMaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
+        cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && comparemaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && comparemaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
 
         foo.swap(bar);
         ft_foo.swap(ft_bar);
 
-        cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && compareMaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && compareMaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
+        cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && comparemaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && comparemaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
 
         std::set<std::string, std::greater<std::string> > m1, m2;
         ft::Set<std::string, std::greater<std::string> > ft_m1, ft_m2;
@@ -1533,14 +1533,14 @@ void testModifiers()
         m.clear();
         ft_m.clear();
 
-        cond = cond && m.empty() == ft_m.empty() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+        cond = cond && m.empty() == ft_m.empty() && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
 
         m.insert('a');
         m.insert('b');
         ft_m.insert('a');
         ft_m.insert('b');
 
-        cond = cond && m.size() == ft_m.size() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+        cond = cond && m.size() == ft_m.size() && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
 
         m = std::set<char>();
         ft_m = ft::Set<char>();
@@ -1548,7 +1548,7 @@ void testModifiers()
         m.clear();
         ft_m.clear();
 
-        cond = cond && m.size() == ft_m.size() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+        cond = cond && m.size() == ft_m.size() && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
 
         EQUAL(cond);
     }
@@ -1738,7 +1738,7 @@ void testOperations()
         if (ft_it2 != ft_m.end())
             ft_m.erase(ft_it2);
 
-        cond = cond && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
+        cond = cond && comparemaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
 
         EQUAL(cond && vec == ft_vec);
     }
